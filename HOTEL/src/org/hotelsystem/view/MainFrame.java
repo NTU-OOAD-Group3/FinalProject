@@ -7,6 +7,7 @@ public class MainFrame extends JFrame {
 	private JTabbedPane tabbedPane; 
     private SearchUI searchUI;
     private ReserveUI reserveUI;
+    private LoginUI loginUI;
 
     public MainFrame() {
         super("Main Frame");
@@ -14,11 +15,16 @@ public class MainFrame extends JFrame {
 
         this.tabbedPane = new JTabbedPane();
         
+        this.loginUI = new LoginUI();
+        tabbedPane.addTab("Login", this.loginUI);
+        
+        
         this.searchUI = new SearchUI();
         tabbedPane.addTab("Search", this.searchUI);
         
         this.reserveUI = new ReserveUI();
         tabbedPane.addTab("Reserve", this.reserveUI);
+
         
         add(tabbedPane, BorderLayout.CENTER);
         setSize(1400, 700);
