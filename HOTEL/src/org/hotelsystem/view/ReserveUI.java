@@ -1,5 +1,10 @@
 package org.hotelsystem.view;
 
-public class ReserveUI {
-	
+import java.awt.*;
+import javax.swing.*;
+
+public class ReserveUI extends JPanel {
+	public ReserveUI() {
+        
+    }
 }
