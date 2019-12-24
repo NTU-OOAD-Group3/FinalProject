@@ -8,6 +8,7 @@ public class MainFrame extends JFrame {
     private SearchUI searchUI;
     private ReserveUI reserveUI;
     private LoginUI loginUI;
+    private ModifyUI modifyUI;
 
     public MainFrame() {
         super("Main Frame");
@@ -24,6 +25,9 @@ public class MainFrame extends JFrame {
         
         this.reserveUI = new ReserveUI();
         tabbedPane.addTab("Reserve", this.reserveUI);
+
+        this.modifyUI = new ModifyUI();
+        tabbedPane.addTab("ModifyUI",this.modifyUI);        
 
         
         add(tabbedPane, BorderLayout.CENTER);
