@@ -1,4 +1,4 @@
-package org.hotelsystem.controll;
+package org.hotelsystem.control;
 
 public class ReserveControl {
 	

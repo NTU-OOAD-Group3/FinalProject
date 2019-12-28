@@ -15,20 +15,21 @@ public class SearchUI extends JPanel {
 	}
 	
 	private void initUI() {
-		this.searchBar = new JPanel();
-		this.searchBar.setBorder(new LineBorder(Color.RED));
-		this.addWithConstraints(this.searchBar, 0, 0, 7, 2, 7, 2,
-				GridBagConstraints.BOTH, GridBagConstraints.WEST);
+		this.searchBar = new SearchBar();
+		LineBorder line = new LineBorder(Color.BLACK);
+		EmptyBorder empty = new EmptyBorder(20, 50, 20, 50);
+		this.searchBar.setBorder(new CompoundBorder(line, empty));
+		this.addWithConstraints(this.searchBar, 0, 0, 7, 1, 7, 1,
+				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-		this.searchFilter = new JPanel();
-		this.searchFilter.setBorder(new LineBorder(Color.GREEN));
-		this.addWithConstraints(this.searchFilter, 0, 2, 2, 5, 2, 5,
-				GridBagConstraints.BOTH, GridBagConstraints.WEST);
+		this.searchFilter = new SearchFilter();
+		this.addWithConstraints(this.searchFilter, 0, 1, 2, 6, 2, 6,
+				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
-		this.searchResult = new JPanel();
-		this.searchResult.setBorder(new LineBorder(Color.BLUE));
-		this.addWithConstraints(this.searchResult, 2, 2, 5, 5, 5, 5,
-				GridBagConstraints.BOTH, GridBagConstraints.WEST);
+		this.searchResult = new SearchResults();
+		this.searchResult.setBorder(new LineBorder(Color.BLACK));
+		this.addWithConstraints(this.searchResult, 2, 1, 5, 6, 5, 6,
+				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 	}
 	
 	private void addWithConstraints(JComponent c, int gridx, int gridy,
