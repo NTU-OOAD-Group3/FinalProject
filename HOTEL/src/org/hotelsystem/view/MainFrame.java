@@ -16,9 +16,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.tabbedPane = new JTabbedPane();
-        
-        this.modifyUI = new ModifyUI();
-        tabbedPane.addTab("ModifyUI",this.modifyUI);        
+               
 
         this.loginUI = new LoginUI();
         tabbedPane.addTab("Login", this.loginUI);

@@ -33,7 +33,7 @@ public class ModifyUI extends JPanel{
 
         JButton btnQueryOrder = new JButton("Query");
         this.addWithConstraints(this.orderIDbar, btnQueryOrder, 0, 2, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST, 0, 0, 1200, 50);
+            GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST, 0, 0, 1000, 50);
 
         JLabel lbOriginalOrder = new JLabel("Original order");
         lbOriginalOrder.setHorizontalAlignment(JLabel.CENTER);
