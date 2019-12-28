@@ -17,8 +17,8 @@ public class MainFrame extends JFrame {
 
         this.tabbedPane = new JTabbedPane();
         
-        this.loginUI = new LoginUI();
-        tabbedPane.addTab("Login", this.loginUI);
+        this.loginUI = new LoginUI();//this page should be load by check user status,Guest:loginUI;User/Hoster:AccountUI
+        tabbedPane.addTab("Account", this.loginUI);
         
         
         this.searchUI = new SearchUI();

@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - LoginUI",
+            "request": "launch",
+            "mainClass": "org.hotelsystem.view.LoginUI",
+            "projectName": "FinalProject_f9a64fb5"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SearchBar",
+            "request": "launch",
+            "mainClass": "org.hotelsystem.view.SearchBar",
+            "projectName": "FinalProject_f9a64fb5"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - MainFrame",
             "request": "launch",
             "mainClass": "org.hotelsystem.view.MainFrame",
