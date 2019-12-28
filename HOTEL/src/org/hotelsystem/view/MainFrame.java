@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("Reserve", this.reserveUI);
         
         add(tabbedPane, BorderLayout.CENTER);
-        setSize(1400, 700);
+        setSize(1200, 600);
         setVisible(true);
     }
 
