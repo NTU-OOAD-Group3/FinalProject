@@ -16,7 +16,7 @@ ROOM TABLE
 	INT HOTELID NOT NULL,
 	INT ROOMID NOT NULL,/*(Publish key: HETELID,ROOMID)*/
 	 /*set first digit as roomtype, 4 random digits following as unique room id */
-	INT HOTELID
+	INT HOTELID NOT NULL
 	/*ENUM ROOMTYPE = {1, 2, 4}*/
 	INT ROOMPRICE NOT NULL,
 

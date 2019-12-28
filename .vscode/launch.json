@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - MainFrame",
+            "request": "launch",
+            "mainClass": "org.hotelsystem.view.MainFrame",
+            "projectName": "FinalProject_f9a64fb5"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - main",
             "request": "launch",
             "mainClass": "main"
