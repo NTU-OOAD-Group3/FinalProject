@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -18,6 +19,8 @@ public class SearchResult extends JPanel implements ActionListener{
     private JLabel labelSummary;
     private JButton btnReserve;
 
+    private ArrayList<ArrayList<Integer>> roomCombination;
+
     public SearchResult(AvailableHotel availableHotel) {
         initUI(availableHotel);
     }
@@ -25,6 +28,8 @@ public class SearchResult extends JPanel implements ActionListener{
     private void initUI(AvailableHotel availableHotel) {
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
+        this.roomCombination = availableHotel.getRoomCombination();
+
         this.setBorder(new CompoundBorder(line, empty));
         this.setLayout(new GridBagLayout());
 
@@ -34,7 +39,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.addWithConstraints(labelHotelImage, 0, 0, 4, 4, 4, 4,
             GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-        this.labelHotelName = new JLabel("Hotel Name");
+        this.labelHotelName = new JLabel(Integer.toString(availableHotel.getHotelID()));
         this.addWithConstraints(labelHotelName, 4, 0, 4, 1, 4, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         
@@ -46,8 +51,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.addWithConstraints(labelHotelAddress, 4, 2, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        String star = Integer.toString(availableHotel.getHotelStar());
-        this.labelHotelStar = new JLabel(star);
+        this.labelHotelStar = new JLabel(Integer.toString(availableHotel.getHotelStar()));
         this.addWithConstraints(labelHotelStar, 4, 3, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
@@ -76,6 +80,13 @@ public class SearchResult extends JPanel implements ActionListener{
 
     }
 
+    public void refreshUI(AvailableHotel availableHotel){
+        this.labelHotelName.setText(Integer.toString(availableHotel.getHotelID()));
+        this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
+        this.labelHotelLocality.setText(availableHotel.getLocality());
+        this.labelHotelAddress.setText(availableHotel.getStreetAddress());
+        this.roomCombination = availableHotel.getRoomCombination();
+    }
     private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
 			int fill, int anchor) {

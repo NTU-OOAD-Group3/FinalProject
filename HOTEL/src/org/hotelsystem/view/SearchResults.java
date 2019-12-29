@@ -11,20 +11,25 @@ public class SearchResults extends JPanel implements ActionListener{
     private SearchResult[] resultArray = new SearchResult[10];
     private JButton btnPrevPage, btnNextPage;
     private JLabel labelPageNum;
+    private int page = 0;
+    private int totalPage = 0;
+    private ArrayList<AvailableHotel> availableHotels =  new ArrayList<AvailableHotel>(4); ;
 
     public SearchResults() {
         initUI();
     }
 
     private void initUI() {
+        for(int i=0;i<11;i++)
+            availableHotels.add(new AvailableHotel(i, 1, "test", "test", null));
         this.setLayout(new BorderLayout());
 
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-        AvailableHotel availablehotel = new AvailableHotel(0, 1, "test", "test", null);
-        for ( int i=0; i<10; ++i ) {
-            resultArray[i] = new SearchResult(availablehotel);
+        this.totalPage = this.availableHotels.size() / 10;
+        for ( int i=0; i<10 && i<this.availableHotels.size(); ++i ) {
+            resultArray[i] = new SearchResult(this.availableHotels.get(i));
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -48,6 +53,18 @@ public class SearchResults extends JPanel implements ActionListener{
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    private void refreshUI(){
+        int round = 10, base = 10 * this.page;
+        if( this.page == this.totalPage ){
+            round = this.availableHotels.size() % 10;
+            for( int i=round;i<10;++i )
+                this.resultArray[i].setVisible(false);
+        }
+        for( int i=0;i<round;++i ){
+            this.resultArray[i].setVisible(true);
+            this.resultArray[i].refreshUI(this.availableHotels.get(base + i));
+        }
+    }
     private void addWithConstraints(JPanel p, JComponent c,
         int gridx, int gridy, int gridwidth, int gridheight,
         int weightx, int weighty, int fill, int anchor) {
@@ -67,9 +84,23 @@ public class SearchResults extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnPrevPage ){
             System.out.println("Previous page triggered.");
+            if( this.page > 0 ){
+                --this.page;
+                refreshUI();
+            }
+            else{ 
+                System.out.println("Already the first page.");
+            }
         }  
         else if( e.getSource() == this.btnNextPage ){
             System.out.println("Next page triggered.");
+            if( this.page < this.totalPage ){
+                ++this.page;
+                refreshUI();
+            }
+            else{
+                System.out.println("Already the final page.");
+            }
         }
     }
 
