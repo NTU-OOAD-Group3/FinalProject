@@ -1,7 +1,7 @@
 package org.hotelsystem.view;
+import org.hotelsystem.model.Order;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -13,11 +13,7 @@ public class InquireOrderUnit extends JPanel{
     private JLabel labelOrderID;
     private JLabel labelPrice;
 
-    public InquireOrderUnit() {
-        initUI();
-    }
-
-    private void initUI() {
+    public InquireOrderUnit(Order order) {
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
         this.setBorder(new CompoundBorder(line, empty));
@@ -29,28 +25,27 @@ public class InquireOrderUnit extends JPanel{
         this.addWithConstraints(labelHotelImage, 0, 0, 4, 4, 4, 4,
             GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-        this.labelHotelName = new JLabel("Hotel Name: ");
+        this.labelHotelName = new JLabel("Hotel Name: " + order.getHotelID());
         this.addWithConstraints(labelHotelName, 8, 1, 4, 1, 4, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.labelRoomType = new JLabel("Rooms: ");
+        this.labelRoomType = new JLabel("Rooms: " + roomIDToString(order));
         this.addWithConstraints(labelRoomType, 8, 3, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.checkInAndOut = new JLabel("Check in/out: ");
+        this.checkInAndOut = new JLabel("Check in/out: " + order.getCheckinTime() + " ~ " + order.getCheckoutTime());
         this.addWithConstraints(checkInAndOut, 8, 2, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
 
-        this.labelOrderID = new JLabel("Order ID: ");
+        this.labelOrderID = new JLabel("Order ID: " + order.getOrderID());
         this.addWithConstraints(labelOrderID, 4, 0, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
 
-        this.labelPrice = new JLabel("NTD 168,000");
+        this.labelPrice = new JLabel("NTD " + order.getPrice());
         this.addWithConstraints(labelPrice, 12, 1, 4, 1, 12, 1,
             GridBagConstraints.CENTER, GridBagConstraints.EAST);
-
     }
 
     private void addWithConstraints(JComponent c, int gridx, int gridy,
@@ -67,6 +62,15 @@ public class InquireOrderUnit extends JPanel{
 		gbc.anchor = anchor;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		this.add(c, gbc);
+    }
+
+    private String roomIDToString(Order order){
+        String buf = "";
+        for (int i =0; i<order.getRoomIDs().size();i++){
+          buf = buf + order.getRoomIDs().get(i);
+          if (i!=order.getRoomIDs().size()-1) buf = buf + ", "; 
+        }
+        return buf;
     }
 
 }
