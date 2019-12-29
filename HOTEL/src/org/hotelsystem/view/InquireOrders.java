@@ -1,26 +1,23 @@
 package org.hotelsystem.view;
+import org.hotelsystem.model.Order;
 
 import java.awt.*;
-import java.awt.event.*;  
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class InquireOrders extends JPanel{
     private JPanel listPanel;
     private InquireOrderUnit[] arrs = new InquireOrderUnit[10];
 
-    public InquireOrders() {
-        initUI();
-    }
-
-    private void initUI() {
+    public InquireOrders(ArrayList<Order> orders) {
         this.setLayout(new BorderLayout());
 
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
 
-        for ( int i=0; i<10; ++i ) {
-            arrs[i] = new InquireOrderUnit();
+        for ( int i=0; i<orders.size(); i++ ) {
+            arrs[i] = new InquireOrderUnit(orders.get(i));
             this.addWithConstraints(listPanel, arrs[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);

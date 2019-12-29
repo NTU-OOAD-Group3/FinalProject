@@ -1,9 +1,11 @@
 package org.hotelsystem.view;
+import org.hotelsystem.model.Order;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class InquireUI extends JPanel implements ActionListener{
   private JPanel userInfo;
@@ -12,8 +14,8 @@ public class InquireUI extends JPanel implements ActionListener{
   private JButton searchOrderButton;
 
   private String userName;
-  private int orderSum;
-  private int[] orderIDs;
+  private ArrayList<Order> orders = new ArrayList<Order>();
+
   
   public InquireUI() {
     this.setLayout(new GridBagLayout());
@@ -21,10 +23,14 @@ public class InquireUI extends JPanel implements ActionListener{
   }
     
   private void initUI() {
+    //mock Data
+    for (int i=0;i<10;i++){
+      ArrayList<Integer> a= new ArrayList<Integer>();
+      a.add(12);
+      a.add(15);
+      orders.add(new Order(i, 0, 0, a, 1250, 1350, 666*i));
+    }
     this.userName = "Default";
-    this.orderSum = 10;
-    int[] buf = {1,2,3,4,5};
-    this.orderIDs = buf;
 
     LineBorder line = new LineBorder(Color.BLACK);
     EmptyBorder empty = new EmptyBorder(10, 10, 10, 10);
@@ -66,7 +72,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.addWithConstraints(this.userInfo, userNameLabel, 0, 1, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         
-    JLabel orderSumLabel = new JLabel(" Total Order: " + orderSum);
+    JLabel orderSumLabel = new JLabel(" Total Order: " + this.orders.size());
     this.addWithConstraints(this.userInfo, orderSumLabel, 0, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
@@ -77,7 +83,7 @@ public class InquireUI extends JPanel implements ActionListener{
 
     
     
-    this.showGeneralOrder = new InquireOrders();
+    this.showGeneralOrder = new InquireOrders(this.orders);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -119,9 +125,9 @@ public class InquireUI extends JPanel implements ActionListener{
 
   private String orderIDsToString(){
     String buf = "";
-    for (int i =0; i<this.orderIDs.length;i++){
-      buf = buf + this.orderIDs[i];
-      if (i!=this.orderIDs.length-1) buf = buf + ", "; 
+    for (int i =0; i<this.orders.size();i++){
+      buf = buf + this.orders.get(i).getOrderID();
+      if (i!=this.orders.size()-1) buf = buf + ", "; 
     }
     return buf;
   }
