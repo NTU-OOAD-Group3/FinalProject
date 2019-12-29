@@ -4,14 +4,16 @@ import org.hotelsystem.model.Order;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.awt.event.*;
 
-public class InquireOrderUnit extends JPanel{
+public class InquireOrderUnit extends JPanel implements ActionListener{
     private JLabel labelHotelImage;
     private JLabel labelHotelName;
     private JLabel labelRoomType;
     private JLabel checkInAndOut;
     private JLabel labelOrderID;
     private JLabel labelPrice;
+    private JButton btnModify;
 
     public InquireOrderUnit(Order order) {
         LineBorder line = new LineBorder(Color.GRAY);
@@ -46,6 +48,11 @@ public class InquireOrderUnit extends JPanel{
         this.labelPrice = new JLabel("NTD " + order.getPrice());
         this.addWithConstraints(labelPrice, 12, 1, 4, 1, 12, 1,
             GridBagConstraints.CENTER, GridBagConstraints.EAST);
+
+        this.btnModify = new JButton("Modify");
+        this.btnModify.addActionListener(this);
+        this.addWithConstraints(btnModify, 12, 3, 4, 1, 8, 1,
+            GridBagConstraints.NONE, GridBagConstraints.EAST);
     }
 
     private void addWithConstraints(JComponent c, int gridx, int gridy,
@@ -72,5 +79,11 @@ public class InquireOrderUnit extends JPanel{
         }
         return buf;
     }
+
+    public void actionPerformed(ActionEvent e){  
+        if( e.getSource() == this.btnModify){
+            System.out.println("Modify triggered.");
+        } 
+    }  
 
 }

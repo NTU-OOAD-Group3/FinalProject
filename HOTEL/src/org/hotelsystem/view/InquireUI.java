@@ -12,6 +12,7 @@ public class InquireUI extends JPanel implements ActionListener{
   private JPanel searchOrder;
   private JPanel showGeneralOrder;
   private JButton searchOrderButton;
+  private JTextField searchOrderTextField;
 
   private String userName;
   private ArrayList<Order> orders = new ArrayList<Order>();
@@ -47,8 +48,8 @@ public class InquireUI extends JPanel implements ActionListener{
     this.addWithConstraints(this.searchOrder, searchOrderLabel, 0, 0, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
         
-    JTextField searchOrderTextField = new JTextField();
-    addWithConstraints(this.searchOrder, searchOrderTextField, 0, 1, 1, 1, 1, 1,
+    this.searchOrderTextField = new JTextField();
+    addWithConstraints(this.searchOrder, this.searchOrderTextField, 0, 1, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
     this.searchOrderButton = new JButton("Send query!");
@@ -134,7 +135,19 @@ public class InquireUI extends JPanel implements ActionListener{
 
   public void actionPerformed(ActionEvent e){  
     if( e.getSource() == this.searchOrderButton){
-        System.out.println("Search triggered.");
+        try{
+          int orderID = Integer.valueOf(this.searchOrderTextField.getText());
+          for (int i=0;i<this.orders.size();i++){
+            if (this.orders.get(i).getOrderID() == orderID) {
+              System.out.println("Hit!");
+              return;
+            }
+          }
+          JOptionPane.showMessageDialog(this, "No such order!", "Error!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (NumberFormatException f){
+          JOptionPane.showMessageDialog(this, "Input is not a number!", "Error!", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
   }  
 	
