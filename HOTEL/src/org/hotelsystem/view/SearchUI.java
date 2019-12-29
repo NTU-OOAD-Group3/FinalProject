@@ -8,14 +8,15 @@ public class SearchUI extends JPanel {
 	private JPanel searchBar;
 	private JPanel searchFilter;
 	private JPanel searchResult;
-	
-	public SearchUI() {
+	private JFrame parent;
+	public SearchUI(JFrame parent) {
 		this.setLayout(new GridBagLayout());
+		this.parent = parent;
 		initUI();
 	}
 	
 	private void initUI() {
-		this.searchBar = new SearchBar();
+		this.searchBar = new SearchBar(this.parent);
 		LineBorder line = new LineBorder(Color.BLACK);
 		EmptyBorder empty = new EmptyBorder(20, 50, 20, 50);
 		this.searchBar.setBorder(new CompoundBorder(line, empty));
