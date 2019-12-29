@@ -70,6 +70,7 @@ public class SearchBar extends JPanel implements ActionListener{
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.tfCheckin = new JTextField(8);
+        this.tfCheckin.setEditable(false);
         this.addWithConstraints(tfCheckin, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
         
@@ -81,6 +82,7 @@ public class SearchBar extends JPanel implements ActionListener{
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.tfCheckout = new JTextField(8);
+        this.tfCheckout.setEditable(false);
         this.addWithConstraints(tfCheckout, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
@@ -90,6 +92,7 @@ public class SearchBar extends JPanel implements ActionListener{
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.tfTotalNight = new JTextField(8);
+        this.tfTotalNight.setEditable(false);
         this.addWithConstraints(tfTotalNight, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 

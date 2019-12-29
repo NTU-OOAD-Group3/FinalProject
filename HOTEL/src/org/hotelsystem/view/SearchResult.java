@@ -18,14 +18,18 @@ public class SearchResult extends JPanel implements ActionListener{
     private JLabel labelPrice;
     private JLabel labelSummary;
     private JButton btnReserve;
+    private JFrame parent;
+    private AvailableHotel availableHotel;
 
     private ArrayList<ArrayList<Integer>> roomCombination;
 
-    public SearchResult(AvailableHotel availableHotel) {
-        initUI(availableHotel);
+    public SearchResult(JFrame parent, AvailableHotel availableHotel) {
+        this.parent = parent;
+        this.availableHotel = availableHotel;
+        initUI();
     }
 
-    private void initUI(AvailableHotel availableHotel) {
+    private void initUI() {
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
         this.roomCombination = availableHotel.getRoomCombination();
@@ -103,12 +107,20 @@ public class SearchResult extends JPanel implements ActionListener{
 		this.add(c, gbc);
     }
 
+    public ArrayList<ArrayList<Integer>> getRoomCombination(){
+        return this.availableHotel.getRoomCombination();
+    }
+
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnReview){
             System.out.println("Review triggered.");
+            CommentDialogs commentDialog = new CommentDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews");
+            commentDialog.setVisible(true);
         } 
         else if( e.getSource() == this.btnReserve){
             System.out.println("Reserve triggered.");
+            RoomCombDialog roomCombDialog = new RoomCombDialog(this.getRoomCombination(), this.parent, "Reserve candidates");
+            roomCombDialog.setVisible(true);
         }
     }  
 

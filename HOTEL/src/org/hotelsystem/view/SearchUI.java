@@ -24,12 +24,12 @@ public class SearchUI extends JPanel {
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
 		this.searchFilter = new SearchFilter();
-		this.addWithConstraints(this.searchFilter, 0, 1, 2, 6, 2, 6,
+		this.addWithConstraints(this.searchFilter, 0, 1, 1, 6, 1, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
-		this.searchResult = new SearchResults();
+		this.searchResult = new SearchResults(this.parent);
 		this.searchResult.setBorder(new LineBorder(Color.BLACK));
-		this.addWithConstraints(this.searchResult, 2, 1, 5, 6, 5, 6,
+		this.addWithConstraints(this.searchResult, 1, 1, 6, 6, 6, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 	}
 	

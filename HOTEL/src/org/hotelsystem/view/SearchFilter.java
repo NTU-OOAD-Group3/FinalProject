@@ -43,11 +43,11 @@ public class SearchFilter extends JPanel implements ActionListener {
         this.addWithConstraints(this, this.labelPriceUpper, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfPriceLower = new JTextField(15);
+        this.tfPriceLower = new JTextField(10);
         this.addWithConstraints(this, this.tfPriceLower, 0, 2, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfPriceUpper = new JTextField(15);
+        this.tfPriceUpper = new JTextField(10);
         this.addWithConstraints(this, this.tfPriceUpper, 1, 2, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
