@@ -5,14 +5,13 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class InquireOrderUnit extends JPanel implements ActionListener{
+public class InquireOrderUnit extends JPanel{
     private JLabel labelHotelImage;
     private JLabel labelHotelName;
     private JLabel labelRoomType;
     private JLabel checkInAndOut;
     private JLabel labelOrderID;
     private JLabel labelPrice;
-    public JButton btnReserve;
 
     public InquireOrderUnit() {
         initUI();
@@ -49,13 +48,9 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
 
 
         this.labelPrice = new JLabel("NTD 168,000");
-        this.addWithConstraints(labelPrice, 12, 1, 4, 1, 4, 1,
-            GridBagConstraints.NONE, GridBagConstraints.EAST);
+        this.addWithConstraints(labelPrice, 12, 1, 4, 1, 12, 1,
+            GridBagConstraints.CENTER, GridBagConstraints.EAST);
 
-        this.btnReserve = new JButton("Show Order!");
-        this.btnReserve.addActionListener(this);
-        this.addWithConstraints(btnReserve, 12, 3, 4, 1, 4, 1,
-            GridBagConstraints.NONE, GridBagConstraints.EAST);
     }
 
     private void addWithConstraints(JComponent c, int gridx, int gridy,
@@ -74,9 +69,4 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
 		this.add(c, gbc);
     }
 
-    public void actionPerformed(ActionEvent e){  
-        if( e.getSource() == this.btnReserve){
-            System.out.println("Show order triggered.");
-        }
-    }  
 }

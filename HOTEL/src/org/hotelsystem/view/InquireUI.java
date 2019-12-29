@@ -1,4 +1,5 @@
 package org.hotelsystem.view;
+import org.hotelsystem.model.Orders;
 
 import java.awt.*;
 import javax.swing.*;
