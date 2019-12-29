@@ -15,8 +15,11 @@ public class LoginUI extends JPanel implements ActionListener{
     private JTextField tfPassword; //get password input
     private JButton loginButton; //login  event 
     private JButton signupButton; //open up a new dialog
-	public LoginUI() {
+
+    private JFrame parent;
+	public LoginUI(JFrame parent) {
         ////this cannot be used with `addWithConstraints`
+        this.parent=parent;
         initUI();
     }
     private void initUI(){
@@ -87,6 +90,8 @@ public class LoginUI extends JPanel implements ActionListener{
         }
         else if( e.getSource() == this.signupButton ){
             System.out.println("signup triggered.");
+            SignupDialog signUpDlg = new SignupDialog(this.parent,"Sign Up");
+            signUpDlg.setVisible(true);
         }
     }
     
