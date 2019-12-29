@@ -1,10 +1,11 @@
 package org.hotelsystem.view;
 
 import java.awt.*;
+import java.awt.event.*;  
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginUI extends JPanel {
+public class LoginUI extends JPanel implements ActionListener{
     private JLabel blankLableL;
     private JLabel blankLableR;
     private JLabel usernameLable;
@@ -54,14 +55,17 @@ public class LoginUI extends JPanel {
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         //line3
         this.loginButton = new JButton("login");
+        this.loginButton.addActionListener(this);
         this.addWithConstraints(loginButton, 3, 3, 1, 1, 1, 1, 
         GridBagConstraints.NONE, GridBagConstraints.EAST);
         this.signupButton = new JButton("SignUp");
+        this.signupButton.addActionListener(this);
         this.addWithConstraints(signupButton, 4, 3, 1, 1, 1, 1, 
         GridBagConstraints.NONE, GridBagConstraints.WEST);
         
  
     }
+
     private void addWithConstraints(JComponent c, int gridx, int gridy,
             int gridwidth, int gridheight, int weightx, int weighty,
             int fill, int anchor) {
@@ -75,8 +79,15 @@ public class LoginUI extends JPanel {
         gbc.fill = fill;
         gbc.anchor = anchor;
         this.add(c, gbc);
-}
-   
-
+    }
+    
+    public void actionPerformed(ActionEvent e){
+        if( e.getSource() == this.loginButton ){
+            System.out.println("login triggered.");
+        }
+        else if( e.getSource() == this.signupButton ){
+            System.out.println("signup triggered.");
+        }
+    }
     
 }
