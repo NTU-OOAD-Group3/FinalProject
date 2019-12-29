@@ -1,5 +1,9 @@
 package org.hotelsystem.view;
 
+import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,15 +16,18 @@ public class SearchBar extends JPanel implements ActionListener{
     private JLabel labelTotalNight;
     private JLabel labelRoom;
     private JLabel labelPeople;
-    private JTextField tfLocality;
     private JTextField tfCheckin;
     private JTextField tfCheckout;
     private JTextField tfTotalNight;
     private JTextField tfRoom;
     private JTextField tfPeople;
     private JButton btnSearch;
-
-    public SearchBar() {
+    private JButton btnCheckinDate;
+    private JButton btnCheckoutDate;
+    private JFrame parent;
+    private JComboBox jcmbLocality;
+    public SearchBar(JFrame parent) {
+        this.parent = parent;
         initUI();
     }
 
@@ -30,56 +37,69 @@ public class SearchBar extends JPanel implements ActionListener{
         this.labelLocality = new JLabel("Destination");
         // this.labelLocality.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelLocality, 0, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.labelCheckin = new JLabel("Checkin");
         // this.labelCheckin.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelCheckin, 1, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.labelCheckout = new JLabel("Checkout");
         // this.labelCheckout.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelCheckout, 2, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.labelTotalNight = new JLabel("Nights");
         // this.labelTotalNight.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelTotalNight, 3, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
         
         this.labelRoom = new JLabel("Rooms");
         // this.labelRoom.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelRoom, 4, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.labelPeople = new JLabel("People");
         // this.labelPeople.setBorder(new LineBorder(Color.RED));
         this.addWithConstraints(labelPeople, 5, 0, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfLocality = new JTextField();
-        this.addWithConstraints(tfLocality, 0, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+        String Locality[]={"Taipei","Taichung","Kaohsiung"};
+        this.jcmbLocality = new JComboBox(Locality);
+        this.addWithConstraints(jcmbLocality, 0, 1, 1, 1, 1, 1,
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfCheckin = new JTextField();
+        this.tfCheckin = new JTextField(8);
         this.addWithConstraints(tfCheckin, 1, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
+        
+        ImageIcon iconCalendar = new ImageIcon("../resources/calendar.png");
+        iconCalendar.setImage(iconCalendar.getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
+        this.btnCheckinDate = new JButton(iconCalendar);
+        this.btnCheckinDate.addActionListener(this);
+        this.addWithConstraints(btnCheckinDate, 1, 2, 1, 1, 1, 1,
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfCheckout = new JTextField();
+        this.tfCheckout = new JTextField(8);
         this.addWithConstraints(tfCheckout, 2, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfTotalNight = new JTextField();
+        this.btnCheckoutDate = new JButton(iconCalendar);
+        this.btnCheckoutDate.addActionListener(this);
+        this.addWithConstraints(btnCheckoutDate, 2, 2, 1, 1, 1, 1,
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
+
+        this.tfTotalNight = new JTextField(8);
         this.addWithConstraints(tfTotalNight, 3, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfRoom = new JTextField();
+        this.tfRoom = new JTextField(8);
         this.addWithConstraints(tfRoom, 4, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.tfPeople = new JTextField();
+        this.tfPeople = new JTextField(8);
         this.addWithConstraints(tfPeople, 5, 1, 1, 1, 1, 1,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.btnSearch = new JButton("Search");
         this.btnSearch.addActionListener(this);
@@ -103,18 +123,39 @@ public class SearchBar extends JPanel implements ActionListener{
 		this.add(c, gbc);
     }
     
-    public void actionPerformed(ActionEvent e){  
-        System.out.println("Search triggered.");  
+    public void actionPerformed(ActionEvent e){ 
+        if( e.getSource() == this.btnSearch ){
+            System.out.println("Search triggered.");
+        }
+        else if( e.getSource() == this.btnCheckinDate ){
+            DatePickerDialog datePickDlg = new DatePickerDialog(this.parent, "Select Date");
+            datePickDlg.setVisible(true);
+            if (datePickDlg.isPicked()) {
+                System.out.println("select checkin date.");
+            	this.tfCheckin.setText(datePickDlg.getPickedDate());
+            }
+        }
+        else if( e.getSource() == this.btnCheckoutDate ){
+            DatePickerDialog datePickDlg = new DatePickerDialog(this.parent, "Select Date");
+            datePickDlg.setVisible(true);
+            if (datePickDlg.isPicked()) {
+                System.out.println("select checkout date.");
+            	this.tfCheckout.setText(datePickDlg.getPickedDate());
+            }
+        }
+        try{
+            if( !(this.tfCheckin.getText().equals("") || this.tfCheckout.getText().equals("")) ){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                Date firstDate = sdf.parse(this.tfCheckin.getText());
+                Date secondDate = sdf.parse(this.tfCheckout.getText());
+                long diffInMillies = secondDate.getTime() - firstDate.getTime();
+                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                this.tfTotalNight.setText(String.valueOf(diff));
+            }
+        }
+        catch(Exception error){
+
+        }
     }  
 
-    public static void main(String[] args) {
-        JFrame testFrame = new JFrame("SearchBar testFrame");
-        testFrame.setSize(600, 150);
-        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel searchBar = new SearchBar();
-        testFrame.add(searchBar);
-
-        testFrame.setVisible(true);
-    }
 }
