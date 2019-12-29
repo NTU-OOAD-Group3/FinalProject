@@ -1,10 +1,11 @@
 package org.hotelsystem.view;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class SearchResult extends JPanel {
+public class SearchResult extends JPanel implements ActionListener{
     private JLabel labelHotelImage;
     private JLabel labelHotelName;
     private JLabel labelHotelLocality;
@@ -49,6 +50,7 @@ public class SearchResult extends JPanel {
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
         this.btnReview = new JButton("Reviews");
+        this.btnReview.addActionListener(this);
         this.addWithConstraints(btnReview, 8, 0, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
@@ -66,6 +68,7 @@ public class SearchResult extends JPanel {
             GridBagConstraints.NONE, GridBagConstraints.EAST);
 
         this.btnReserve = new JButton("Reserve It!");
+        this.btnReserve.addActionListener(this);
         this.addWithConstraints(btnReserve, 12, 3, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.EAST);
 
@@ -86,6 +89,15 @@ public class SearchResult extends JPanel {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		this.add(c, gbc);
     }
+
+    public void actionPerformed(ActionEvent e){  
+        if( e.getSource() == this.btnReview){
+            System.out.println("Review triggered.");
+        } 
+        else if( e.getSource() == this.btnReserve){
+            System.out.println("Reserve triggered.");
+        }
+    }  
 
     public static void main(String[] args) {
         JFrame testFrame = new JFrame("SearchResult testFrame");

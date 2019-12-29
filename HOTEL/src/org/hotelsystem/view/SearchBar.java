@@ -1,10 +1,11 @@
 package org.hotelsystem.view;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class SearchBar extends JPanel {
+public class SearchBar extends JPanel implements ActionListener{
     private JLabel labelLocality;
     private JLabel labelCheckin;
     private JLabel labelCheckout;
@@ -81,6 +82,7 @@ public class SearchBar extends JPanel {
             GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
         this.btnSearch = new JButton("Search");
+        this.btnSearch.addActionListener(this);
         this.addWithConstraints(btnSearch, 5, 2, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH);
     }
@@ -101,6 +103,10 @@ public class SearchBar extends JPanel {
 		this.add(c, gbc);
     }
     
+    public void actionPerformed(ActionEvent e){  
+        System.out.println("Search triggered.");  
+    }  
+
     public static void main(String[] args) {
         JFrame testFrame = new JFrame("SearchBar testFrame");
         testFrame.setSize(600, 150);
