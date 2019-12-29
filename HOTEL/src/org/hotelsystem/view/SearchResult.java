@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.model.AvailableHotel;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,11 +18,11 @@ public class SearchResult extends JPanel implements ActionListener{
     private JLabel labelSummary;
     private JButton btnReserve;
 
-    public SearchResult() {
-        initUI();
+    public SearchResult(AvailableHotel availableHotel) {
+        initUI(availableHotel);
     }
 
-    private void initUI() {
+    private void initUI(AvailableHotel availableHotel) {
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
         this.setBorder(new CompoundBorder(line, empty));
@@ -36,16 +37,17 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelName = new JLabel("Hotel Name");
         this.addWithConstraints(labelHotelName, 4, 0, 4, 1, 4, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-
-        this.labelHotelLocality = new JLabel("Hotel Locality");
+        
+        this.labelHotelLocality = new JLabel(availableHotel.getLocality());
         this.addWithConstraints(labelHotelLocality, 4, 1, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.labelHotelAddress = new JLabel("Hotel Address");
+        this.labelHotelAddress = new JLabel(availableHotel.getStreetAddress());
         this.addWithConstraints(labelHotelAddress, 4, 2, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.labelHotelStar = new JLabel("Hotel Star");
+        String star = Integer.toString(availableHotel.getHotelStar());
+        this.labelHotelStar = new JLabel(star);
         this.addWithConstraints(labelHotelStar, 4, 3, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
@@ -99,14 +101,14 @@ public class SearchResult extends JPanel implements ActionListener{
         }
     }  
 
-    public static void main(String[] args) {
-        JFrame testFrame = new JFrame("SearchResult testFrame");
-        testFrame.setSize(600, 150);
-        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // public static void main(String[] args) {
+    //     JFrame testFrame = new JFrame("SearchResult testFrame");
+    //     testFrame.setSize(600, 150);
+    //     testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel SearchResult = new SearchResult();
-        testFrame.add(SearchResult);
+    //     JPanel SearchResult = new SearchResult(availableHotel);
+    //     testFrame.add(SearchResult);
 
-        testFrame.setVisible(true);
-    }
+    //     testFrame.setVisible(true);
+    // }
 }

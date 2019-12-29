@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class SearchFilter extends JPanel {
+public class SearchFilter extends JPanel implements ActionListener {
     private JLabel labelTitle;
     private JLabel labelPriceLower;
     private JTextField tfPriceLower;
@@ -56,11 +56,23 @@ public class SearchFilter extends JPanel {
         this.btnGroupStars.add(rbtnStars[0]);
         this.addWithConstraints(this, this.rbtnStars[0], 0, 6, 1, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-        for ( int i=5; i>=0; --i ) {
+        for ( int i=5; i>0; --i ) {
             this.rbtnStars[i] = new JRadioButton(String.valueOf(i));
+            this.rbtnStars[i].addActionListener(this);
             this.btnGroupStars.add(rbtnStars[i]);
             this.addWithConstraints(this, this.rbtnStars[i], 0, 12-i, 1, 1, 1, 1,
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+        }
+    }
+
+    public void actionPerformed(ActionEvent e){
+        for( int i=1;i<6;++i ){
+            if( e.getSource() == this.rbtnStars[i] ){
+                System.out.printf("Refresh, star = %d\n", i);
+            }
+        }
+        if( e.getSource() == this.rbtnStars[0] ){
+            System.out.printf("Refresh, all\n");
         }
     }
 

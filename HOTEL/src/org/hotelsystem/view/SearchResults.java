@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.model.AvailableHotel;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;  
@@ -21,9 +22,9 @@ public class SearchResults extends JPanel implements ActionListener{
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-
+        AvailableHotel availablehotel = new AvailableHotel(0, 1, "test", "test", null);
         for ( int i=0; i<10; ++i ) {
-            resultArray[i] = new SearchResult();
+            resultArray[i] = new SearchResult(availablehotel);
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);

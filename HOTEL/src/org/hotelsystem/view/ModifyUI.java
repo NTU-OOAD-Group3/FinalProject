@@ -58,7 +58,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriCheckInTime, 1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriCheckInTime = new JTextField(15);
+        JTextField tfOriCheckInTime = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriCheckInTime, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -66,7 +66,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriCheckOutTime, 2, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriCheckOutTime = new JTextField(15);
+        JTextField tfOriCheckOutTime = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriCheckOutTime, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -74,7 +74,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriSingleNum, 3, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriSingleNum = new JTextField(15);
+        JTextField tfOriSingleNum = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriSingleNum, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -82,7 +82,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriDoubleNum, 4, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriDoubleNum = new JTextField(15);
+        JTextField tfOriDoubleNum = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriDoubleNum, 4, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -90,7 +90,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriQuadNum, 5, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriQuadNum = new JTextField(15);
+        JTextField tfOriQuadNum = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriQuadNum, 5, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -98,7 +98,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriPrice, 6, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriPrice = new JTextField(15);
+        JTextField tfOriPrice = new JTextField(8);
         this.addWithConstraints(this.originalOrderbar, tfOriPrice, 6, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -125,7 +125,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModCheckInTime, 1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModCheckInTime = new JTextField(15);
+        JTextField tfModCheckInTime = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModCheckInTime, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -133,7 +133,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModCheckOutTime, 2, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfModCheckOutTime = new JTextField(15);
+        JTextField tfModCheckOutTime = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModCheckOutTime, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -141,7 +141,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModSingleNum, 3, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModSingleNum = new JTextField(15);
+        JTextField tfModSingleNum = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModSingleNum, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -149,7 +149,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModDoubleNum, 4, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModDoubleNum = new JTextField(15);
+        JTextField tfModDoubleNum = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModDoubleNum, 4, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -157,7 +157,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModQuadNum, 5, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfModQuadNum = new JTextField(15);
+        JTextField tfModQuadNum = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModQuadNum, 5, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -165,7 +165,7 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModPrice, 6, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfModPrice = new JTextField(15);
+        JTextField tfModPrice = new JTextField(8);
         this.addWithConstraints(this.modifiedOrderbar, tfModPrice, 6, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
         
