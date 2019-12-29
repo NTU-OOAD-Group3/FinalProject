@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("Account", this.loginUI);
         
         
-        this.searchUI = new SearchUI();
+        this.searchUI = new SearchUI(this);
         tabbedPane.addTab("Search", this.searchUI);
         
         this.reserveUI = new ReserveUI();
