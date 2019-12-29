@@ -12,35 +12,54 @@
 ```
 
 ```SQL
-ROOM TABLE
-	INT HOTELID NOT NULL,
-	INT ROOMID NOT NULL,/*(Publish key: HETELID,ROOMID)*/
-	 /*set first digit as roomtype, 4 random digits following as unique room id */
-	INT HOTELID NOT NULL
-	/*ENUM ROOMTYPE = {1, 2, 4}*/
-	INT ROOMPRICE NOT NULL,
+CREATE TABLE Users (
+    `UserID` INT NOT NULL,
+    `UserType` INT NOT NULL, /* 0=hoster, 1=user */
+    `UserName` VARCHAR(100) NOT NULL,
+    `Password` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`UserID`)
+);
 
-ORDER TABLE
-	INT ORDERID NOT NULL,(PUBLIC KEY)
-	INT USERID NOT NULL,(FOREIGN KEY)
-	DATE CHECKIN NOT NULL,
-	DATE CHECKOUT NOT NULL,
-	INT HOTELID NOT NULL,
-	INT ROOMID NOT NULL
+CREATE TABLE Hotels (
+    `HotelID` INT NOT NULL,
+    `HotelStar` INT NOT NULL,
+    `LOCALITY` CHAR(16) NOT NULL,
+    `ADDRESS` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`HotelID`)
+);
 
-USER TABLE
-	INT USERID (PUBLIC KEY)
-	INT USERTYPE /*1=user, 0=hoster*/
-	VARCHAR USERNAME
-	VARCHAR PASSWORD
+CREATE TABLE Rooms (
+	/* set first digit as roomtype, 4 random digits following as unique room id */
+    `RoomID` INT NOT NULL,
+    `HotelID` INT NOT NULL,
+    `RoomPrice` INT NOT NULL,
+    PRIMARY KEY (`RoomID`, `HotelID`),
+    FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`)
+);
 
-HOTEL TABLE
-	INT HOTELID ,(PUBLIC KEY)
-	INT HOTELSTAR,
-	CHAR LOCALITY,
-	VARCHAR ADDRESS	
+CREATE TABLE Orders (
+    `OrderID` INT NOT NULL,
+    `UserID` INT NOT NULL,
+    `HotelID` INT NOT NULL,
+    `RoomID` INT NOT NULL,
+    `CheckIn` DATE NOT NULL,
+    `CheckOut` DATE NOT NULL,
+    PRIMARY KEY (`OrderID`),
+    FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`),
+    FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`),
+    FOREIGN KEY (`RoomID`) REFERENCES Rooms (`RoomID`)
+);
 
-
+CREATE TABLE Comments (
+    `HotelID` INT NOT NULL,
+    `UserID` INT NOT NULL,
+    `OrderID` INT NOT NULL,
+    `Rating` INT NOT NULL,
+    `Comment` VARCHAR(256),
+    PRIMARY KEY (`HotelID`, `UserID`, `OrderID`),
+    FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`),
+    FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)
+);
 
 user U, time A ~ time B, Hotel C, Room 1, 2, 5
 (OID-1, U, A, B, C, 1)
