@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+
 public class LoginUI extends JPanel implements ActionListener{
     private JLabel blankLableL;
     private JLabel blankLableR;
@@ -16,8 +17,8 @@ public class LoginUI extends JPanel implements ActionListener{
     private JButton loginButton; //login  event 
     private JButton signupButton; //open up a new dialog
 
-    private JFrame parent;
-	public LoginUI(JFrame parent) {
+    private MainFrame parent;
+	public LoginUI(MainFrame parent) {
         ////this cannot be used with `addWithConstraints`
         this.parent=parent;
         initUI();
@@ -87,6 +88,24 @@ public class LoginUI extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if( e.getSource() == this.loginButton ){
             System.out.println("login triggered.");
+            System.out.println(this.tfUsername.getText());
+            if(this.tfUsername.getText().equals("")){
+                JOptionPane.showMessageDialog(this,"Please input your username");
+            }
+            if(this.tfPassword.getText().equals("")){
+                JOptionPane.showMessageDialog(this,"Password can't be empty");
+            }
+            if(this.tfUsername.getText().equals("") && this.tfPassword.getText().equals("")){
+                //LOGIN HERE
+                //throw username and password to Controller.
+                //```pseudocode
+                //if(controller.passlogin):
+                //  this.parent.loginChange();
+                //```
+
+            }
+
+
         }
         else if( e.getSource() == this.signupButton ){
             System.out.println("signup triggered.");

@@ -112,7 +112,19 @@ public class SignupDialog extends JDialog implements ActionListener{
         }
         else if(e.getSource()==this.signUpButton){
             System.out.println("Sign Up triggered");
-
+            if(this.tfUsername.getText().equals("")){
+                JOptionPane.showMessageDialog(this,"Username cannot be empty");
+            }
+            if(this.tfPassword.getText().equals("")||this.tfRepeatPassword.getText().equals("")){
+                JOptionPane.showMessageDialog(this,"Password cannot be empty");
+            }
+            if(this.tfPassword.getText().equals(this.tfRepeatPassword.getText())){
+                JOptionPane.showMessageDialog(this,"Repeat password is incorret");
+            }
+            if(!this.tfUsername.getText().equals("")&&this.tfPassword.getText().equals(this.tfRepeatPassword.getText())){
+                //SIGN UP here
+                //throw username and password to controller.
+            }
         }
 
     }

@@ -10,15 +10,25 @@ public class MainFrame extends JFrame {
     private LoginUI loginUI;
     private ModifyUI modifyUI;
     private InquireUI inquireUI;
+    private AccountUI accountUI;
 
+    public void logoutChange(){//will be called when user click `logout Button` in AccountUI
+        tabbedPane.remove(0);
+        tabbedPane.insertTab("login",null, this.loginUI,null, 0);
+    }
+    public void loginChange(){//will be called when controller pass the login/signup in LoginUI
+        tabbedPane.remove(0);
+        tabbedPane.insertTab("Account",null,this.accountUI,null,0);
+    }
     public MainFrame() {
         super("Main Frame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.tabbedPane = new JTabbedPane();
         
-        this.loginUI = new LoginUI(this);//this page should be load by check user status,Guest:loginUI;User/Hoster:AccountUI
-        tabbedPane.addTab("Account", this.loginUI);
+        this.loginUI = new LoginUI(this);
+        this.accountUI=new AccountUI(this);
+        tabbedPane.addTab("Account", this.accountUI);
         
         
         this.searchUI = new SearchUI(this);
