@@ -73,17 +73,17 @@ public class InitDB {
                     "PRIMARY KEY (`UserID`)" +
                   ");";
             stmt.execute(cmd);
-            System.out.println("CREATE TABLE User");
+            System.out.println("CREATE TABLE Users");
 
             cmd = "CREATE TABLE Hotels (" +
                     "`HotelID` INT NOT NULL," +
                     "`HotelStar` INT NOT NULL," +
-                    "`LOCALITY` CHAR(16) NOT NULL," +
-                    "`ADDRESS` VARCHAR(100) NOT NULL," +
+                    "`Locality` CHAR(16) NOT NULL," +
+                    "`Address` VARCHAR(100) NOT NULL," +
                     "PRIMARY KEY (`HotelID`)" +
                   ");";
             stmt.execute(cmd);
-            System.out.println("CREATE TABLE Hotel");
+            System.out.println("CREATE TABLE Hotels");
 
             cmd = "CREATE TABLE Rooms (" +
                     "`RoomID` INT NOT NULL," +
@@ -93,7 +93,7 @@ public class InitDB {
                     "FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`)" +
                   ");";
             stmt.execute(cmd);
-            System.out.println("CREATE TABLE Room");
+            System.out.println("CREATE TABLE Rooms");
 
             cmd = "CREATE TABLE Orders (" +
                     "`OrderID` INT NOT NULL," +
@@ -108,7 +108,20 @@ public class InitDB {
                     "FOREIGN KEY (`RoomID`) REFERENCES Rooms (`RoomID`)" +
                   ");";
             stmt.execute(cmd);
-            System.out.println("CREATE TABLE Order");
+            System.out.println("CREATE TABLE Orders");
+
+            cmd = "CREATE TABLE Comments (" +
+                    "`HotelID` INT NOT NULL," +
+                    "`UserID` INT NOT NULL," +
+                    "`OrderID` INT NOT NULL," +
+                    "`Rating` INT NOT NULL," +
+                    "`Comment` VARCHAR(256)," +
+                    "PRIMARY KEY (`HotelID`, `UserID`, `OrderID`)," +
+                    "FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`)," +
+                    "FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)" +
+                  ");";
+            stmt.execute(cmd);
+            System.out.println("CREATE TABLE Comments");
 
             stmt.close();
         } catch (Exception e) {
@@ -210,6 +223,7 @@ public class InitDB {
 
     public static void main(String[] args) {
         InitDB mysql = new InitDB("140.112.21.82", "ooad", "ooad");
+        mysql.createDatabase();
         mysql.createTables();
         mysql.insertFromJSON("data/HotelList.json");
     }
