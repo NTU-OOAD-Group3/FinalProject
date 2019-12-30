@@ -1,24 +1,24 @@
 package org.hotelsystem.view;
 
-import org.hotelsystem.model.HotelComment;
+import org.hotelsystem.model.HotelReview;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class CommentDialogs extends JDialog implements ActionListener{
+public class ReviewDialogs extends JDialog implements ActionListener{
     private int hotelID;
     private int page = 0;
     private int totalPage = 0;
-    private CommentPanel[] commentArray = new CommentPanel[10];
-    private ArrayList<HotelComment> hotelComments = new ArrayList<HotelComment>(0) ;
+    private ReviewPanel[] ReviewArray = new ReviewPanel[10];
+    private ArrayList<HotelReview> hotelReviews = new ArrayList<HotelReview>(0) ;
     private JPanel listPanel;
     private JPanel bottomPanel;
     private JButton btnPrevPage;
     private JButton btnNextPage;
     private JLabel labelPageNum;
 
-    public CommentDialogs(int hotelID, JFrame parent, String name){
+    public ReviewDialogs(int hotelID, JFrame parent, String name){
         super(parent, name, true);
         initUI();
     }
@@ -30,12 +30,12 @@ public class CommentDialogs extends JDialog implements ActionListener{
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-        this.totalPage = this.hotelComments.size() / 10;
-        hotelComments.add(new HotelComment(0, 0, 5, "YOYOYOYOYOYOYOYOYO"));
-        for ( int i=0; i<10 && i<this.hotelComments.size(); ++i ) {
-            commentArray[i] = new CommentPanel(this.hotelComments.get(i));
-            // commentArray[i].setVisible(false);
-            this.addWithConstraints(listPanel, commentArray[i],
+        this.totalPage = this.hotelReviews.size() / 10;
+        hotelReviews.add(new HotelReview(0, 0, 5, "YOYOYOYOYOYOYOYOYO"));
+        for ( int i=0; i<10 && i<this.hotelReviews.size(); ++i ) {
+            ReviewArray[i] = new ReviewPanel(this.hotelReviews.get(i));
+            // ReviewArray[i].setVisible(false);
+            this.addWithConstraints(listPanel, ReviewArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         }
@@ -47,7 +47,7 @@ public class CommentDialogs extends JDialog implements ActionListener{
         this.btnPrevPage.addActionListener(this);
         this.bottomPanel.add(this.btnPrevPage);
 
-        this.labelPageNum = new JLabel("0/0", JLabel.CENTER);
+        this.labelPageNum = new JLabel(String.format("%d/%d", this.page + 1, this.totalPage + 1), JLabel.CENTER);
         this.bottomPanel.add(this.labelPageNum);
         
         this.btnNextPage = new JButton("Next >>");
@@ -58,7 +58,7 @@ public class CommentDialogs extends JDialog implements ActionListener{
         this.add(listPanelScroll, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
     
-        this.setSize(300, 800);
+        this.setSize(800, 600);
     }
 
     private void addWithConstraints(JPanel p, JComponent c,
