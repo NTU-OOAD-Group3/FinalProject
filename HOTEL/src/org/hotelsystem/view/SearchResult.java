@@ -107,19 +107,15 @@ public class SearchResult extends JPanel implements ActionListener{
 		this.add(c, gbc);
     }
 
-    public ArrayList<ArrayList<Integer>> getRoomCombination(){
-        return this.availableHotel.getRoomCombination();
-    }
-
     public void actionPerformed(ActionEvent e){  
-        if( e.getSource() == this.btnReview){
+        if( e.getSource() == this.btnReview ){
             System.out.println("Review triggered.");
-            CommentDialogs commentDialog = new CommentDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews");
-            commentDialog.setVisible(true);
+            ReviewDialogs reviewDialog = new ReviewDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews");
+            reviewDialog.setVisible(true);
         } 
-        else if( e.getSource() == this.btnReserve){
+        else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");
-            RoomCombDialog roomCombDialog = new RoomCombDialog(this.getRoomCombination(), this.parent, "Reserve candidates");
+            RoomCombDialog roomCombDialog = new RoomCombDialog(this.availableHotel, this.parent, "Reserve candidates");
             roomCombDialog.setVisible(true);
         }
     }  

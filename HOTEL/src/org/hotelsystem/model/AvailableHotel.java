@@ -13,7 +13,7 @@ public class AvailableHotel {
         this.hotelStar = hotelStar;
         this.locality = locality;
         this.streetAddress = streetAddress;
-        this.roomCombination = roomCombination;
+        this.roomCombination = roomCombination = new ArrayList<ArrayList<Integer>>(0);
     }
 
     public int getHotelID(){

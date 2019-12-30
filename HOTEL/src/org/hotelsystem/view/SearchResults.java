@@ -28,7 +28,7 @@ public class SearchResults extends JPanel implements ActionListener{
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-        this.totalPage = this.availableHotels.size() / 10;
+        this.totalPage = (this.availableHotels.size() - 1) / 10;
         for ( int i=0; i<10 && i<this.availableHotels.size(); ++i ) {
             resultArray[i] = new SearchResult(this.parent, this.availableHotels.get(i));
             // resultArray[i].setVisible(false);
@@ -44,7 +44,7 @@ public class SearchResults extends JPanel implements ActionListener{
         this.btnPrevPage.addActionListener(this);
         this.bottomPanel.add(this.btnPrevPage);
 
-        this.labelPageNum = new JLabel("0/0", JLabel.CENTER);
+        this.labelPageNum = new JLabel(String.format("%d/%d", this.page + 1, this.totalPage + 1), JLabel.CENTER);
         this.bottomPanel.add(this.labelPageNum);
         
         this.btnNextPage = new JButton("Next >>");
@@ -105,6 +105,7 @@ public class SearchResults extends JPanel implements ActionListener{
                 System.out.println("Already the final page.");
             }
         }
+        this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
     }
 
 }
