@@ -1,5 +1,5 @@
 package org.hotelsystem.view;
-
+import org.hotelsystem.model.LoginStatus;
 import java.awt.*;
 import javax.swing.*;
 
@@ -21,14 +21,17 @@ public class MainFrame extends JFrame {
         tabbedPane.insertTab("Account",null,this.accountUI,null,0);
     }
     public MainFrame() {
+        
         super("Main Frame");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        LoginStatus loginstatus = new LoginStatus();
         this.tabbedPane = new JTabbedPane();
         
         this.loginUI = new LoginUI(this);
         this.accountUI=new AccountUI(this);
-        tabbedPane.addTab("Account", this.accountUI);
+        tabbedPane.addTab("Account", this.loginUI);
+        
         
         
         this.searchUI = new SearchUI(this);

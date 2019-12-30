@@ -35,7 +35,7 @@ public class SignupDialog extends JDialog implements ActionListener{
         //signupPanel.setPreferredSize(new Dimension(400,500));
         //bottomPanel = new JPanel(new GridLayout(1,3));
         this.setLayout(new GridBagLayout());
-        //this.setPreferredSize(new Dimension(400,500));
+        this.setSize(new Dimension(400,500));
 
         this.blankLableL = new JLabel();
         this.addWithConstraints(blankLableL, 0, 0, 1, 5, 1, 5,
