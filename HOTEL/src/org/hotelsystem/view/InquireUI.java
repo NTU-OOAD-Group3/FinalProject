@@ -13,13 +13,15 @@ public class InquireUI extends JPanel implements ActionListener{
   private JPanel showGeneralOrder;
   private JButton searchOrderButton;
   private JTextField searchOrderTextField;
+  private MainFrame mainFrame;
 
   private String userName;
   private ArrayList<Order> orders = new ArrayList<Order>();
 
   
-  public InquireUI() {
+  public InquireUI(MainFrame mainFrame) {
     this.setLayout(new GridBagLayout());
+    this.mainFrame = mainFrame;
     initUI();
   }
     
@@ -133,13 +135,35 @@ public class InquireUI extends JPanel implements ActionListener{
     return buf;
   }
 
+  private String intToString(ArrayList<Integer> intArr){
+    String buf = "";
+    for (int i = 0;i<intArr.size();i++){
+      buf = buf + intArr.get(i);
+      if (i != intArr.size()-1) buf = buf + ",";
+    }
+    return buf;
+  }
+
   public void actionPerformed(ActionEvent e){  
     if( e.getSource() == this.searchOrderButton){
         try{
           int orderID = Integer.valueOf(this.searchOrderTextField.getText());
           for (int i=0;i<this.orders.size();i++){
             if (this.orders.get(i).getOrderID() == orderID) {
-              System.out.println("Hit!");
+              String showMessage = "";
+              showMessage += "Order ID: " + orderID + "\n";
+              showMessage += "Hotel name: " + orders.get(orderID).getHotelID() + "\n";
+              showMessage += "Checkin/Checkout: " + orders.get(orderID).getCheckinTime() + "~" + orders.get(orderID).getCheckoutTime() + "\n";
+              showMessage += "Rooms: " + intToString(orders.get(orderID).getRoomIDs()) + "\n";
+              showMessage += "Price: " + orders.get(orderID).getPrice() + "\n" + "\n";
+              showMessage += "Do you want to modify order?";
+
+              int modify =  JOptionPane.showConfirmDialog(this, showMessage, "Order ID: " + orderID, JOptionPane.YES_NO_OPTION);
+              if (modify == JOptionPane.YES_OPTION) {
+                this.mainFrame.switchPanal(3);
+              } else if (modify == JOptionPane.NO_OPTION) {
+                System.out.println("Cancel");
+              }
               return;
             }
           }

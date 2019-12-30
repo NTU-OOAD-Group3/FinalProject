@@ -40,7 +40,7 @@ public class MainFrame extends JFrame {
         this.modifyUI = new ModifyUI();
         tabbedPane.addTab("ModifyUI",this.modifyUI);      
         
-        this.inquireUI = new InquireUI();
+        this.inquireUI = new InquireUI(this);
         tabbedPane.addTab("InquireUI",this.inquireUI);
 
         
@@ -48,6 +48,10 @@ public class MainFrame extends JFrame {
         setSize(1200, 600);
         setVisible(true);
     }
+
+    public void switchPanal(int switchTo){
+        this.tabbedPane.setSelectedIndex(switchTo);
+    } 
 
     public static void main(String[] args) {
     	MainFrame mainFrame = new MainFrame();
