@@ -50,12 +50,12 @@ CREATE TABLE Orders (
     FOREIGN KEY (`RoomID`) REFERENCES Rooms (`RoomID`)
 );
 
-CREATE TABLE Comments (
+CREATE TABLE Reviews (
     `HotelID` INT NOT NULL,
     `UserID` INT NOT NULL,
     `OrderID` INT NOT NULL,
     `Rating` INT NOT NULL,
-    `Comment` VARCHAR(256),
+    `Review` VARCHAR(256),
     PRIMARY KEY (`HotelID`, `UserID`, `OrderID`),
     FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`),
     FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)

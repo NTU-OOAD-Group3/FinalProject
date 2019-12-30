@@ -110,18 +110,18 @@ public class InitDB {
             stmt.execute(cmd);
             System.out.println("CREATE TABLE Orders");
 
-            cmd = "CREATE TABLE Comments (" +
+            cmd = "CREATE TABLE Reviews (" +
                     "`HotelID` INT NOT NULL," +
                     "`UserID` INT NOT NULL," +
                     "`OrderID` INT NOT NULL," +
                     "`Rating` INT NOT NULL," +
-                    "`Comment` VARCHAR(256)," +
+                    "`Review` VARCHAR(256)," +
                     "PRIMARY KEY (`HotelID`, `UserID`, `OrderID`)," +
                     "FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`)," +
                     "FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)" +
                   ");";
             stmt.execute(cmd);
-            System.out.println("CREATE TABLE Comments");
+            System.out.println("CREATE TABLE Reviews");
 
             stmt.close();
         } catch (Exception e) {

@@ -1,16 +1,16 @@
 package org.hotelsystem.model;
 
-public class HotelComment {
+public class HotelReview {
     private int hotelID;
     private int userID;
     private int rating;
-    private String comment;
+    private String review;
     
-    public HotelComment(int hotelID, int userID, int rating, String comment){
+    public HotelReview(int hotelID, int userID, int rating, String review){
         this.hotelID = hotelID;
         this.userID = userID;
         this.rating = rating;
-        this.comment = comment;
+        this.review = review;
     }
 
     public int getHotelID(){
@@ -26,6 +26,6 @@ public class HotelComment {
     }
 
     public String getComment(){
-        return this.comment;
+        return this.review;
     }
 }
