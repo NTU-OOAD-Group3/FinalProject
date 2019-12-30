@@ -14,8 +14,15 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     private JLabel labelOrderID;
     private JLabel labelPrice;
     private JButton btnModify;
+    private MainFrame mainFrame;
+    private ModifyUI modifyUI;
+    private Order order;
 
-    public InquireOrderUnit(Order order) {
+    public InquireOrderUnit(Order order, MainFrame mainFrame, ModifyUI modifyUI) {
+        this.mainFrame = mainFrame;
+        this.modifyUI = modifyUI;
+        this.order = order;
+
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
         this.setBorder(new CompoundBorder(line, empty));
@@ -82,7 +89,8 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
 
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnModify){
-            System.out.println("Modify triggered.");
+            this.modifyUI.setOrderIDField(String.valueOf(this.order.getOrderID()));
+            this.mainFrame.switchPanal(3);
         } 
     }  
 
