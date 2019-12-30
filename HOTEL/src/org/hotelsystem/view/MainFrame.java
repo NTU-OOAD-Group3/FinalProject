@@ -40,7 +40,7 @@ public class MainFrame extends JFrame {
         this.modifyUI = new ModifyUI();
         tabbedPane.addTab("ModifyUI",this.modifyUI);      
         
-        this.inquireUI = new InquireUI(this);
+        this.inquireUI = new InquireUI(this, this.modifyUI);
         tabbedPane.addTab("InquireUI",this.inquireUI);
 
         

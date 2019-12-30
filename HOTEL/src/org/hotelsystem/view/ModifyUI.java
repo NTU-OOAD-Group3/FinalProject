@@ -7,7 +7,8 @@ import javax.swing.border.*;
 public class ModifyUI extends JPanel{
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
-	private JPanel modifiedOrderbar;
+    private JPanel modifiedOrderbar;
+    private JTextField tfOrderID;
 	
 	public ModifyUI() {
 		this.setLayout(new GridBagLayout());
@@ -26,9 +27,9 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.orderIDbar, lbOrderID, 0, 0, 1, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 10, 10, 0, 0);
         
-        JTextField tfOrderID = new JTextField(20);
-        tfOrderID.setHorizontalAlignment(JTextField.CENTER);
-        this.addWithConstraints(this.orderIDbar, tfOrderID, 0, 1, 1, 1, 1, 1,
+        this.tfOrderID = new JTextField(20);
+        this.tfOrderID.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.orderIDbar, this.tfOrderID, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 10, 10, 0, 0);
 
         JButton btnQueryOrder = new JButton("Query");
@@ -173,6 +174,10 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this, btnCheckAndSend, 0, 10, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH);
 
+    }
+
+    public void setOrderIDField(String orderID){
+        this.tfOrderID.setText(orderID);
     }
 	
 	private void addWithConstraints(JComponent mother, JComponent c, int gridx, int gridy,

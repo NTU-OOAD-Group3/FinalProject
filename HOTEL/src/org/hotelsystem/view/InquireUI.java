@@ -14,14 +14,16 @@ public class InquireUI extends JPanel implements ActionListener{
   private JButton searchOrderButton;
   private JTextField searchOrderTextField;
   private MainFrame mainFrame;
+  private ModifyUI modifyUI;
 
   private String userName;
   private ArrayList<Order> orders = new ArrayList<Order>();
 
   
-  public InquireUI(MainFrame mainFrame) {
+  public InquireUI(MainFrame mainFrame, ModifyUI modifyUI) {
     this.setLayout(new GridBagLayout());
     this.mainFrame = mainFrame;
+    this.modifyUI = modifyUI;
     initUI();
   }
     
@@ -86,7 +88,7 @@ public class InquireUI extends JPanel implements ActionListener{
 
     
     
-    this.showGeneralOrder = new InquireOrders(this.orders);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.mainFrame, this.modifyUI);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -160,6 +162,7 @@ public class InquireUI extends JPanel implements ActionListener{
 
               int modify =  JOptionPane.showConfirmDialog(this, showMessage, "Order ID: " + orderID, JOptionPane.YES_NO_OPTION);
               if (modify == JOptionPane.YES_OPTION) {
+                this.modifyUI.setOrderIDField(String.valueOf(orderID));
                 this.mainFrame.switchPanal(3);
               } else if (modify == JOptionPane.NO_OPTION) {
                 System.out.println("Cancel");
@@ -167,10 +170,10 @@ public class InquireUI extends JPanel implements ActionListener{
               return;
             }
           }
-          JOptionPane.showMessageDialog(this, "No such order!", "Error!", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
         catch (NumberFormatException f){
-          JOptionPane.showMessageDialog(this, "Input is not a number!", "Error!", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
   }  
