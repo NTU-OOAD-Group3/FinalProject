@@ -3,6 +3,7 @@ package org.hotelsystem.control;
 import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.model.Hotel;
 import org.hotelsystem.model.DBUtil;
+import org.hotelsystem.model.HotelReview;
 import org.hotelsystem.view.SearchUI;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class SearchControl {
     public ArrayList<AvailableHotel> searchAvailableHotel(String locality, int checkin, int checkout, int room, int people){
         this.hotels = dbutils.getHotels(locality, checkin, checkout);
         ArrayList<AvailableHotel> availableHotel = new ArrayList<AvailableHotel>(0);
+        System.out.printf("get %d hotels\n", this.hotels.size());
         for( int i=0; i<this.hotels.size(); ++i){
             AvailableHotel tmp = hotels.get(i).getAvailableHotel(people, room);
             if( tmp.getRoomCombination().size() > 0 )
@@ -31,4 +33,7 @@ public class SearchControl {
         return availableHotel;   
     }
     
+    public ArrayList<HotelReview> getHotelReviews(int hotelID){
+        return dbutils.getHotelReviews(hotelID);
+    }
 }

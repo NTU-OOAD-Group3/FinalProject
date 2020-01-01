@@ -33,14 +33,14 @@ public class SearchUI extends JPanel {
 		this.addWithConstraints(this.searchFilter, 0, 1, 1, 6, 1, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
-		this.searchResult = new SearchResults(this.parent);
+		this.searchResult = new SearchResults(this.parent, this.searchControl);
 		this.searchResult.setBorder(new LineBorder(Color.BLACK));
 		this.addWithConstraints(this.searchResult, 1, 1, 6, 6, 6, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 	}
 	
 	public void triggerSearch(String locality, int checkin, int checkout, int room, int people){
-		ArrayList<AvailableHotel> tmp =this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
+		ArrayList<AvailableHotel> tmp = this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
 		System.out.printf("get %d available hotels\n", tmp.size());
 		this.searchResult.setAvailableHotel(tmp);
 	}

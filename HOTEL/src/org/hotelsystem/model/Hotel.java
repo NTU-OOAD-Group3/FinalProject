@@ -21,7 +21,6 @@ public class Hotel {
         this.singleRooms = singleRooms;
         this.doubleRooms = doubleRooms;
         this.quadRooms = quadRooms;
-        this.calcVacantNum();
     }
 
     private void calcVacantNum() {
@@ -43,7 +42,6 @@ public class Hotel {
                 vacantQuadNum += 1;
             }
         }
-
     }
 
     public void setOccupied(int roomID, boolean b) {
@@ -64,6 +62,7 @@ public class Hotel {
     public int getHotelID() { return this.hotelID; }
 
     public AvailableHotel getAvailableHotel(int peopleNum, int roomNum) {
+        this.calcVacantNum();
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
         for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
             for ( int y=0; y<=Math.min(roomNum, vacantDoubleNum); ++y ) {

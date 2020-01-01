@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.control.SearchControl;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,8 +19,9 @@ public class ReviewDialogs extends JDialog implements ActionListener{
     private JButton btnNextPage;
     private JLabel labelPageNum;
 
-    public ReviewDialogs(int hotelID, JFrame parent, String name){
+    public ReviewDialogs(int hotelID, JFrame parent, String name, SearchControl searchControl){
         super(parent, name, true);
+        this.hotelReviews = searchControl.getHotelReviews(hotelID);
         initUI();
     }
 
@@ -31,7 +33,7 @@ public class ReviewDialogs extends JDialog implements ActionListener{
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
         this.totalPage = this.hotelReviews.size() / 10;
-        hotelReviews.add(new HotelReview(0, 0, 5, "YOYOYOYOYOYOYOYOYO"));
+        
         for ( int i=0; i<10 && i<this.hotelReviews.size(); ++i ) {
             ReviewArray[i] = new ReviewPanel(this.hotelReviews.get(i));
             // ReviewArray[i].setVisible(false);

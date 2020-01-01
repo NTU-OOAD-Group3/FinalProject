@@ -58,9 +58,9 @@ public class DBUtil {
             
             int lastHotelID = -1;
             Hotel hotel = null;
-            ArrayList<Room> singleRooms = null;
-            ArrayList<Room> doubleRooms = null;
-            ArrayList<Room> quadRooms = null;
+            ArrayList<Room> singleRooms = new ArrayList<Room>();;
+            ArrayList<Room> doubleRooms = new ArrayList<Room>();;
+            ArrayList<Room> quadRooms = new ArrayList<Room>();;
             while ( this.result.next() ) {
                 int hotelID = this.result.getInt("HotelID");
                 int hotelStar = this.result.getInt("HotelStar");
@@ -148,7 +148,7 @@ public class DBUtil {
             e.getStackTrace();
             System.exit(1);
         }
-
+        System.out.printf("get %d reviews\n", hotelReviews.size());
         return hotelReviews;
     }
 

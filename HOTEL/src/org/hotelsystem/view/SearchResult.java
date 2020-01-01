@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
+import org.hotelsystem.control.SearchControl;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -21,12 +22,14 @@ public class SearchResult extends JPanel implements ActionListener{
     private JFrame parent;
     private AvailableHotel availableHotel;
     private RoomCombDialog roomCombDialog;
+    private SearchControl searchControl;
 
     private ArrayList<ArrayList<Integer>> roomCombination;
 
-    public SearchResult(JFrame parent, AvailableHotel availableHotel) {
+    public SearchResult(JFrame parent, AvailableHotel availableHotel, SearchControl searchControl) {
         this.parent = parent;
         this.availableHotel = availableHotel;
+        this.searchControl = searchControl;
         initUI();
     }
 
@@ -112,7 +115,7 @@ public class SearchResult extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnReview ){
             System.out.println("Review triggered.");
-            ReviewDialogs reviewDialog = new ReviewDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews");
+            ReviewDialogs reviewDialog = new ReviewDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews", this.searchControl);
             reviewDialog.setVisible(true);
         } 
         else if( e.getSource() == this.btnReserve ){

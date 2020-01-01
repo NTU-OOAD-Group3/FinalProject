@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
+import org.hotelsystem.control.SearchControl;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;  
@@ -15,9 +16,11 @@ public class SearchResults extends JPanel implements ActionListener{
     private int page = 0;
     private int totalPage = 0;
     private ArrayList<AvailableHotel> availableHotels =  new ArrayList<AvailableHotel>(0);
+    private SearchControl searchControl;
 
-    public SearchResults(JFrame parent) {
+    public SearchResults(JFrame parent, SearchControl searchControl) {
         this.parent = parent;
+        this.searchControl = searchControl;
         initUI();
     }
 
@@ -31,8 +34,8 @@ public class SearchResults extends JPanel implements ActionListener{
 
         this.totalPage = 0;
         for ( int i=0; i<10 ; ++i ){
-            resultArray[i] = new SearchResult(this.parent, this.availableHotels.get(i));
-            // resultArray[i].setVisible(false);
+            resultArray[i] = new SearchResult(this.parent, this.availableHotels.get(i), searchControl);
+            resultArray[i].setVisible(false);
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -59,11 +62,11 @@ public class SearchResults extends JPanel implements ActionListener{
     private void refreshUI(){
         int round = 10;
         int base = 10 * this.page;
-        // if( this.page == this.totalPage ){
-        //     round = this.availableHotels.size() % 10;
-        //     for( int i=round; i<10; ++i )
-        //         this.resultArray[i].setVisible(false);
-        // }
+        if( this.page == this.totalPage ){
+            round = this.availableHotels.size() % 10;
+            for( int i=round; i<10; ++i )
+                this.resultArray[i].setVisible(false);
+        }
         for( int i=0; i<10; ++i ){
             this.resultArray[i].setVisible(true);
             this.resultArray[i].refreshUI(this.availableHotels.get(base + i));
