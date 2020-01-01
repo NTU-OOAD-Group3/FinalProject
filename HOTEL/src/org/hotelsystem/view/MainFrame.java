@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.LoginStatus;
+import org.hotelsystem.control.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -12,6 +13,12 @@ public class MainFrame extends JFrame {
     private InquireUI inquireUI;
     private AccountUI accountUI;
 
+    private SearchControl searchControl;
+    private ReserveControl reserveControl;
+    private LoginControl loginControl;
+    private ModifyControl modifyControl;
+    private InquireControl inquireControl;
+    
     public void logoutChange(){//will be called when user click `logout Button` in AccountUI
         tabbedPane.remove(0);
         tabbedPane.insertTab("login",null, this.loginUI,null, 0);
@@ -24,17 +31,19 @@ public class MainFrame extends JFrame {
         
         super("Main Frame");
 
+        this.searchControl = new SearchControl();
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LoginStatus loginstatus = new LoginStatus();
         this.tabbedPane = new JTabbedPane();
         
         this.loginUI = new LoginUI(this);
         this.accountUI=new AccountUI(this);
+
         tabbedPane.addTab("Account", this.loginUI);
         
-        
-        
-        this.searchUI = new SearchUI(this);
+        this.searchUI = new SearchUI(this, this.searchControl);
+        this.searchControl.setUI(this.searchUI);
         tabbedPane.addTab("Search", this.searchUI);
         
         this.reserveUI = new ReserveUI();

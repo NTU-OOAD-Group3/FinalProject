@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class SearchFilter extends JPanel implements ActionListener {
+    private SearchUI searchUI;
     private JLabel labelTitle;
     private JLabel labelPriceLower;
     private JTextField tfPriceLower;
@@ -20,7 +21,8 @@ public class SearchFilter extends JPanel implements ActionListener {
     private JRadioButton rbtnPriceL2H;
     private JRadioButton rbtnPriceH2L;
 
-    public SearchFilter() {
+    public SearchFilter(SearchUI searchUI) {
+        this.searchUI = searchUI;
         initUI();
     }
 
