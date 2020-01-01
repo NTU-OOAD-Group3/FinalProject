@@ -67,7 +67,7 @@ public class SearchBar extends JPanel implements ActionListener{
         this.addWithConstraints(labelPeople, 5, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        String Locality[]={"Taipei","Taichung","Kaohsiung"};
+        String Locality[]={"台北","Taichung","Kaohsiung"};
         this.jcmbLocality = new JComboBox(Locality);
         this.addWithConstraints(jcmbLocality, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
@@ -135,14 +135,18 @@ public class SearchBar extends JPanel implements ActionListener{
         if( e.getSource() == this.btnSearch ){
             System.out.println("Search triggered.");
             try{
-                Date checkinDate = sdf.parse(this.tfCheckin.getText());
-                Date checkoutDate = sdf.parse(this.tfCheckout.getText());
-                int checkin = Integer.valueOf(String.format("%s%s%s", checkinDate.getYear(), checkinDate.getMonth(), checkinDate.getDate()));
-                int checkout = Integer.valueOf(String.format("%s%s%s", checkinDate.getYear(), checkinDate.getMonth(), checkinDate.getDate()));
+                Calendar checkinDate = Calendar.getInstance();
+                Calendar checkoutDate = Calendar.getInstance();
+                checkinDate.setTime(sdf.parse(this.tfCheckin.getText()));
+                checkoutDate.setTime(sdf.parse(this.tfCheckout.getText()));
+                
+                int checkin = Integer.valueOf(String.format("%4d%02d%02d", checkinDate.get(Calendar.YEAR), checkinDate.get(Calendar.MONTH) + 1, checkinDate.get(Calendar.DAY_OF_MONTH)));
+                int checkout = Integer.valueOf(String.format("%4d%02d%02d", checkoutDate.get(Calendar.YEAR), checkoutDate.get(Calendar.MONTH) + 1, checkoutDate.get(Calendar.DAY_OF_MONTH)));
                 this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
             }
             catch(Exception error){
             }
+            System.out.println("Search Comlete.");
             // searchAvailableHotel(this.jcmbLocality.getText(), checkin, checkout, Integer.valueOf(this.tfRoom), Integer.valueOf(this.tfPeople));
         }
         else if( e.getSource() == this.btnCheckinDate ){

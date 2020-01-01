@@ -121,6 +121,37 @@ public class DBUtil {
         return hotels;
     }
 
+    public ArrayList<HotelReview> getHotelReviews(int hotelID) {
+        ArrayList<HotelReview> hotelReviews = new ArrayList<HotelReview>();
+        String cmd = null;
+
+        try {
+            this.stmt = this.conn.createStatement();
+            cmd = "SELECT * FROM Reviews " +
+                "WHERE HotelID = " + String.valueOf(hotelID) + " " +
+                "ORDER BY ReviewTime DESC;";
+            this.result = this.stmt.executeQuery(cmd);
+            if ( !this.result.isBeforeFirst() ) {
+                System.err.println("EMPTY_QUERY");
+            }
+
+            while ( this.result.next() ) {
+                int userID = this.result.getInt("UserID");
+                int rating = this.result.getInt("Rating");
+                String review = this.result.getString("Review");
+                hotelReviews.add(new HotelReview(hotelID, userID, rating, review));
+            }
+
+            this.stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            System.exit(1);
+        }
+
+        return hotelReviews;
+    }
+
     public static void main(String[] args) {
         DBUtil dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
         ArrayList<Hotel> hotels = dbutil.getHotels("台北", 20191229, 20191231);

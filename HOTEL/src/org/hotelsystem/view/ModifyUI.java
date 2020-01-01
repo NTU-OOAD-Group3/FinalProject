@@ -1,14 +1,34 @@
 package org.hotelsystem.view;
+import org.hotelsystem.model.Order;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
-public class ModifyUI extends JPanel{
+public class ModifyUI extends JPanel implements ActionListener{
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
     private JPanel modifiedOrderbar;
     private JTextField tfOrderID;
+    private JButton btnQueryOrder;
+
+    JTextField tfOriHotelName;
+    JTextField tfOriCheckInTime;
+    JTextField tfOriCheckOutTime;
+    JTextField tfOriSingleNum;
+    JTextField tfOriDoubleNum;
+    JTextField tfOriQuadNum;
+    JTextField tfOriPrice;
+
+    JTextField tfModHotelName;
+    JTextField tfModCheckInTime;
+    JTextField tfModCheckOutTime;
+    JTextField tfModSingleNum;
+    JTextField tfModDoubleNum;
+    JTextField tfModQuadNum;
+
 	
 	public ModifyUI() {
 		this.setLayout(new GridBagLayout());
@@ -32,8 +52,9 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.orderIDbar, this.tfOrderID, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 10, 10, 0, 0);
 
-        JButton btnQueryOrder = new JButton("Query");
-        this.addWithConstraints(this.orderIDbar, btnQueryOrder, 0, 2, 1, 1, 1, 1,
+        this.btnQueryOrder = new JButton("Query");
+        this.btnQueryOrder.addActionListener(this);
+        this.addWithConstraints(this.orderIDbar, this.btnQueryOrder, 0, 2, 1, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST, 0, 0, 1000, 50);
 
         JLabel lbOriginalOrder = new JLabel("Original order");
@@ -51,7 +72,9 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriHotelName, 0, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 10, 10);
         
-        JTextField tfOriHotelName = new JTextField(15);
+        this.tfOriHotelName = new JTextField(15);
+        this.tfOriHotelName.setEditable(false);
+        this.tfOriHotelName.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.originalOrderbar, tfOriHotelName, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -59,47 +82,59 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.originalOrderbar, lbOriCheckInTime, 1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriCheckInTime = new JTextField(8);
-        this.addWithConstraints(this.originalOrderbar, tfOriCheckInTime, 1, 1, 1, 1, 1, 1,
+        this.tfOriCheckInTime = new JTextField(8);
+        this.tfOriCheckInTime.setEditable(false);
+        this.tfOriCheckInTime.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.originalOrderbar, this.tfOriCheckInTime, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbOriCheckOutTime = new JLabel("Check out");
         this.addWithConstraints(this.originalOrderbar, lbOriCheckOutTime, 2, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriCheckOutTime = new JTextField(8);
-        this.addWithConstraints(this.originalOrderbar, tfOriCheckOutTime, 2, 1, 1, 1, 1, 1,
+        this.tfOriCheckOutTime = new JTextField(8);
+        this.tfOriCheckOutTime.setEditable(false);
+        this.tfOriCheckOutTime.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.originalOrderbar, this.tfOriCheckOutTime, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbOriSingleNum = new JLabel("Single ");
         this.addWithConstraints(this.originalOrderbar, lbOriSingleNum, 3, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriSingleNum = new JTextField(8);
-        this.addWithConstraints(this.originalOrderbar, tfOriSingleNum, 3, 1, 1, 1, 1, 1,
+        this.tfOriSingleNum = new JTextField(8);
+        this.tfOriSingleNum.setEditable(false);
+        this.tfOriSingleNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.originalOrderbar, this.tfOriSingleNum, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbOriDoubleNum = new JLabel("Double ");
         this.addWithConstraints(this.originalOrderbar, lbOriDoubleNum, 4, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfOriDoubleNum = new JTextField(8);
-        this.addWithConstraints(this.originalOrderbar, tfOriDoubleNum, 4, 1, 1, 1, 1, 1,
+        this.tfOriDoubleNum = new JTextField(8);
+        this.tfOriDoubleNum.setEditable(false);
+        this.tfOriDoubleNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.originalOrderbar, this.tfOriDoubleNum, 4, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbOriQuadNum = new JLabel("Quad");
         this.addWithConstraints(this.originalOrderbar, lbOriQuadNum, 5, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriQuadNum = new JTextField(8);
-        this.addWithConstraints(this.originalOrderbar, tfOriQuadNum, 5, 1, 1, 1, 1, 1,
+        this.tfOriQuadNum = new JTextField(8);
+        this.tfOriQuadNum.setEditable(false);
+        this.tfOriQuadNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.originalOrderbar, this.tfOriQuadNum, 5, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbOriPrice = new JLabel("Price");
         this.addWithConstraints(this.originalOrderbar, lbOriPrice, 6, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfOriPrice = new JTextField(8);
+        this.tfOriPrice = new JTextField(8);
+        this.tfOriPrice.setEditable(false);
+        this.tfOriPrice.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.originalOrderbar, tfOriPrice, 6, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
@@ -118,56 +153,54 @@ public class ModifyUI extends JPanel{
         this.addWithConstraints(this.modifiedOrderbar, lbModHotelName, 0, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 10, 10);
         
-        JTextField tfModHotelName = new JTextField(15);
-        this.addWithConstraints(this.modifiedOrderbar, tfModHotelName, 0, 1, 1, 1, 1, 1,
+        this.tfModHotelName = new JTextField(15);
+        this.tfModHotelName.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModHotelName, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModCheckInTime = new JLabel("Check in");
         this.addWithConstraints(this.modifiedOrderbar, lbModCheckInTime, 1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModCheckInTime = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModCheckInTime, 1, 1, 1, 1, 1, 1,
+        this.tfModCheckInTime = new JTextField(8);
+        this.tfModCheckInTime.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModCheckInTime, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModCheckOutTime = new JLabel("Check out");
         this.addWithConstraints(this.modifiedOrderbar, lbModCheckOutTime, 2, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfModCheckOutTime = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModCheckOutTime, 2, 1, 1, 1, 1, 1,
+        this.tfModCheckOutTime = new JTextField(8);
+        this.tfModCheckOutTime.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModCheckOutTime, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModSingleNum = new JLabel("Single ");
         this.addWithConstraints(this.modifiedOrderbar, lbModSingleNum, 3, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModSingleNum = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModSingleNum, 3, 1, 1, 1, 1, 1,
+        this.tfModSingleNum = new JTextField(8);
+        this.tfModSingleNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModSingleNum, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModDoubleNum = new JLabel("Double ");
         this.addWithConstraints(this.modifiedOrderbar, lbModDoubleNum, 4, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
-        JTextField tfModDoubleNum = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModDoubleNum, 4, 1, 1, 1, 1, 1,
+        this.tfModDoubleNum = new JTextField(8);
+        this.tfModDoubleNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModDoubleNum, 4, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModQuadNum = new JLabel("Quad");
         this.addWithConstraints(this.modifiedOrderbar, lbModQuadNum, 5, 0, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
-        JTextField tfModQuadNum = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModQuadNum, 5, 1, 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
-
-        JLabel lbModPrice = new JLabel("Price");
-        this.addWithConstraints(this.modifiedOrderbar, lbModPrice, 6, 0, 1, 1, 1, 1,
-                GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
-        
-        JTextField tfModPrice = new JTextField(8);
-        this.addWithConstraints(this.modifiedOrderbar, tfModPrice, 6, 1, 1, 1, 1, 1,
+        this.tfModQuadNum = new JTextField(8);
+        this.tfModQuadNum.setHorizontalAlignment(JTextField.CENTER);
+        this.addWithConstraints(this.modifiedOrderbar, this.tfModQuadNum, 5, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
         
         JButton btnCheckAndSend = new JButton("Check");
@@ -176,8 +209,16 @@ public class ModifyUI extends JPanel{
 
     }
 
-    public void setOrderIDField(String orderID){
-        this.tfOrderID.setText(orderID);
+    public void setOrder(Order order){
+        this.tfOrderID.setText(String.valueOf(order.getOrderID()));
+        this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
+        this.tfOriCheckInTime.setText(String.valueOf(order.getCheckinTime()));
+        this.tfOriCheckOutTime.setText(String.valueOf(order.getCheckoutTime()));
+        this.tfOriPrice.setText(String.valueOf(order.getPrice()));
+
+        this.tfModHotelName.setText(String.valueOf(order.getHotelID()));
+        this.tfModCheckInTime.setText(String.valueOf(order.getCheckinTime()));
+        this.tfModCheckOutTime.setText(String.valueOf(order.getCheckoutTime()));
     }
 	
 	private void addWithConstraints(JComponent mother, JComponent c, int gridx, int gridy,
@@ -210,5 +251,15 @@ public class ModifyUI extends JPanel{
 		gbc.anchor = anchor;
         gbc.insets = new Insets(insetup, insetleft, insetdown, insetright);
         mother.add(c, gbc);
+    }
+
+    public void actionPerformed(ActionEvent e){
+        if( e.getSource() == this.btnQueryOrder){
+            //Mock Data
+            ArrayList<Integer> a= new ArrayList<Integer>();
+            a.add(1);
+            Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
+            this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
+        }
     }
 }

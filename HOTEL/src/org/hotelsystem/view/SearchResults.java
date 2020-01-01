@@ -24,10 +24,19 @@ public class SearchResults extends JPanel implements ActionListener{
     private void initUI() {
         this.setLayout(new BorderLayout());
         for(int i=0;i<10;i++)
-            availableHotels.add( new AvailableHotel(i, i, "test", "test", null));
+            this.availableHotels.add(new AvailableHotel(i, i, "test", "test", null));
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
+
+        this.totalPage = 0;
+        for ( int i=0; i<10 ; ++i ){
+            resultArray[i] = new SearchResult(this.parent, this.availableHotels.get(i));
+            // resultArray[i].setVisible(false);
+            this.addWithConstraints(listPanel, resultArray[i],
+                0, i, 1, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.CENTER);
+        }
 
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
@@ -48,16 +57,25 @@ public class SearchResults extends JPanel implements ActionListener{
     }
 
     private void refreshUI(){
-        int round = 10, base = 10 * this.page;
-        if( this.page == this.totalPage ){
-            round = this.availableHotels.size() % 10;
-            for( int i=round;i<10;++i )
-                this.resultArray[i].setVisible(false);
-        }
-        for( int i=0;i<round;++i ){
+        int round = 10;
+        int base = 10 * this.page;
+        // if( this.page == this.totalPage ){
+        //     round = this.availableHotels.size() % 10;
+        //     for( int i=round; i<10; ++i )
+        //         this.resultArray[i].setVisible(false);
+        // }
+        for( int i=0; i<10; ++i ){
             this.resultArray[i].setVisible(true);
             this.resultArray[i].refreshUI(this.availableHotels.get(base + i));
         }
+    }
+
+    public void setAvailableHotel(ArrayList<AvailableHotel> availableHotels){
+        this.availableHotels = availableHotels;
+        this.page = 0;
+        this.totalPage = (this.availableHotels.size() - 1) / 10;
+        this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
+        this.refreshUI();
     }
 
     private void addWithConstraints(JPanel p, JComponent c,
@@ -74,18 +92,6 @@ public class SearchResults extends JPanel implements ActionListener{
 		gbc.anchor = anchor;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		p.add(c, gbc);
-    }
-
-    public void set(ArrayList<AvailableHotel> availableHotels){
-        this.availableHotels = availableHotels;
-        this.totalPage = (this.availableHotels.size() - 1) / 10;
-        for ( int i=0; i<10 && i<this.availableHotels.size(); ++i ){
-            resultArray[i] = new SearchResult(this.parent, this.availableHotels.get(i));
-            this.addWithConstraints(listPanel, resultArray[i],
-                0, i, 1, 1, 1, 1,
-                GridBagConstraints.BOTH, GridBagConstraints.CENTER);
-        }
-        this.refreshUI();
     }
 
     public void actionPerformed(ActionEvent e){  

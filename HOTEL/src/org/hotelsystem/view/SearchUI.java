@@ -1,15 +1,18 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.control.SearchControl;
+import org.hotelsystem.model.AvailableHotel;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.util.ArrayList;
 
 public class SearchUI extends JPanel {
 	private SearchControl searchControl;
-	private JPanel searchBar;
-	private JPanel searchFilter;
-	private JPanel searchResult;
+	private SearchBar searchBar;
+	private SearchFilter searchFilter;
+	private SearchResults searchResult;
 	private JFrame parent;
 	public SearchUI(JFrame parent, SearchControl searchControl) {
 		this.setLayout(new GridBagLayout());
@@ -37,8 +40,9 @@ public class SearchUI extends JPanel {
 	}
 	
 	public void triggerSearch(String locality, int checkin, int checkout, int room, int people){
-		// this.searchResult.setAvailableHotel(this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people));
-
+		ArrayList<AvailableHotel> tmp =this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
+		System.out.printf("get %d available hotels\n", tmp.size());
+		this.searchResult.setAvailableHotel(tmp);
 	}
 
 	private void addWithConstraints(JComponent c, int gridx, int gridy,

@@ -8,6 +8,7 @@ public class Hotel {
     private String locality;
     private String address;
     ArrayList<Room> singleRooms, doubleRooms, quadRooms;
+    private int vacantSingleNum, vacantDoubleNum, vacantQuadNum;
     
     public Hotel(int hotelID, int hotelStar, String locality, String address,
                  ArrayList<Room> singleRooms,
@@ -20,6 +21,29 @@ public class Hotel {
         this.singleRooms = singleRooms;
         this.doubleRooms = doubleRooms;
         this.quadRooms = quadRooms;
+        this.calcVacantNum();
+    }
+
+    private void calcVacantNum() {
+        this.vacantSingleNum = 0;
+        this.vacantDoubleNum = 0;
+        this.vacantQuadNum = 0;
+        for ( int i=0; i<this.singleRooms.size(); ++i ) {
+            if (this.singleRooms.get(i).isOccupied() == false) {
+                vacantSingleNum += 1;
+            }
+        }
+        for ( int i=0; i<this.doubleRooms.size(); ++i ) {
+            if (this.doubleRooms.get(i).isOccupied() == false) {
+                vacantDoubleNum += 1;
+            }
+        }
+        for ( int i=0; i<this.quadRooms.size(); ++i ) {
+            if ( this.quadRooms.get(i).isOccupied() == false) {
+                vacantQuadNum += 1;
+            }
+        }
+
     }
 
     public void setOccupied(int roomID, boolean b) {
@@ -40,25 +64,6 @@ public class Hotel {
     public int getHotelID() { return this.hotelID; }
 
     public AvailableHotel getAvailableHotel(int peopleNum, int roomNum) {
-        int vacantSingleNum = 0;
-        int vacantDoubleNum = 0;
-        int vacantQuadNum = 0;
-        for ( int i=0; i<this.singleRooms.size(); ++i ) {
-            if (this.singleRooms.get(i).isOccupied() == false) {
-                vacantSingleNum += 1;
-            }
-        }
-        for ( int i=0; i<this.doubleRooms.size(); ++i ) {
-            if (this.doubleRooms.get(i).isOccupied() == false) {
-                vacantDoubleNum += 1;
-            }
-        }
-        for ( int i=0; i<this.quadRooms.size(); ++i ) {
-            if ( this.quadRooms.get(i).isOccupied() == false) {
-                vacantQuadNum += 1;
-            }
-        }
-
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
         for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
             for ( int y=0; y<=Math.min(roomNum, vacantDoubleNum); ++y ) {
@@ -73,11 +78,17 @@ public class Hotel {
                 }
             }
         }
-        
         AvailableHotel availableHotel = new AvailableHotel(
             this.hotelID, this.hotelStar, this.locality, this.address, roomCombination);
 
         return availableHotel;
+    }
+
+    public boolean checkAvailable(int singleNum, int doubleNum, int quadNum) {
+        if ( singleNum <= this.vacantSingleNum ) { return false; }
+        if ( doubleNum <= this.vacantDoubleNum ) { return false; }
+        if ( quadNum <= this.vacantQuadNum ) { return false; }
+        return true;
     }
 
     public String toString() {

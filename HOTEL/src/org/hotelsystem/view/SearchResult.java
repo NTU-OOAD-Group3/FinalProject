@@ -20,6 +20,7 @@ public class SearchResult extends JPanel implements ActionListener{
     private JButton btnReserve;
     private JFrame parent;
     private AvailableHotel availableHotel;
+    private RoomCombDialog roomCombDialog;
 
     private ArrayList<ArrayList<Integer>> roomCombination;
 
@@ -90,6 +91,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelLocality.setText(availableHotel.getLocality());
         this.labelHotelAddress.setText(availableHotel.getStreetAddress());
         this.roomCombination = availableHotel.getRoomCombination();
+        this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates");
     }
     private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
@@ -115,8 +117,7 @@ public class SearchResult extends JPanel implements ActionListener{
         } 
         else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");
-            RoomCombDialog roomCombDialog = new RoomCombDialog(this.availableHotel, this.parent, "Reserve candidates");
-            roomCombDialog.setVisible(true);
+            this.roomCombDialog.setVisible(true);
         }
     }  
 

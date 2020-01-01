@@ -17,7 +17,7 @@ public class ReviewPanel extends JPanel{
     }
 
     private void initUI(HotelReview hotelReview){
-        this.setBorder(new LineBorder(Color.RED));
+        this.setBorder(new LineBorder(Color.black));
         this.setLayout(new GridBagLayout());
         
         labelUserID = new JLabel(String.format("User: %d", hotelReview.getUserID()));
