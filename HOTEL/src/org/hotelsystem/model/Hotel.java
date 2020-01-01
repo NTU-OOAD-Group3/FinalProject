@@ -60,9 +60,9 @@ public class Hotel {
         }
 
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
-        for ( int x=0; x<Math.min(roomNum, vacantSingleNum); ++x ) {
-            for ( int y=0; y<Math.min(roomNum, vacantDoubleNum); ++y ) {
-                for ( int z=0; z<Math.min(roomNum, vacantQuadNum); ++z ) {
+        for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
+            for ( int y=0; y<=Math.min(roomNum, vacantDoubleNum); ++y ) {
+                for ( int z=0; z<=Math.min(roomNum, vacantQuadNum); ++z ) {
                     if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
                         ArrayList<Integer> comb = new ArrayList<Integer>();
                         comb.add(x);
@@ -73,7 +73,7 @@ public class Hotel {
                 }
             }
         }
-
+        
         AvailableHotel availableHotel = new AvailableHotel(
             this.hotelID, this.hotelStar, this.locality, this.address, roomCombination);
 

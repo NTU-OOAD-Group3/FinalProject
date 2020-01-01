@@ -49,11 +49,11 @@ public class DBUtil {
             this.stmt = this.conn.createStatement();
             cmd = "SELECT * FROM Hotels as H, Rooms as R " +
                 "WHERE H.HotelID = R.HotelID " +
-                "AND H.Locality = \"" + locality + "\" " +
+                // "AND H.Locality = \"" + locality + "\" " +
                 "ORDER BY H.HotelID ASC, R.RoomID ASC;";
             this.result = this.stmt.executeQuery(cmd);
             if ( !this.result.isBeforeFirst() ) {
-                System.err.println("EMPTY_QUERY");
+                // System.err.println("EMPTY_QUERY");
             }
             
             int lastHotelID = -1;
@@ -103,7 +103,7 @@ public class DBUtil {
                 // System.out.println(cmd);
                 this.result = this.stmt.executeQuery(cmd);
                 if ( !this.result.isBeforeFirst() ) {
-                    System.err.println("EMPTY_QUERY");
+                    // System.err.println("EMPTY_QUERY");
                 }
                 while ( this.result.next() ) {
                     int roomID = this.result.getInt("RoomID");
