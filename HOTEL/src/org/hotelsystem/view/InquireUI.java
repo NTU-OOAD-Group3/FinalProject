@@ -137,7 +137,7 @@ public class InquireUI extends JPanel implements ActionListener{
     return buf;
   }
 
-  private String intToString(ArrayList<Integer> intArr){
+  private String intArrToString(ArrayList<Integer> intArr){
     String buf = "";
     for (int i = 0;i<intArr.size();i++){
       buf = buf + intArr.get(i);
@@ -146,26 +146,26 @@ public class InquireUI extends JPanel implements ActionListener{
     return buf;
   }
 
+  public String showOrder(Order order){
+    String showMessage = "";
+    showMessage += "Order ID: " + order.getOrderID() + "\n";
+    showMessage += "Hotel name: " + order.getHotelID() + "\n";
+    showMessage += "Checkin/Checkout: " + order.getCheckinTime() + "~" + order.getCheckoutTime() + "\n";
+    showMessage += "Rooms: " + intArrToString(order.getRoomIDs()) + "\n";
+    showMessage += "Price: " + order.getPrice() + "\n" + "\n";
+    return showMessage;
+  }
+
   public void actionPerformed(ActionEvent e){  
     if( e.getSource() == this.searchOrderButton){
         try{
           int orderID = Integer.valueOf(this.searchOrderTextField.getText());
           for (int i=0;i<this.orders.size();i++){
             if (this.orders.get(i).getOrderID() == orderID) {
-              String showMessage = "";
-              showMessage += "Order ID: " + orderID + "\n";
-              showMessage += "Hotel name: " + orders.get(orderID).getHotelID() + "\n";
-              showMessage += "Checkin/Checkout: " + orders.get(orderID).getCheckinTime() + "~" + orders.get(orderID).getCheckoutTime() + "\n";
-              showMessage += "Rooms: " + intToString(orders.get(orderID).getRoomIDs()) + "\n";
-              showMessage += "Price: " + orders.get(orderID).getPrice() + "\n" + "\n";
-              showMessage += "Do you want to modify order?";
-
-              int modify =  JOptionPane.showConfirmDialog(this, showMessage, "Order ID: " + orderID, JOptionPane.YES_NO_OPTION);
+              int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
               if (modify == JOptionPane.YES_OPTION) {
-                this.modifyUI.setOrderIDField(String.valueOf(orderID));
+                this.modifyUI.setOrder(orders.get(orderID));
                 this.mainFrame.switchPanal(3);
-              } else if (modify == JOptionPane.NO_OPTION) {
-                System.out.println("Cancel");
               }
               return;
             }
