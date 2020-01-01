@@ -9,7 +9,7 @@ public class InquireOrders extends JPanel{
     private JPanel listPanel;
     private InquireOrderUnit[] arrs = new InquireOrderUnit[10];
 
-    public InquireOrders(ArrayList<Order> orders) {
+    public InquireOrders(ArrayList<Order> orders, MainFrame mainFrame, ModifyUI modifyUI) {
         this.setLayout(new BorderLayout());
 
         this.listPanel = new JPanel();
@@ -17,7 +17,7 @@ public class InquireOrders extends JPanel{
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
 
         for ( int i=0; i<orders.size(); i++ ) {
-            arrs[i] = new InquireOrderUnit(orders.get(i));
+            arrs[i] = new InquireOrderUnit(orders.get(i), mainFrame, modifyUI);
             this.addWithConstraints(listPanel, arrs[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);

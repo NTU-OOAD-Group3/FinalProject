@@ -1,5 +1,7 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.control.LoginControl;
+
 import java.awt.*;
 import java.awt.event.*;  
 import javax.swing.*;
@@ -13,7 +15,7 @@ public class LoginUI extends JPanel implements ActionListener{
     private JLabel passwordLable;
     private JLabel textLable;
     private JTextField tfUsername;/*get username input */
-    private JTextField tfPassword; //get password input
+    private JPasswordField tfPassword; //get password input
     private JButton loginButton; //login  event 
     private JButton signupButton; //open up a new dialog
 
@@ -54,7 +56,7 @@ public class LoginUI extends JPanel implements ActionListener{
         this.passwordLable = new JLabel("Password:");
         this.addWithConstraints(passwordLable, 3, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
-        this.tfPassword=new JTextField();
+        this.tfPassword=new JPasswordField();
         this.addWithConstraints(tfPassword, 4, 2, 2, 1, 2, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         //line3
@@ -92,16 +94,26 @@ public class LoginUI extends JPanel implements ActionListener{
             if(this.tfUsername.getText().equals("")){
                 JOptionPane.showMessageDialog(this,"Please input your username");
             }
-            if(this.tfPassword.getText().equals("")){
+            if(String.valueOf(this.tfPassword.getPassword()).equals("")){
                 JOptionPane.showMessageDialog(this,"Password can't be empty");
             }
-            if(this.tfUsername.getText().equals("") && this.tfPassword.getText().equals("")){
+            if(!this.tfUsername.getText().equals("") && !String.valueOf(this.tfPassword.getPassword()).equals("")){
                 //LOGIN HERE
                 //throw username and password to Controller.
                 //```pseudocode
                 //if(controller.passlogin):
                 //  this.parent.loginChange();
                 //```
+                LoginControl loginControl = new LoginControl();//will be moved into `main.java`
+                
+                if(loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
+                    //ENCODER SHOULD BE HERE to deal with password.getText()
+                    this.parent.loginChange();
+                    
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Wrong username or password");
+                }
 
             }
 

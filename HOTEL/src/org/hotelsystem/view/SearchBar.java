@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class SearchBar extends JPanel implements ActionListener{
+    private SearchUI searchUI;
     private JLabel labelLocality;
     private JLabel labelCheckin;
     private JLabel labelCheckout;
@@ -26,8 +27,10 @@ public class SearchBar extends JPanel implements ActionListener{
     private JButton btnCheckoutDate;
     private JFrame parent;
     private JComboBox jcmbLocality;
-    public SearchBar(JFrame parent) {
+    
+    public SearchBar(JFrame parent, SearchUI searchUI) {
         this.parent = parent;
+        this.searchUI = searchUI;
         initUI();
     }
 
@@ -127,8 +130,20 @@ public class SearchBar extends JPanel implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){ 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        
         if( e.getSource() == this.btnSearch ){
             System.out.println("Search triggered.");
+            try{
+                Date checkinDate = sdf.parse(this.tfCheckin.getText());
+                Date checkoutDate = sdf.parse(this.tfCheckout.getText());
+                int checkin = Integer.valueOf(String.format("%s%s%s", checkinDate.getYear(), checkinDate.getMonth(), checkinDate.getDate()));
+                int checkout = Integer.valueOf(String.format("%s%s%s", checkinDate.getYear(), checkinDate.getMonth(), checkinDate.getDate()));
+                this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
+            }
+            catch(Exception error){
+            }
+            // searchAvailableHotel(this.jcmbLocality.getText(), checkin, checkout, Integer.valueOf(this.tfRoom), Integer.valueOf(this.tfPeople));
         }
         else if( e.getSource() == this.btnCheckinDate ){
             DatePickerDialog datePickDlg = new DatePickerDialog(this.parent, "Select Date");
@@ -147,11 +162,10 @@ public class SearchBar extends JPanel implements ActionListener{
             }
         }
         try{
-            if( !(this.tfCheckin.getText().equals("") || this.tfCheckout.getText().equals("")) ){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-                Date firstDate = sdf.parse(this.tfCheckin.getText());
-                Date secondDate = sdf.parse(this.tfCheckout.getText());
-                long diffInMillies = secondDate.getTime() - firstDate.getTime();
+            if( !(this.tfCheckin.getText().equals("") || this.tfCheckout.getText().equals("")) ){  
+                Date checkinDate = sdf.parse(this.tfCheckin.getText());
+                Date checkoutDate = sdf.parse(this.tfCheckout.getText());
+                long diffInMillies = checkoutDate.getTime() - checkinDate.getTime();
                 long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
                 this.tfTotalNight.setText(String.valueOf(diff));
             }

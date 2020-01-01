@@ -25,7 +25,7 @@ public class HotelReview {
         return this.rating;
     }
 
-    public String getComment(){
+    public String getReview(){
         return this.review;
     }
 }

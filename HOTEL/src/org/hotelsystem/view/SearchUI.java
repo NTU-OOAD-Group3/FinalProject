@@ -1,29 +1,32 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.control.SearchControl;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class SearchUI extends JPanel {
+	private SearchControl searchControl;
 	private JPanel searchBar;
 	private JPanel searchFilter;
 	private JPanel searchResult;
 	private JFrame parent;
-	public SearchUI(JFrame parent) {
+	public SearchUI(JFrame parent, SearchControl searchControl) {
 		this.setLayout(new GridBagLayout());
 		this.parent = parent;
+		this.searchControl = searchControl;
 		initUI();
 	}
 	
 	private void initUI() {
-		this.searchBar = new SearchBar(this.parent);
+		this.searchBar = new SearchBar(this.parent, this);
 		LineBorder line = new LineBorder(Color.BLACK);
 		EmptyBorder empty = new EmptyBorder(20, 50, 20, 50);
 		this.searchBar.setBorder(new CompoundBorder(line, empty));
 		this.addWithConstraints(this.searchBar, 0, 0, 7, 1, 7, 1,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-		this.searchFilter = new SearchFilter();
+		this.searchFilter = new SearchFilter(this);
 		this.addWithConstraints(this.searchFilter, 0, 1, 1, 6, 1, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
@@ -33,6 +36,11 @@ public class SearchUI extends JPanel {
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 	}
 	
+	public void triggerSearch(String locality, int checkin, int checkout, int room, int people){
+		// this.searchResult.setAvailableHotel(this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people));
+
+	}
+
 	private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
 			int fill, int anchor) {

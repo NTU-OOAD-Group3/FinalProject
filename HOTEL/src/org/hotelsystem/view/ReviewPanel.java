@@ -1,6 +1,6 @@
 package org.hotelsystem.view;
 
-import org.hotelsystem.model.HotelComment;
+import org.hotelsystem.model.HotelReview;
 import java.util.ArrayList;
 
 import java.awt.*;
@@ -8,29 +8,30 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class CommentPanel extends JPanel{
+public class ReviewPanel extends JPanel{
     private JLabel labelUserID;
     private JLabel labelRaring;
-    private JTextArea taComment;
-    public CommentPanel (HotelComment hotelComment){
-        initUI(hotelComment);
+    private JTextArea taReview;
+    public ReviewPanel (HotelReview hotelReview){
+        initUI(hotelReview);
     }
 
-    private void initUI(HotelComment hotelComment){
+    private void initUI(HotelReview hotelReview){
         this.setBorder(new LineBorder(Color.RED));
         this.setLayout(new GridBagLayout());
         
-        labelUserID = new JLabel(String.valueOf(hotelComment.getUserID()));
+        labelUserID = new JLabel(String.format("User: %d", hotelReview.getUserID()));
         this.addWithConstraints(this, labelUserID, 0, 0, 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.CENTER);
+            GridBagConstraints.NONE, GridBagConstraints.WEST);
         
-        labelRaring = new JLabel(String.valueOf(hotelComment.getRating()));
+        labelRaring = new JLabel(String.format("Rating: %d ", hotelReview.getRating()));
         this.addWithConstraints(this, labelRaring, 1, 0, 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.CENTER);
+            GridBagConstraints.NONE, GridBagConstraints.WEST);
         
-        taComment = new JTextArea(hotelComment.getComment());
-        taComment.setEditable(false);
-        this.addWithConstraints(this, taComment, 0, 1, 1, 2, 1, 2,
+        taReview = new JTextArea("Comment: \n    " + hotelReview.getReview());
+        taReview.setBackground(new Color(238, 238, 238));
+        taReview.setEditable(false);
+        this.addWithConstraints(this, taReview, 0, 1, 1, 2, 1, 2,
             GridBagConstraints.NONE, GridBagConstraints.WEST);
 
     }
