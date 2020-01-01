@@ -67,8 +67,13 @@ public class SearchBar extends JPanel implements ActionListener{
         this.addWithConstraints(labelPeople, 5, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        String Locality[]={"台北","Taichung","Kaohsiung"};
-        this.jcmbLocality = new JComboBox(Locality);
+        // String Locality[]={"台北","Taichung","Kaohsiung"};
+        ArrayList<String> tmpLocality = this.searchUI.getLocality();
+        String locality[] = new String[tmpLocality.size()];
+        for(int i=0; i<tmpLocality.size(); ++i)
+            locality[i] = tmpLocality.get(i);
+
+        this.jcmbLocality = new JComboBox(locality);
         this.addWithConstraints(jcmbLocality, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 

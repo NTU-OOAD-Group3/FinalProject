@@ -49,7 +49,7 @@ public class DBUtil {
             this.stmt = this.conn.createStatement();
             cmd = "SELECT * FROM Hotels as H, Rooms as R " +
                 "WHERE H.HotelID = R.HotelID " +
-                // "AND H.Locality = \"" + locality + "\" " +
+                "AND H.Locality = \"" + locality + "\" " +
                 "ORDER BY H.HotelID ASC, R.RoomID ASC;";
             this.result = this.stmt.executeQuery(cmd);
             if ( !this.result.isBeforeFirst() ) {
@@ -150,6 +150,26 @@ public class DBUtil {
         }
         System.out.printf("get %d reviews\n", hotelReviews.size());
         return hotelReviews;
+    }
+
+    public ArrayList<String> getLocality(){
+        ArrayList<String> locality = new ArrayList<String>();
+        String cmd = null;
+        try{
+            this.stmt = this.conn.createStatement();
+            cmd = "SELECT DISTINCT Locality FROM Hotels;";
+            this.result = this.stmt.executeQuery(cmd);
+            while ( this.result.next() ) {
+                locality.add(result.getString("Locality"));
+            }
+            this.stmt.close();
+        }
+        catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            System.exit(1);
+        }
+        return locality;
     }
 
     public static void main(String[] args) {

@@ -45,6 +45,10 @@ public class SearchUI extends JPanel {
 		this.searchResult.setAvailableHotel(tmp);
 	}
 
+	public ArrayList<String> getLocality(){
+		return this.searchControl.getLocality();
+	}
+
 	private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
 			int fill, int anchor) {

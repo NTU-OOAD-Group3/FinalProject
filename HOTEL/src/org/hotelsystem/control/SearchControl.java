@@ -33,6 +33,10 @@ public class SearchControl {
         return availableHotel;   
     }
     
+    public ArrayList<String> getLocality(){
+        return dbutils.getLocality();
+    }
+
     public ArrayList<HotelReview> getHotelReviews(int hotelID){
         return dbutils.getHotelReviews(hotelID);
     }
