@@ -12,6 +12,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private int page = 0;
     private int totalPage = 0;
     private ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>(0);
+    private ArrayList<Integer> combinationPrice = new ArrayList<Integer>(0);
     private JPanel hotelPanel;
     private JPanel listPanel;
     private JPanel bottomPanel;
@@ -42,8 +43,9 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         listPanelScroll.setBorder(new LineBorder(Color.black));
         
         this.roomCombination = availableHotel.getRoomCombination();
+        this.combinationPrice = availableHotel.getCombinationPrice();
         this.btnGroupCombinations = new ButtonGroup();
-        this.totalPage = 0;
+        this.totalPage = (this.roomCombination.size() - 1) / 10;
         this.labelHotelID = new JLabel(String.format("Hotel: %d", availableHotel.getHotelID()));
         this.addWithConstraints(hotelPanel, labelHotelID, 0, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
@@ -62,7 +64,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
 
         for ( int i=0; i<10 && i < this.roomCombination.size(); ++i ) {
             ArrayList<Integer> combination = this.roomCombination.get(i);
-            rbtnCombination[i] = new JRadioButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), 7777));
+            rbtnCombination[i] = new JRadioButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
             this.btnGroupCombinations.add(rbtnCombination[i]);
             // commentArray[i].setVisible(false);
             this.addWithConstraints(listPanel, rbtnCombination[i],
@@ -122,6 +124,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         this.roomCombination = availableHotel.getRoomCombination();
         this.page = 0;
         this.totalPage = ( this.roomCombination.size() - 1) / 10;
+        System.out.println(this.totalPage);
         this.refreshUI();
     }
 
@@ -135,7 +138,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         for( int i=0;i<round;++i ){
             ArrayList<Integer> combination = this.roomCombination.get(base + i);
             this.rbtnCombination[i].setVisible(true);
-            this.rbtnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), 7777));
+            this.rbtnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
         }
     }
 

@@ -93,6 +93,8 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
         this.labelHotelLocality.setText(availableHotel.getLocality());
         this.labelHotelAddress.setText(availableHotel.getStreetAddress());
+        this.labelPrice.setText(Integer.toString(availableHotel.getCombinationPrice().get(0)));
+        this.labelSummary.setText(String.format("(%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), this.searchControl.getSearchRoom()));
         this.roomCombination = availableHotel.getRoomCombination();
         this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates");
     }
@@ -115,8 +117,7 @@ public class SearchResult extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnReview ){
             System.out.println("Review triggered.");
-            ReviewDialogs reviewDialog = new ReviewDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews", this.searchControl);
-            reviewDialog.setVisible(true);
+            this.searchControl.getHotelReviews( this.availableHotel.getHotelID() );
         } 
         else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");

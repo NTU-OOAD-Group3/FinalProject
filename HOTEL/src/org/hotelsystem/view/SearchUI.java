@@ -2,6 +2,7 @@ package org.hotelsystem.view;
 
 import org.hotelsystem.control.SearchControl;
 import org.hotelsystem.model.AvailableHotel;
+import org.hotelsystem.model.HotelReview;
 
 import java.awt.*;
 import javax.swing.*;
@@ -14,10 +15,12 @@ public class SearchUI extends JPanel {
 	private SearchFilter searchFilter;
 	private SearchResults searchResult;
 	private JFrame parent;
+	private ReviewDialogs reviewDialogs;
 	public SearchUI(JFrame parent, SearchControl searchControl) {
 		this.setLayout(new GridBagLayout());
 		this.parent = parent;
 		this.searchControl = searchControl;
+		reviewDialogs = new ReviewDialogs(0, this.parent, "", null, 0, 0, this.searchControl);
 		initUI();
 	}
 	
@@ -40,9 +43,16 @@ public class SearchUI extends JPanel {
 	}
 	
 	public void triggerSearch(String locality, int checkin, int checkout, int room, int people){
-		ArrayList<AvailableHotel> tmp = this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
-		System.out.printf("get %d available hotels\n", tmp.size());
-		this.searchResult.setAvailableHotel(tmp);
+		this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
+	}
+
+	public void setAvailableHotels(ArrayList<AvailableHotel> availableHotels, int page, int totalPage){
+		this.searchResult.setAvailableHotel(availableHotels, page, totalPage);
+	}
+
+	public void showReview(int hotelID, String dialogName, ArrayList<HotelReview> hotelReview, int page, int totalPage){
+		this.reviewDialogs.refresh(hotelID, hotelReview, page, totalPage);
+		this.reviewDialogs.setVisible(true);
 	}
 
 	public ArrayList<String> getLocality(){

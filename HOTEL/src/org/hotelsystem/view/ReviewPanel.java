@@ -10,30 +10,36 @@ import javax.swing.border.*;
 
 public class ReviewPanel extends JPanel{
     private JLabel labelUserID;
-    private JLabel labelRaring;
+    private JLabel labelRating;
     private JTextArea taReview;
-    public ReviewPanel (HotelReview hotelReview){
-        initUI(hotelReview);
+
+    public ReviewPanel(){
+        initUI();
     }
 
-    private void initUI(HotelReview hotelReview){
+    private void initUI(){
         this.setBorder(new LineBorder(Color.black));
         this.setLayout(new GridBagLayout());
         
-        labelUserID = new JLabel(String.format("User: %d", hotelReview.getUserID()));
+        labelUserID = new JLabel(String.format("User: %d", 0));
         this.addWithConstraints(this, labelUserID, 0, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.WEST);
         
-        labelRaring = new JLabel(String.format("Rating: %d ", hotelReview.getRating()));
-        this.addWithConstraints(this, labelRaring, 1, 0, 1, 1, 1, 1,
+        labelRating = new JLabel(String.format("Rating: %d ", 5));
+        this.addWithConstraints(this, labelRating, 1, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.WEST);
         
-        taReview = new JTextArea("Comment: \n    " + hotelReview.getReview());
+        taReview = new JTextArea("Comment: \n    " + "this is a review.");
         taReview.setBackground(new Color(238, 238, 238));
         taReview.setEditable(false);
         this.addWithConstraints(this, taReview, 0, 1, 1, 2, 1, 2,
             GridBagConstraints.NONE, GridBagConstraints.WEST);
+    }
 
+    public void setReview(HotelReview hotelReview){
+        this.labelUserID.setText(String.format("User: %d", hotelReview.getUserID()));
+        this.labelRating.setText(String.format("Rating: %d", hotelReview.getRating()));
+        this.taReview.setText(String.format("comment: \n    " + hotelReview.getReview()));
     }
 
     private void addWithConstraints(JComponent parent, JComponent c, int gridx, int gridy,
