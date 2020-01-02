@@ -44,48 +44,53 @@ public class DBUtil {
     public ArrayList<Hotel> getHotels(String locality, int checkin, int checkout) {
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
         String cmd = null;
-        
         try {
             this.stmt = this.conn.createStatement();
-            cmd = "SELECT * FROM Hotels as H, Rooms as R " +
+            cmd = "SELECT * FROM Hotels AS H, Rooms AS R " +
                 "WHERE H.HotelID = R.HotelID " +
                 "AND H.Locality = \"" + locality + "\" " +
                 "ORDER BY H.HotelID ASC, R.RoomID ASC;";
+            // System.out.println(cmd);
             this.result = this.stmt.executeQuery(cmd);
             if ( !this.result.isBeforeFirst() ) {
                 // System.err.println("EMPTY_QUERY");
             }
-            
-            int lastHotelID = -1;
-            Hotel hotel = null;
+            int lastHotelID = -1, lastHotelStar = 0;
+            String lastLocality = null, lastAddress = null;
             ArrayList<Room> singleRooms = new ArrayList<Room>();;
             ArrayList<Room> doubleRooms = new ArrayList<Room>();;
             ArrayList<Room> quadRooms = new ArrayList<Room>();;
             while ( this.result.next() ) {
-                int hotelID = this.result.getInt("HotelID");
-                int hotelStar = this.result.getInt("HotelStar");
-                String address = this.result.getString("Address");
-                int roomID = this.result.getInt("RoomID");
-                int roomType = roomID / 10000;
-                int roomPrice = this.result.getInt("RoomPrice");
+                int rowHotelID = this.result.getInt("HotelID");
+                int rowHotelStar = this.result.getInt("HotelStar");
+                String rowLocality = this.result.getString("Locality");
+                String rowAddress = this.result.getString("Address");
+                int rowRoomID = this.result.getInt("RoomID");
+                int rowRoomType = rowRoomID / 10000;
+                int rowRoomPrice = this.result.getInt("RoomPrice");
                 
-                if ( hotelID != lastHotelID ) {
+                if ( lastHotelID != rowHotelID ) {
+                    if ( lastHotelID != -1 ) {
+                        hotels.add(new Hotel(lastHotelID, lastHotelStar, lastLocality, lastAddress,
+                                             singleRooms, doubleRooms, quadRooms));
+                    }
+                    lastHotelID = rowHotelID;
+                    lastHotelStar = rowHotelStar;
+                    lastLocality = rowLocality;
+                    lastAddress = rowAddress;
                     singleRooms = new ArrayList<Room>();
                     doubleRooms = new ArrayList<Room>();
                     quadRooms = new ArrayList<Room>();
-                    hotel = new Hotel(hotelID, hotelStar, locality, address, singleRooms, doubleRooms, quadRooms);
-                    hotels.add(hotel);
-                    lastHotelID = hotelID;
                 }
 
-                if ( roomType == 1 ) {
-                    singleRooms.add(new Room(roomID, roomPrice));
-                } else if ( roomType == 2 ) {
-                    doubleRooms.add(new Room(roomID, roomPrice));
-                } else if ( roomType == 4 ) {
-                    quadRooms.add(new Room(roomID, roomPrice));
+                if ( rowRoomType == 1 ) {
+                    singleRooms.add(new Room(rowRoomID, rowRoomPrice));
+                } else if ( rowRoomType == 2 ) {
+                    doubleRooms.add(new Room(rowRoomID, rowRoomPrice));
+                } else if ( rowRoomType == 4 ) {
+                    quadRooms.add(new Room(rowRoomID, rowRoomPrice));
                 } else {
-                    System.err.println("Error on roomType " + String.valueOf(roomType));
+                    System.err.println("Error on roomType " + String.valueOf(rowRoomType));
                     System.exit(1);
                 }
             }
@@ -94,21 +99,27 @@ public class DBUtil {
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-mm-dd");
             String checkinStr = sdf2.format(sdf1.parse(String.valueOf(checkin)));
             String checkoutStr = sdf2.format(sdf1.parse(String.valueOf(checkout)));
-            for ( int i=0; i<hotels.size(); ++i ) {
-                hotel = hotels.get(i);
-                cmd = "SELECT * FROM Orders " +
-                    "WHERE HotelID = " + String.valueOf(hotel.getHotelID()) + " " +
-                    "AND CheckOut > \"" + checkinStr + "\" " +
-                    "AND CheckIn < \"" + checkoutStr + "\";";
-                // System.out.println(cmd);
-                this.result = this.stmt.executeQuery(cmd);
-                if ( !this.result.isBeforeFirst() ) {
-                    // System.err.println("EMPTY_QUERY");
-                }
+            cmd = "SELECT H.HotelID, O.RoomID " +
+                "FROM Hotels AS H, Orders AS O " +
+                "WHERE H.HotelID = O.HotelID " +
+                "AND H.Locality = \"" + locality + "\" " +
+                "AND O.CheckOut > \"" + checkinStr + "\" " +
+                "AND O.CheckIn < \"" + checkoutStr + "\" " +
+                "ORDER BY H.HotelID ASC, O.RoomID ASC;";
+            // System.out.println(cmd);
+            this.result = this.stmt.executeQuery(cmd);
+            if ( this.result.isBeforeFirst() ) {
+                int hotels_ptr = 0;
                 while ( this.result.next() ) {
-                    int roomID = this.result.getInt("RoomID");
-                    hotel.setOccupied(roomID, true);
+                    int rowHotelID = this.result.getInt("HotelID");
+                    int rowRoomID = this.result.getInt("RoomID");
+                    while ( hotels.get(hotels_ptr).getHotelID() != rowHotelID ) {
+                        ++hotels_ptr;
+                    }
+                    hotels.get(hotels_ptr).setOccupied(rowRoomID, true);
                 }
+            } else {
+                // System.err.println("EMPTY_QUERY");
             }
 
             this.stmt.close();
@@ -124,17 +135,16 @@ public class DBUtil {
     public ArrayList<HotelReview> getHotelReviews(int hotelID) {
         ArrayList<HotelReview> hotelReviews = new ArrayList<HotelReview>();
         String cmd = null;
-
         try {
             this.stmt = this.conn.createStatement();
-            cmd = "SELECT * FROM Reviews " +
+            cmd = "SELECT UserID, Rating, Review " +
+                "FROM Reviews " +
                 "WHERE HotelID = " + String.valueOf(hotelID) + " " +
                 "ORDER BY ReviewTime DESC;";
             this.result = this.stmt.executeQuery(cmd);
             if ( !this.result.isBeforeFirst() ) {
-                System.err.println("EMPTY_QUERY");
+                // System.err.println("EMPTY_QUERY");
             }
-
             while ( this.result.next() ) {
                 int userID = this.result.getInt("UserID");
                 int rating = this.result.getInt("Rating");
@@ -152,7 +162,7 @@ public class DBUtil {
         return hotelReviews;
     }
 
-    public ArrayList<String> getLocality(){
+    public ArrayList<String> getLocality() {
         ArrayList<String> locality = new ArrayList<String>();
         String cmd = null;
         try{
@@ -174,10 +184,13 @@ public class DBUtil {
 
     public static void main(String[] args) {
         DBUtil dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
-        ArrayList<Hotel> hotels = dbutil.getHotels("台北", 20191229, 20191231);
+        long time1 = System.currentTimeMillis();
+        ArrayList<Hotel> hotels = dbutil.getHotels("台北", 20200103, 20200105);
+        long time2 = System.currentTimeMillis();
+        System.out.println((time2 - time1));
         System.out.println(hotels.size());
-        for ( int i=0; i<hotels.size(); ++i ) {
-            System.out.println(hotels.get(i).toString());
-        }
+        // for ( int i=0; i<hotels.size(); ++i ) {
+        //     System.out.println(hotels.get(i));
+        // }
     }
 }

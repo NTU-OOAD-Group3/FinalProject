@@ -9,6 +9,7 @@ public class Hotel {
     private String address;
     ArrayList<Room> singleRooms, doubleRooms, quadRooms;
     private int vacantSingleNum, vacantDoubleNum, vacantQuadNum;
+    private int singleRoomPrice, doubleRoomPrice, quadRoomPrice;
     
     public Hotel(int hotelID, int hotelStar, String locality, String address,
                  ArrayList<Room> singleRooms,
@@ -44,6 +45,12 @@ public class Hotel {
         }
     }
 
+    private void retrieveRoomPrice() {
+        this.singleRoomPrice = (this.singleRooms.isEmpty() ? -1 : this.singleRooms.get(0).getRoomPrice());
+        this.doubleRoomPrice = (this.doubleRooms.isEmpty() ? -1 : this.doubleRooms.get(0).getRoomPrice());
+        this.quadRoomPrice = (this.quadRooms.isEmpty() ? -1 : this.quadRooms.get(0).getRoomPrice());
+    }
+
     public void setOccupied(int roomID, boolean b) {
         int roomType = roomID / 10000;
         int roomNumber = roomID % 10000;
@@ -63,27 +70,30 @@ public class Hotel {
 
     public AvailableHotel getAvailableHotel(int peopleNum, int roomNum) {
         this.calcVacantNum();
+        this.retrieveRoomPrice();
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> combinationPrice = new ArrayList<Integer>();
         for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
-            for ( int y=0; y<=Math.min(roomNum, vacantDoubleNum); ++y ) {
-                for ( int z=0; z<=Math.min(roomNum, vacantQuadNum); ++z ) {
-                    if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
-                        ArrayList<Integer> comb = new ArrayList<Integer>();
-                        comb.add(x);
-                        comb.add(y);
-                        comb.add(z);
-                        roomCombination.add(comb);
-                    }
+            for ( int y=0; y<=Math.min(roomNum - x, vacantDoubleNum); ++y ) {
+                int z = roomNum - x - y;
+                if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
+                    ArrayList<Integer> comb = new ArrayList<Integer>();
+                    comb.add(x); comb.add(y); comb.add(z);
+                    roomCombination.add(comb);
+                    combinationPrice.add(x * this.singleRoomPrice +
+                                         y * this.doubleRoomPrice +
+                                         z * this.quadRoomPrice);
                 }
             }
         }
         AvailableHotel availableHotel = new AvailableHotel(
-            this.hotelID, this.hotelStar, this.locality, this.address, roomCombination);
-
+            this.hotelID, this.hotelStar, this.locality, this.address,
+            roomCombination, combinationPrice);
         return availableHotel;
     }
 
     public boolean checkAvailable(int singleNum, int doubleNum, int quadNum) {
+        this.calcVacantNum();
         if ( singleNum <= this.vacantSingleNum ) { return false; }
         if ( doubleNum <= this.vacantDoubleNum ) { return false; }
         if ( quadNum <= this.vacantQuadNum ) { return false; }
