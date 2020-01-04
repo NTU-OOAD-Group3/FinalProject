@@ -14,6 +14,7 @@ import java.text.*;
 
 public class ModifyUI extends JPanel implements ActionListener{
     private ModifyControl modifyControl;
+    private int haveSetOrderID;
 
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
@@ -230,6 +231,12 @@ public class ModifyUI extends JPanel implements ActionListener{
         return tmp;
     }
 
+    public int dateToInt(String date){
+        String tmp = date.substring(0,4) + date.substring(5, 7) + date.substring(8, 10);
+        System.out.println(tmp);
+        return Integer.valueOf(tmp);
+    }
+
 
     public void setOrder(Order order){
         ArrayList<Integer> roomNums = order.getRoomsNum();
@@ -249,6 +256,29 @@ public class ModifyUI extends JPanel implements ActionListener{
         this.tfModSingleNum.setText(String.valueOf(roomNums.get(0)));
         this.tfModDoubleNum.setText(String.valueOf(roomNums.get(1)));
         this.tfModQuadNum.setText(String.valueOf(roomNums.get(2)));
+
+        this.haveSetOrderID = order.getOrderID();
+    }
+
+    public void resetOrder(){
+        this.tfOrderID.setText("");
+        this.tfOriHotelName.setText("");
+        this.tfOriCheckInTime.setText("");
+        this.tfOriCheckOutTime.setText("");
+        this.tfOriSingleNum.setText("");
+        this.tfOriDoubleNum.setText("");
+        this.tfOriQuadNum.setText("");
+        this.tfOriPrice.setText("");
+        
+
+        this.tfModHotelName.setText("");
+        this.tfModCheckInTime.setText("");
+        this.tfModCheckOutTime.setText("");
+        this.tfModSingleNum.setText("");
+        this.tfModDoubleNum.setText("");
+        this.tfModQuadNum.setText("");
+
+        this.haveSetOrderID = -1;
     }
 	
 	private void addWithConstraints(JComponent mother, JComponent c, int gridx, int gridy,
@@ -293,21 +323,31 @@ public class ModifyUI extends JPanel implements ActionListener{
             //Todo
             Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
             if (order == null){
+                this.resetOrder();
                 JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             else{
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
+                    this.setOrder(order);
+                }
+                else{
+                    this.resetOrder();
                     JOptionPane.showMessageDialog(this, "Cannot modify order equal or after checkin date!", "Error", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
-                this.setOrder(order);
+                
             }
             System.out.println("Perform Query");
         }
         else if (e.getSource() == this.btnCheckAndSend){
             try{
+                if (this.haveSetOrderID != Integer.valueOf(this.tfOrderID.getText())){
+                    this.resetOrder();
+                    JOptionPane.showMessageDialog(this, "Order ID unmatched please first query!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
                 boolean simpleCheckPass = true;
                 if (Integer.valueOf(this.tfModSingleNum.getText())>Integer.valueOf(this.tfOriSingleNum.getText())) simpleCheckPass = false;
                 if (Integer.valueOf(this.tfModDoubleNum.getText())>Integer.valueOf(this.tfOriDoubleNum.getText())) simpleCheckPass = false;
@@ -323,6 +363,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                     return;
                 }
                 //Todo
+                modifyControl.modifyOrder(this.haveSetOrderID, Integer.valueOf(this.tfModSingleNum.getText()).intValue(), Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), Integer.valueOf(this.tfModQuadNum.getText()).intValue(), this.dateToInt(this.tfModCheckInTime.getText()), this.dateToInt(this.tfModCheckOutTime.getText()));
                 System.out.println("Perform modify");
             }
             catch(NumberFormatException f){

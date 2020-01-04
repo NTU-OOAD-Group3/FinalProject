@@ -23,7 +23,7 @@ public class InquireControl {
     }
     public void switchToModify(Order order){
         this.mainControl.getModifyControl().setOrder(order);
-        this.mainControl.switchPane(3);
+        this.mainControl.switchPane(2);
         System.out.println("Switch to modify");
     }
     public void setOrders(){

@@ -20,9 +20,13 @@ public class ModifyControl{
         this.modifyUI.setOrder(order);
     }
     public Order getOrder(int orderID){
-        System.out.println("Set InquireUI");
+        System.out.println("get Order");
         ArrayList<Order> orders = dbutils.getOrders(orderID, -1, -1);
         if (orders.size()!=1) return null;
+        System.out.println(orders.get(0).toString());
         return orders.get(0);
+    }
+    public boolean modifyOrder(Order order, int newSN, int newDN, int newQN, int newCheckin, int newCheckout){
+        return dbutils.modifyOrder(order, newSN, newDN, newQN, newCheckin, newCheckout);
     }
 }

@@ -1,15 +1,15 @@
 ./org/hotelsystem/control/ModifyControl.java
 ./org/hotelsystem/control/LoginControl.java
-./org/hotelsystem/control/ReserveControl.java
 ./org/hotelsystem/control/MainControl.java
 ./org/hotelsystem/control/SearchControl.java
+./org/hotelsystem/control/Encoder.java
 ./org/hotelsystem/control/HostControl.java
 ./org/hotelsystem/control/InquireControl.java
 ./org/hotelsystem/model/LoginStatus.java
+./org/hotelsystem/model/Review.java
 ./org/hotelsystem/model/Order.java
 ./org/hotelsystem/model/Hotel.java
 ./org/hotelsystem/model/Room.java
-./org/hotelsystem/model/HotelReview.java
 ./org/hotelsystem/model/User.java
 ./org/hotelsystem/model/AvailableHotel.java
 ./org/hotelsystem/model/Users.java
@@ -33,6 +33,5 @@
 ./org/hotelsystem/view/DatePickerDialog.java
 ./org/hotelsystem/view/SearchBar.java
 ./org/hotelsystem/view/AccountUI.java
-./org/hotelsystem/view/ReserveUI.java
 ./InitDB.java
 ./main.java
