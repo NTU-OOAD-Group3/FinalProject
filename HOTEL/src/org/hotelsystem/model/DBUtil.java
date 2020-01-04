@@ -529,8 +529,8 @@ public class DBUtil {
             }
             // Update checkin, checkout
             String cmd = "UPDATE Orders " +
-                "SET CheckIn = \"" + this.dateIntToString(newCheckin) + "\" " +
-                "SET CheckOut = \"" + this.dateIntToString(newCheckout) + "\" " +
+                "SET CheckIn = \"" + this.dateIntToString(newCheckin) + "\", " +
+                    "CheckOut = \"" + this.dateIntToString(newCheckout) + "\" " +
                 "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
                 "AND UserID = " + String.valueOf(order.getUserID()) + " " +
                 "AND HotelID = " + String.valueOf(order.getHotelID()) + ";";

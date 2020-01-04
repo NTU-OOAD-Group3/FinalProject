@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.control.ModifyControl;
 
 import java.awt.*;
 import javax.swing.*;
@@ -10,7 +11,11 @@ import java.util.*;
 import java.text.*;
 
 
+
 public class ModifyUI extends JPanel implements ActionListener{
+    private ModifyControl modifyControl;
+    private int haveSetOrderID;
+
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
     private JPanel modifiedOrderbar;
@@ -18,24 +23,25 @@ public class ModifyUI extends JPanel implements ActionListener{
     private JButton btnQueryOrder;
     private JButton btnCheckAndSend;
 
-    JTextField tfOriHotelName;
-    JTextField tfOriCheckInTime;
-    JTextField tfOriCheckOutTime;
-    JTextField tfOriSingleNum;
-    JTextField tfOriDoubleNum;
-    JTextField tfOriQuadNum;
-    JTextField tfOriPrice;
+    private JTextField tfOriHotelName;
+    private JTextField tfOriCheckInTime;
+    private JTextField tfOriCheckOutTime;
+    private JTextField tfOriSingleNum;
+    private JTextField tfOriDoubleNum;
+    private JTextField tfOriQuadNum;
+    private JTextField tfOriPrice;
 
-    JTextField tfModHotelName;
-    JTextField tfModCheckInTime;
-    JTextField tfModCheckOutTime;
-    JTextField tfModSingleNum;
-    JTextField tfModDoubleNum;
-    JTextField tfModQuadNum;
+    private JTextField tfModHotelName;
+    private JTextField tfModCheckInTime;
+    private JTextField tfModCheckOutTime;
+    private JTextField tfModSingleNum;
+    private JTextField tfModDoubleNum;
+    private JTextField tfModQuadNum;
 
 	
-	public ModifyUI() {
-		this.setLayout(new GridBagLayout());
+	public ModifyUI(ModifyControl modifyControl) {
+        this.setLayout(new GridBagLayout());
+        this.modifyControl = modifyControl;
 		initUI();
 	}
 	
@@ -216,13 +222,20 @@ public class ModifyUI extends JPanel implements ActionListener{
     }
 
     public String dateToString(int date){
-        String tmp = "";
+        String tmp = "";    
         tmp += String.valueOf(date/10000);
         tmp +="-";
+        if ((date%10000)/100<10) tmp+="0";
         tmp += String.valueOf((date%10000)/100);
         tmp +="-";
+        if (date%100<10) tmp+="0";
         tmp += String.valueOf(date%100);
         return tmp;
+    }
+
+    public int dateToInt(String date){
+        String tmp = date.substring(0,4) + date.substring(5, 7) + date.substring(8, 10);
+        return Integer.valueOf(tmp);
     }
 
 
@@ -244,6 +257,29 @@ public class ModifyUI extends JPanel implements ActionListener{
         this.tfModSingleNum.setText(String.valueOf(roomNums.get(0)));
         this.tfModDoubleNum.setText(String.valueOf(roomNums.get(1)));
         this.tfModQuadNum.setText(String.valueOf(roomNums.get(2)));
+
+        this.haveSetOrderID = order.getOrderID();
+    }
+
+    public void resetOrder(){
+        this.tfOrderID.setText("");
+        this.tfOriHotelName.setText("");
+        this.tfOriCheckInTime.setText("");
+        this.tfOriCheckOutTime.setText("");
+        this.tfOriSingleNum.setText("");
+        this.tfOriDoubleNum.setText("");
+        this.tfOriQuadNum.setText("");
+        this.tfOriPrice.setText("");
+        
+
+        this.tfModHotelName.setText("");
+        this.tfModCheckInTime.setText("");
+        this.tfModCheckOutTime.setText("");
+        this.tfModSingleNum.setText("");
+        this.tfModDoubleNum.setText("");
+        this.tfModQuadNum.setText("");
+
+        this.haveSetOrderID = -1;
     }
 	
 	private void addWithConstraints(JComponent mother, JComponent c, int gridx, int gridy,
@@ -281,15 +317,37 @@ public class ModifyUI extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == this.btnQueryOrder){
             //Mock Data
-            ArrayList<Integer> a= new ArrayList<Integer>();
-            a.add(1);
-            Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
-            this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
+            // ArrayList<Integer> a= new ArrayList<Integer>();
+            // a.add(1);
+            // Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
+            // this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
             //Todo
-            System.out.println("Perform Query");
+            Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
+            if (order == null){
+                this.resetOrder();
+                JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            else{
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
+                    this.setOrder(order);
+                }
+                else{
+                    this.resetOrder();
+                    JOptionPane.showMessageDialog(this, "Cannot modify order equal or after checkin date!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                
+            }
         }
         else if (e.getSource() == this.btnCheckAndSend){
             try{
+                if (this.haveSetOrderID != Integer.valueOf(this.tfOrderID.getText())){
+                    this.resetOrder();
+                    JOptionPane.showMessageDialog(this, "Order ID unmatched please first query!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
                 boolean simpleCheckPass = true;
                 if (Integer.valueOf(this.tfModSingleNum.getText())>Integer.valueOf(this.tfOriSingleNum.getText())) simpleCheckPass = false;
                 if (Integer.valueOf(this.tfModDoubleNum.getText())>Integer.valueOf(this.tfOriDoubleNum.getText())) simpleCheckPass = false;
@@ -301,16 +359,27 @@ public class ModifyUI extends JPanel implements ActionListener{
                 if (java.sql.Date.valueOf(this.tfModCheckInTime.getText()).before(java.sql.Date.valueOf(this.tfOriCheckInTime.getText()))) simpleCheckPass =false;
                 if (java.sql.Date.valueOf(this.tfModCheckOutTime.getText()).after(java.sql.Date.valueOf(this.tfOriCheckOutTime.getText()))) simpleCheckPass =false;
                 if (simpleCheckPass == false){
-                    JOptionPane.showMessageDialog(this, "Modify date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Modified date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 //Todo
-                System.out.println("Perform modify");
+                boolean success = modifyControl.modifyOrder(
+                    this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText())), 
+                    Integer.valueOf(this.tfModSingleNum.getText()).intValue(), 
+                    Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), 
+                    Integer.valueOf(this.tfModQuadNum.getText()).intValue(), 
+                    this.dateToInt(this.tfModCheckInTime.getText()), 
+                    this.dateToInt(this.tfModCheckOutTime.getText()));
+                if (success) System.out.println("Modify succeed");
+                else System.out.println("Modify fail");
+                
             }
             catch(NumberFormatException f){
+                System.out.println(f);
                 JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
             catch(Exception a){
+                System.out.println(a);
                 JOptionPane.showMessageDialog(this, "Input wrong date format!", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         }

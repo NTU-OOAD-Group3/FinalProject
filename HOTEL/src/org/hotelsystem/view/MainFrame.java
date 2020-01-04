@@ -52,7 +52,8 @@ public class MainFrame extends JFrame {
         this.searchControl.setUI(this.searchUI);
         tabbedPane.addTab("Search", this.searchUI);
 
-        this.modifyUI = new ModifyUI();
+        this.modifyUI = new ModifyUI(this.modifyControl);
+        this.modifyControl.setUI(modifyUI);
         tabbedPane.addTab("ModifyUI",this.modifyUI);      
         
         this.inquireUI = new InquireUI(this.inquireControl);
