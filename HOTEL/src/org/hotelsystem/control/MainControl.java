@@ -10,17 +10,13 @@ public class MainControl{
     private MainFrame mainFrame;
     public int currentUserID;
     public MainControl(){
+        currentUserID =-1;
         hostControl = new HostControl(this);
         inquireControl = new InquireControl(this);
         loginControl = new LoginControl(this);
         modifyControl = new ModifyControl(this);
         searchControl = new SearchControl(this);
     }
-
-    public Encoder getEncoder(){
-        return this.encoder;
-    }
-
     public HostControl getHostControl(){
         return this.hostControl;
     }
@@ -48,4 +44,7 @@ public class MainControl{
     public void switchPane(int switchTo){
         this.mainFrame.switchPane(switchTo);
     }
+
+    public int getcurrentUserId(){ return this.currentUserID;}
+    public void setcurrentUserId(int id){this.currentUserID=id;}
 }
