@@ -98,11 +98,13 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     }
 
     public String dateToString(int date){
-        String tmp = "";
+        String tmp = "";    
         tmp += String.valueOf(date/10000);
         tmp +="-";
+        if ((date%10000)/100<10) tmp+="0";
         tmp += String.valueOf((date%10000)/100);
         tmp +="-";
+        if (date%100<10) tmp+="0";
         tmp += String.valueOf(date%100);
         return tmp;
     }

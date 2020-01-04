@@ -222,18 +222,19 @@ public class ModifyUI extends JPanel implements ActionListener{
     }
 
     public String dateToString(int date){
-        String tmp = "";
+        String tmp = "";    
         tmp += String.valueOf(date/10000);
         tmp +="-";
+        if ((date%10000)/100<10) tmp+="0";
         tmp += String.valueOf((date%10000)/100);
         tmp +="-";
+        if (date%100<10) tmp+="0";
         tmp += String.valueOf(date%100);
         return tmp;
     }
 
     public int dateToInt(String date){
         String tmp = date.substring(0,4) + date.substring(5, 7) + date.substring(8, 10);
-        System.out.println(tmp);
         return Integer.valueOf(tmp);
     }
 
@@ -339,7 +340,6 @@ public class ModifyUI extends JPanel implements ActionListener{
                 }
                 
             }
-            System.out.println("Perform Query");
         }
         else if (e.getSource() == this.btnCheckAndSend){
             try{
@@ -363,13 +363,23 @@ public class ModifyUI extends JPanel implements ActionListener{
                     return;
                 }
                 //Todo
-                modifyControl.modifyOrder(this.haveSetOrderID, Integer.valueOf(this.tfModSingleNum.getText()).intValue(), Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), Integer.valueOf(this.tfModQuadNum.getText()).intValue(), this.dateToInt(this.tfModCheckInTime.getText()), this.dateToInt(this.tfModCheckOutTime.getText()));
-                System.out.println("Perform modify");
+                boolean success = modifyControl.modifyOrder(
+                    this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText())), 
+                    Integer.valueOf(this.tfModSingleNum.getText()).intValue(), 
+                    Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), 
+                    Integer.valueOf(this.tfModQuadNum.getText()).intValue(), 
+                    this.dateToInt(this.tfModCheckInTime.getText()), 
+                    this.dateToInt(this.tfModCheckOutTime.getText()));
+                if (success) System.out.println("Modify succeed");
+                else System.out.println("Modify fail");
+                
             }
             catch(NumberFormatException f){
+                System.out.println(f);
                 JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
             catch(Exception a){
+                System.out.println(a);
                 JOptionPane.showMessageDialog(this, "Input wrong date format!", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         }
