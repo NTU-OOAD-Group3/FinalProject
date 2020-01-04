@@ -12,6 +12,7 @@ import java.util.*;
 public class SearchControl {
     private ArrayList<Hotel> hotels = new ArrayList<Hotel>(0);
     private SearchUI searchUI;
+    private MainControl mainControl;
     private ArrayList<AvailableHotel> availableHotel = new ArrayList<AvailableHotel>();
     private ArrayList<HotelReview> hotelReview = new ArrayList<HotelReview>();
     //
@@ -22,7 +23,8 @@ public class SearchControl {
     private int searchPeople, searchRoom, searchNight;
     private int checkin, checkout;
     //
-	public SearchControl(){
+	public SearchControl(MainControl mainControl){
+        this.mainControl = mainControl;
     }
 
     public void setUI(SearchUI searchUI){

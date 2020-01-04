@@ -20,9 +20,11 @@ public class LoginUI extends JPanel implements ActionListener{
     private JButton signupButton; //open up a new dialog
 
     private MainFrame parent;
-	public LoginUI(MainFrame parent) {
+    private LoginControl loginControl;
+	public LoginUI(MainFrame parent, LoginControl loginControl) {
         ////this cannot be used with `addWithConstraints`
         this.parent=parent;
+        this.loginControl = loginControl;
         initUI();
     }
     private void initUI(){
@@ -104,9 +106,8 @@ public class LoginUI extends JPanel implements ActionListener{
                 //if(controller.passlogin):
                 //  this.parent.loginChange();
                 //```
-                LoginControl loginControl = new LoginControl();//will be moved into `main.java`
                 
-                if(loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
+                if(this.loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
                     //ENCODER SHOULD BE HERE to deal with password.getText()
                     this.parent.loginChange();
                     
