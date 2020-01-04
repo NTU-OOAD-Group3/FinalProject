@@ -71,6 +71,33 @@ public class DBUtil {
         return user;
     }
 
+    /**
+     * The Method for sign-up with given arguments & insert a row into DB.
+     * @param userType An integer in {0, 1} represents the type of user.
+     * @param username The username to sign-up.
+     * @param password The password to sign-up.
+     * @return True if sign-up successfully, False if failed.
+     */
+    public boolean insertUser(int userType, String username, String password) {
+        try {
+            // Check username available
+            this.stmt = this.conn.createStatement();
+            String cmd = "INSERT INTO Users (UserType, Username, Password) " +
+                "VALUES (" + String.valueOf(userType) + ", " +
+                      "\"" + String.valueOf(username) + "\", " +
+                      "\"" + String.valueOf(password) + "\");";
+            System.out.println(cmd);
+            int rowCount = this.stmt.executeUpdate(cmd);
+            this.stmt.close();
+            if ( rowCount != 1 ) { return false; }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public ArrayList<Hotel> getHotels(String locality, int checkin, int checkout) {
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
         String cmd = null;
@@ -491,15 +518,17 @@ public class DBUtil {
         try {
             this.stmt = this.conn.createStatement();
             // Delete cancelled rooms
-            String cmd = "DELETE FROM Orders " +
-                "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
-                "AND UserID = " + String.valueOf(order.getUserID()) + " " +
-                "AND HotelID = " + String.valueOf(order.getHotelID()) + " " +
-                "AND RoomID IN (" + cancelRoomIDStr + ");";
-            System.out.println(cmd);
-            this.stmt.executeUpdate(cmd);
+            if ( cancelRoomIDs.size() > 0 ) {
+                String cmd = "DELETE FROM Orders " +
+                    "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
+                    "AND UserID = " + String.valueOf(order.getUserID()) + " " +
+                    "AND HotelID = " + String.valueOf(order.getHotelID()) + " " +
+                    "AND RoomID IN (" + cancelRoomIDStr + ");";
+                System.out.println(cmd);
+                this.stmt.executeUpdate(cmd);
+            }
             // Update checkin, checkout
-            cmd = "UPDATE Orders " +
+            String cmd = "UPDATE Orders " +
                 "SET CheckIn = \"" + this.dateIntToString(newCheckin) + "\" " +
                 "SET CheckOut = \"" + this.dateIntToString(newCheckout) + "\" " +
                 "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
@@ -529,13 +558,15 @@ public class DBUtil {
         // User user = dbutil.getUser("Howard", "123");
         // System.out.println(user);
         // Order order = new Order(11, 0, 148, null, 202001015, 20200124, 0);
-        Review review = dbutil.getOrderReview(11);
-        System.out.println(review);
+        // Review review = dbutil.getOrderReview(11);
+        // System.out.println(review);
         // if ( review == null ) {
-        review = new Review(11, 148, 0, 5, "Awesome!");
-        boolean rtn = dbutil.insertReview(review);
-        System.out.println(rtn);
+        // review = new Review(11, 148, 0, 5, "Awesome!");
+        // boolean rtn = dbutil.insertReview(review);
+        // System.out.println(rtn);
         // }
+        boolean rtn = dbutil.insertUser(0, "Howard", "456");
+        System.out.println(rtn);
         long time2 = System.currentTimeMillis();
         System.out.println("Time cost: " + String.valueOf(time2 - time1) + " ms.");
         // System.out.println(orders.size());
