@@ -9,6 +9,7 @@ public class MainControl{
     private LoginControl loginControl;
     private ModifyControl modifyControl;
     private SearchControl searchControl;
+    private AccountControl accountControl;
     private MainFrame mainFrame;
     private DBUtil dbutil;
     public int currentUserID;
@@ -21,7 +22,6 @@ public class MainControl{
         modifyControl = new ModifyControl(this, this.dbutil);
         searchControl = new SearchControl(this, this.dbutil);
     }
-
     public HostControl getHostControl(){
         return this.hostControl;
     }
@@ -41,6 +41,9 @@ public class MainControl{
     public SearchControl getSearchControl(){
         return this.searchControl;
     }
+    public AccountControl getAccountControl(){
+        return this.accountControl;
+    }
 
     public void setUI(MainFrame mainFrame){
         this.mainFrame = mainFrame;
@@ -49,4 +52,7 @@ public class MainControl{
     public void switchPane(int switchTo){
         this.mainFrame.switchPane(switchTo);
     }
+
+    public int getcurrentUserId(){ return this.currentUserID;}
+    public void setcurrentUserId(int id){this.currentUserID=id;}
 }

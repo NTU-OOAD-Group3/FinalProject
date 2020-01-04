@@ -52,6 +52,7 @@ public class AccountUI extends JPanel implements ActionListener{
             //parent.remove(2);
 
             this.parent.logoutChange();
+            this.parent.setloggedout();
             
         }
     }

@@ -16,6 +16,8 @@ public class MainFrame extends JFrame {
     private LoginControl loginControl;
     private ModifyControl modifyControl;
     private InquireControl inquireControl;
+    private AccountControl accountControl;
+    
     
     public void logoutChange(){//will be called when user click `logout Button` in AccountUI
         tabbedPane.remove(0);
@@ -34,6 +36,7 @@ public class MainFrame extends JFrame {
         this.loginControl = mainControl.getLoginControl();
         this.modifyControl = mainControl.getModifyControl();
         this.inquireControl = mainControl.getInquireControl();
+        this.accountControl = mainControl.getAccountControl();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LoginStatus loginstatus = new LoginStatus();
@@ -68,6 +71,9 @@ public class MainFrame extends JFrame {
         this.tabbedPane.setSelectedIndex(switchTo);
     } 
 
+    public void setloggedout(){ 
+        accountControl.setloggedout();
+    }
     // public static void main(String[] args) {
     // 	MainFrame mainFrame = new MainFrame();
     // }
