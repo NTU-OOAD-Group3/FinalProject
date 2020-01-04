@@ -104,7 +104,7 @@ public class SearchFilter extends JPanel implements ActionListener {
                 priceLower = Integer.valueOf(this.tfPriceLower.getText());
                 
             if( !this.tfPriceUpper.getText().equals("") )
-                priceLower = Integer.valueOf(this.tfPriceUpper.getText());
+                priceUpper = Integer.valueOf(this.tfPriceUpper.getText());
 
             for(int i=1;i<6;i++)
                 if( this.rbtnStars[i].isSelected() ){

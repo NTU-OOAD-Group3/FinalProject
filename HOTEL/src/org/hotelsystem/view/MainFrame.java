@@ -27,11 +27,16 @@ public class MainFrame extends JFrame {
         tabbedPane.remove(0);
         tabbedPane.insertTab("Account",null,this.accountUI,null,0);
     }
-    public MainFrame() {
+
+    public MainFrame(MainControl mainControl) {
         
         super("Main Frame");
 
-        this.searchControl = new SearchControl();
+        this.searchControl = mainControl.getSearchControl();
+        this.reserveControl = mainControl.getReserveControl();
+        this.loginControl = mainControl.getLoginControl();
+        this.modifyControl = mainControl.getModifyControl();
+        this.inquireControl = mainControl.getInquireControl();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LoginStatus loginstatus = new LoginStatus();
@@ -65,7 +70,7 @@ public class MainFrame extends JFrame {
         this.tabbedPane.setSelectedIndex(switchTo);
     } 
 
-    public static void main(String[] args) {
-    	MainFrame mainFrame = new MainFrame();
-    }
+    // public static void main(String[] args) {
+    // 	MainFrame mainFrame = new MainFrame();
+    // }
 }
