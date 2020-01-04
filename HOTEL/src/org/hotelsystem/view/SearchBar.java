@@ -84,6 +84,7 @@ public class SearchBar extends JPanel implements ActionListener{
         
         ImageIcon iconCalendar = new ImageIcon("resources/calendar.png");
         iconCalendar.setImage(iconCalendar.getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
+        
         this.btnCheckinDate = new JButton(iconCalendar);
         this.btnCheckinDate.addActionListener(this);
         this.addWithConstraints(btnCheckinDate, 1, 2, 1, 1, 1, 1,

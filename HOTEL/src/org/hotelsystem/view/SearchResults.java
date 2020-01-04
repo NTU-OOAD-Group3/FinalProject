@@ -16,8 +16,8 @@ public class SearchResults extends JPanel implements ActionListener{
     private int page = 0;
     private int totalPage = 0;
     private SearchControl searchControl;
-
-    public SearchResults(JFrame parent, SearchControl searchControl) {
+    private ArrayList<ImageIcon> imageIcons = new ArrayList<ImageIcon>();
+    public SearchResults(JFrame parent, SearchControl searchControl, ArrayList<ImageIcon> imageIcons) {
         this.parent = parent;
         this.searchControl = searchControl;
         initUI();
@@ -65,16 +65,17 @@ public class SearchResults extends JPanel implements ActionListener{
         }
         for( int i=0; i<10 && i<availableHotels.size(); ++i ){
             this.resultArray[i].setVisible(true);
-            this.resultArray[i].refreshUI(availableHotels.get(i));
+            this.resultArray[i].refreshUI(availableHotels.get(i), this.imageIcons.get(i));
         }
     }
 
-    public void setAvailableHotel(ArrayList<AvailableHotel> availableHotels, int page, int totalPage){
+    public void setAvailableHotel(ArrayList<AvailableHotel> availableHotels, int page, int totalPage,ArrayList<ImageIcon> imageIcons ){
         this.page = page;
         this.totalPage = totalPage;
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
         if( availableHotels.size() == 0 )
             JOptionPane.showMessageDialog(this, "No result found, please modify time, room number, or people number.", "No result.", JOptionPane.INFORMATION_MESSAGE);
+        this.imageIcons = imageIcons;
         this.refreshUI(availableHotels);
     }
 

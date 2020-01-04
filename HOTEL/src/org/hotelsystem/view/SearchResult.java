@@ -41,7 +41,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.setBorder(new CompoundBorder(line, empty));
         this.setLayout(new GridBagLayout());
 
-        this.labelHotelImage = new JLabel("Hotel Image");
+        this.labelHotelImage = new JLabel("");
         this.labelHotelImage.setHorizontalAlignment(JLabel.CENTER);
         this.labelHotelImage.setBorder(new LineBorder(Color.BLACK));
         this.addWithConstraints(labelHotelImage, 0, 0, 4, 4, 4, 4,
@@ -88,7 +88,8 @@ public class SearchResult extends JPanel implements ActionListener{
 
     }
 
-    public void refreshUI(AvailableHotel availableHotel){
+    public void refreshUI(AvailableHotel availableHotel, ImageIcon imageIcon){
+        this.labelHotelImage.setIcon(imageIcon);
         this.labelHotelName.setText(Integer.toString(availableHotel.getHotelID()));
         this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
         this.labelHotelLocality.setText(availableHotel.getLocality());

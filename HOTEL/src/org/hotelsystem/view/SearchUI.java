@@ -36,7 +36,7 @@ public class SearchUI extends JPanel {
 		this.addWithConstraints(this.searchFilter, 0, 1, 1, 6, 1, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
-		this.searchResult = new SearchResults(this.parent, this.searchControl);
+		this.searchResult = new SearchResults(this.parent, this.searchControl, null);
 		this.searchResult.setBorder(new LineBorder(Color.BLACK));
 		this.addWithConstraints(this.searchResult, 1, 1, 6, 6, 6, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -46,8 +46,8 @@ public class SearchUI extends JPanel {
 		this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
 	}
 
-	public void setAvailableHotels(ArrayList<AvailableHotel> availableHotels, int page, int totalPage){
-		this.searchResult.setAvailableHotel(availableHotels, page, totalPage);
+	public void setAvailableHotels(ArrayList<AvailableHotel> availableHotels, int page, int totalPage, ArrayList<ImageIcon> imageIcons){
+        this.searchResult.setAvailableHotel(availableHotels, page, totalPage, imageIcons);
 	}
 
 	public void showReview(int hotelID, String dialogName, ArrayList<Review> review, int page, int totalPage){

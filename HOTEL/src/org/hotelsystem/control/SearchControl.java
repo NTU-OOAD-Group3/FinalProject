@@ -7,7 +7,12 @@ import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Review;
 import org.hotelsystem.view.SearchUI;
 
+import java.net.URL;
 import java.util.*;
+import java.awt.Image;
+import java.awt.image.*;
+import javax.swing.*;
+import javax.imageio.ImageIO;
 
 public class SearchControl {
     private ArrayList<Hotel> hotels = new ArrayList<Hotel>(0);
@@ -15,13 +20,14 @@ public class SearchControl {
     private MainControl mainControl;
     private ArrayList<AvailableHotel> availableHotel = new ArrayList<AvailableHotel>();
     private ArrayList<Review> review = new ArrayList<Review>();
-    //
+    private Random ran = new Random();
     private DBUtil dbutils;
     private int resultsPage = 0, resultsTotalPage = 0;
     private int reviewPage = 0, reviewTotalPage = 0;
     private int reviewHotelID = 0;
     private int searchPeople, searchRoom, searchNight;
     private int checkin, checkout;
+    private int imageIdx;
     //
 	public SearchControl(MainControl mainControl, DBUtil dbutils){
         this.mainControl = mainControl;
@@ -49,7 +55,8 @@ public class SearchControl {
         this.checkout = checkout;
         this.availableHotel = tmp;
         this.resultsTotalPage = (tmp.size() - 1) / 10;  
-        this.setSearchResults(this.availableHotel, 0, (tmp.size() -1) / 10);
+        System.out.println("in");
+        this.setSearchResults(new ArrayList<AvailableHotel>(this.availableHotel.subList(0, Math.min(10, this.availableHotel.size()))), 0, (tmp.size() -1) / 10);
     }
 
     public void applySearchFilter(int lower, int upper, int star, int priceOrder){
@@ -71,7 +78,18 @@ public class SearchControl {
 
 
     public void setSearchResults(ArrayList<AvailableHotel> availableHotel, int page, int totalPage){
-        this.searchUI.setAvailableHotels(availableHotel, page, totalPage);
+        ArrayList<ImageIcon> imageIcons = new ArrayList<ImageIcon>(0);
+        try{
+            for(int i=0; i<availableHotel.size(); ++i){
+                this.imageIdx = this.ran.nextInt(87);
+                ImageIcon icon = new ImageIcon(String.format("resources/%d.jpg", this.imageIdx));
+                imageIcons.add(icon);
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+        this.searchUI.setAvailableHotels(availableHotel, page, totalPage, imageIcons);
     }
     
     public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum){
