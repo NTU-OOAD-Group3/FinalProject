@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.control.SearchControl;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,9 +18,14 @@ public class ReviewDialogs extends JDialog implements ActionListener{
     private JButton btnPrevPage;
     private JButton btnNextPage;
     private JLabel labelPageNum;
+    private SearchControl searchControl;
 
-    public ReviewDialogs(int hotelID, JFrame parent, String name){
+    public ReviewDialogs(int hotelID, JFrame parent, String name, ArrayList<HotelReview> hotelReviews, int page, int totalPage, SearchControl searchControl){
         super(parent, name, true);
+        this.hotelReviews = hotelReviews;
+        this.page = page;
+        this.totalPage = totalPage;
+        this.searchControl = searchControl;
         initUI();
     }
 
@@ -30,11 +36,10 @@ public class ReviewDialogs extends JDialog implements ActionListener{
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-        this.totalPage = this.hotelReviews.size() / 10;
-        hotelReviews.add(new HotelReview(0, 0, 5, "YOYOYOYOYOYOYOYOYO"));
-        for ( int i=0; i<10 && i<this.hotelReviews.size(); ++i ) {
-            ReviewArray[i] = new ReviewPanel(this.hotelReviews.get(i));
-            // ReviewArray[i].setVisible(false);
+        
+        for ( int i=0; i<10 ; ++i ) {
+            ReviewArray[i] = new ReviewPanel();    
+            ReviewArray[i].setVisible(false);
             this.addWithConstraints(listPanel, ReviewArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
@@ -61,6 +66,17 @@ public class ReviewDialogs extends JDialog implements ActionListener{
         this.setSize(800, 600);
     }
 
+    public void refresh(int hotelID, ArrayList<HotelReview> hotelReviews, int page, int totalPage){
+        for ( int i=0; i<10 && i<hotelReviews.size(); ++i ) {
+            this.ReviewArray[i].setReview(hotelReviews.get(i));
+            this.ReviewArray[i].setVisible(true);
+        }
+        for( int i=hotelReviews.size(); i<10; ++i){
+            this.ReviewArray[i].setVisible(false);
+        }
+        this.labelPageNum.setText(String.format("%d/%d", page + 1, totalPage + 1));
+    }
+
     private void addWithConstraints(JPanel p, JComponent c,
         int gridx, int gridy, int gridwidth, int gridheight,
         int weightx, int weighty, int fill, int anchor) {
@@ -79,24 +95,12 @@ public class ReviewDialogs extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnPrevPage ){
             System.out.println("Previous page triggered.");
-            if( this.page > 0 ){
-                --this.page;
-                // refreshUI();
-            }
-            else{ 
-                System.out.println("Already the first page.");
-            }
+            this.searchControl.setReviewPage(-1);
         }
 
         else if( e.getSource() == this.btnNextPage ){
             System.out.println("Next page triggered.");
-            if( this.page < this.totalPage ){
-                ++this.page;
-                // refreshUI();
-            }
-            else{
-                System.out.println("Already the final page.");
-            }
+            this.searchControl.setReviewPage(1);
         }
     }
 }

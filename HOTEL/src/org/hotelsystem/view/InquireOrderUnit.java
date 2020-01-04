@@ -89,7 +89,7 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
 
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnModify){
-            this.modifyUI.setOrderIDField(String.valueOf(this.order.getOrderID()));
+            this.modifyUI.setOrder(this.order);
             this.mainFrame.switchPanal(3);
         } 
     }  

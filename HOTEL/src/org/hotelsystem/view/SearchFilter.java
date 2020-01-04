@@ -1,11 +1,15 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.control.SearchControl;
+
+import java.util.Collections;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class SearchFilter extends JPanel implements ActionListener {
+    private SearchControl searchControl;
     private JLabel labelTitle;
     private JLabel labelPriceLower;
     private JTextField tfPriceLower;
@@ -20,7 +24,8 @@ public class SearchFilter extends JPanel implements ActionListener {
     private JRadioButton rbtnPriceL2H;
     private JRadioButton rbtnPriceH2L;
 
-    public SearchFilter() {
+    public SearchFilter(SearchControl searchControl) {
+        this.searchControl = searchControl;
         initUI();
     }
 
@@ -102,7 +107,7 @@ public class SearchFilter extends JPanel implements ActionListener {
                 priceLower = Integer.valueOf(this.tfPriceLower.getText());
                 
             if( !this.tfPriceUpper.getText().equals("") )
-                priceLower = Integer.valueOf(this.tfPriceUpper.getText());
+                priceUpper = Integer.valueOf(this.tfPriceUpper.getText());
 
             for(int i=1;i<6;i++)
                 if( this.rbtnStars[i].isSelected() ){
@@ -111,6 +116,7 @@ public class SearchFilter extends JPanel implements ActionListener {
             if( this.rbtnPriceH2L.isSelected() )
                 selectedPriceIdx = 1;
             System.out.printf("Apply filter triggered.\n lower: %d, upper: %d, Star: %d, price order: %d\n", priceLower, priceUpper, selectedStarIdx, selectedPriceIdx);
+            this.searchControl.applySearchFilter(priceLower, priceUpper, selectedStarIdx, selectedPriceIdx);
         }
         catch(Exception error){
             JOptionPane.showMessageDialog(new JFrame(), "Please input integer into blockes", "Error", JOptionPane.ERROR_MESSAGE);

@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class SearchBar extends JPanel implements ActionListener{
+    private SearchUI searchUI;
     private JLabel labelLocality;
     private JLabel labelCheckin;
     private JLabel labelCheckout;
@@ -26,8 +27,10 @@ public class SearchBar extends JPanel implements ActionListener{
     private JButton btnCheckoutDate;
     private JFrame parent;
     private JComboBox jcmbLocality;
-    public SearchBar(JFrame parent) {
+    
+    public SearchBar(JFrame parent, SearchUI searchUI) {
         this.parent = parent;
+        this.searchUI = searchUI;
         initUI();
     }
 
@@ -64,8 +67,13 @@ public class SearchBar extends JPanel implements ActionListener{
         this.addWithConstraints(labelPeople, 5, 0, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        String Locality[]={"Taipei","Taichung","Kaohsiung"};
-        this.jcmbLocality = new JComboBox(Locality);
+        // String Locality[]={"台北","Taichung","Kaohsiung"};
+        ArrayList<String> tmpLocality = this.searchUI.getLocality();
+        String locality[] = new String[tmpLocality.size()];
+        for(int i=0; i<tmpLocality.size(); ++i)
+            locality[i] = tmpLocality.get(i);
+
+        this.jcmbLocality = new JComboBox(locality);
         this.addWithConstraints(jcmbLocality, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
@@ -74,7 +82,7 @@ public class SearchBar extends JPanel implements ActionListener{
         this.addWithConstraints(tfCheckin, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
         
-        ImageIcon iconCalendar = new ImageIcon("../resources/calendar.png");
+        ImageIcon iconCalendar = new ImageIcon("resources/calendar.png");
         iconCalendar.setImage(iconCalendar.getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
         this.btnCheckinDate = new JButton(iconCalendar);
         this.btnCheckinDate.addActionListener(this);
@@ -127,8 +135,24 @@ public class SearchBar extends JPanel implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){ 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        
         if( e.getSource() == this.btnSearch ){
             System.out.println("Search triggered.");
+            try{
+                Calendar checkinDate = Calendar.getInstance();
+                Calendar checkoutDate = Calendar.getInstance();
+                checkinDate.setTime(sdf.parse(this.tfCheckin.getText()));
+                checkoutDate.setTime(sdf.parse(this.tfCheckout.getText()));
+                
+                int checkin = Integer.valueOf(String.format("%4d%02d%02d", checkinDate.get(Calendar.YEAR), checkinDate.get(Calendar.MONTH) + 1, checkinDate.get(Calendar.DAY_OF_MONTH)));
+                int checkout = Integer.valueOf(String.format("%4d%02d%02d", checkoutDate.get(Calendar.YEAR), checkoutDate.get(Calendar.MONTH) + 1, checkoutDate.get(Calendar.DAY_OF_MONTH)));
+                this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
+            }
+            catch(Exception error){
+            }
+            System.out.println("Search Comlete.");
+            // searchAvailableHotel(this.jcmbLocality.getText(), checkin, checkout, Integer.valueOf(this.tfRoom), Integer.valueOf(this.tfPeople));
         }
         else if( e.getSource() == this.btnCheckinDate ){
             DatePickerDialog datePickDlg = new DatePickerDialog(this.parent, "Select Date");
@@ -147,11 +171,10 @@ public class SearchBar extends JPanel implements ActionListener{
             }
         }
         try{
-            if( !(this.tfCheckin.getText().equals("") || this.tfCheckout.getText().equals("")) ){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-                Date firstDate = sdf.parse(this.tfCheckin.getText());
-                Date secondDate = sdf.parse(this.tfCheckout.getText());
-                long diffInMillies = secondDate.getTime() - firstDate.getTime();
+            if( !(this.tfCheckin.getText().equals("") || this.tfCheckout.getText().equals("")) ){  
+                Date checkinDate = sdf.parse(this.tfCheckin.getText());
+                Date checkoutDate = sdf.parse(this.tfCheckout.getText());
+                long diffInMillies = checkoutDate.getTime() - checkinDate.getTime();
                 long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
                 this.tfTotalNight.setText(String.valueOf(diff));
             }

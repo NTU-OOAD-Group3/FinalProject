@@ -1,7 +1,8 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
-import java.util.ArrayList;
+import org.hotelsystem.control.SearchControl;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -20,12 +21,15 @@ public class SearchResult extends JPanel implements ActionListener{
     private JButton btnReserve;
     private JFrame parent;
     private AvailableHotel availableHotel;
+    private RoomCombDialog roomCombDialog;
+    private SearchControl searchControl;
 
     private ArrayList<ArrayList<Integer>> roomCombination;
 
-    public SearchResult(JFrame parent, AvailableHotel availableHotel) {
+    public SearchResult(JFrame parent, AvailableHotel availableHotel, SearchControl searchControl) {
         this.parent = parent;
         this.availableHotel = availableHotel;
+        this.searchControl = searchControl;
         initUI();
     }
 
@@ -89,7 +93,10 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
         this.labelHotelLocality.setText(availableHotel.getLocality());
         this.labelHotelAddress.setText(availableHotel.getStreetAddress());
+        this.labelPrice.setText(Integer.toString(Collections.min(availableHotel.getCombinationPrice())));
+        this.labelSummary.setText(String.format("(%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), this.searchControl.getSearchRoom()));
         this.roomCombination = availableHotel.getRoomCombination();
+        this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates");
     }
     private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
@@ -110,13 +117,11 @@ public class SearchResult extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnReview ){
             System.out.println("Review triggered.");
-            ReviewDialogs reviewDialog = new ReviewDialogs(this.availableHotel.getHotelID(), this.parent, "Hotel reviews");
-            reviewDialog.setVisible(true);
+            this.searchControl.getHotelReviews( this.availableHotel.getHotelID() );
         } 
         else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");
-            RoomCombDialog roomCombDialog = new RoomCombDialog(this.availableHotel, this.parent, "Reserve candidates");
-            roomCombDialog.setVisible(true);
+            this.roomCombDialog.setVisible(true);
         }
     }  
 

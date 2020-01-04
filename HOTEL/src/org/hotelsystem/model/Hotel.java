@@ -8,6 +8,8 @@ public class Hotel {
     private String locality;
     private String address;
     ArrayList<Room> singleRooms, doubleRooms, quadRooms;
+    private int vacantSingleNum, vacantDoubleNum, vacantQuadNum;
+    private int singleRoomPrice, doubleRoomPrice, quadRoomPrice;
     
     public Hotel(int hotelID, int hotelStar, String locality, String address,
                  ArrayList<Room> singleRooms,
@@ -20,6 +22,33 @@ public class Hotel {
         this.singleRooms = singleRooms;
         this.doubleRooms = doubleRooms;
         this.quadRooms = quadRooms;
+    }
+
+    private void calcVacantNum() {
+        this.vacantSingleNum = 0;
+        this.vacantDoubleNum = 0;
+        this.vacantQuadNum = 0;
+        for ( int i=0; i<this.singleRooms.size(); ++i ) {
+            if (this.singleRooms.get(i).isOccupied() == false) {
+                vacantSingleNum += 1;
+            }
+        }
+        for ( int i=0; i<this.doubleRooms.size(); ++i ) {
+            if (this.doubleRooms.get(i).isOccupied() == false) {
+                vacantDoubleNum += 1;
+            }
+        }
+        for ( int i=0; i<this.quadRooms.size(); ++i ) {
+            if ( this.quadRooms.get(i).isOccupied() == false) {
+                vacantQuadNum += 1;
+            }
+        }
+    }
+
+    private void retrieveRoomPrice() {
+        this.singleRoomPrice = (this.singleRooms.isEmpty() ? -1 : this.singleRooms.get(0).getRoomPrice());
+        this.doubleRoomPrice = (this.doubleRooms.isEmpty() ? -1 : this.doubleRooms.get(0).getRoomPrice());
+        this.quadRoomPrice = (this.quadRooms.isEmpty() ? -1 : this.quadRooms.get(0).getRoomPrice());
     }
 
     public void setOccupied(int roomID, boolean b) {
@@ -40,44 +69,66 @@ public class Hotel {
     public int getHotelID() { return this.hotelID; }
 
     public AvailableHotel getAvailableHotel(int peopleNum, int roomNum) {
-        int vacantSingleNum = 0;
-        int vacantDoubleNum = 0;
-        int vacantQuadNum = 0;
-        for ( int i=0; i<this.singleRooms.size(); ++i ) {
-            if (this.singleRooms.get(i).isOccupied() == false) {
-                vacantSingleNum += 1;
-            }
-        }
-        for ( int i=0; i<this.doubleRooms.size(); ++i ) {
-            if (this.doubleRooms.get(i).isOccupied() == false) {
-                vacantDoubleNum += 1;
-            }
-        }
-        for ( int i=0; i<this.quadRooms.size(); ++i ) {
-            if ( this.quadRooms.get(i).isOccupied() == false) {
-                vacantQuadNum += 1;
-            }
-        }
-
+        this.calcVacantNum();
+        this.retrieveRoomPrice();
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
-        for ( int x=0; x<Math.min(roomNum, vacantSingleNum); ++x ) {
-            for ( int y=0; y<Math.min(roomNum, vacantDoubleNum); ++y ) {
-                for ( int z=0; z<Math.min(roomNum, vacantQuadNum); ++z ) {
-                    if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
-                        ArrayList<Integer> comb = new ArrayList<Integer>();
-                        comb.add(x);
-                        comb.add(y);
-                        comb.add(z);
-                        roomCombination.add(comb);
-                    }
+        ArrayList<Integer> combinationPrice = new ArrayList<Integer>();
+        for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
+            for ( int y=0; y<=Math.min(roomNum - x, vacantDoubleNum); ++y ) {
+                int z = roomNum - x - y;
+                if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
+                    ArrayList<Integer> comb = new ArrayList<Integer>();
+                    comb.add(x); comb.add(y); comb.add(z);
+                    roomCombination.add(comb);
+                    combinationPrice.add(x * this.singleRoomPrice +
+                                         y * this.doubleRoomPrice +
+                                         z * this.quadRoomPrice);
                 }
             }
         }
-
+        keySort(combinationPrice, combinationPrice, roomCombination);
         AvailableHotel availableHotel = new AvailableHotel(
-            this.hotelID, this.hotelStar, this.locality, this.address, roomCombination);
-
+            this.hotelID, this.hotelStar, this.locality, this.address,
+            roomCombination, combinationPrice);
         return availableHotel;
+    }
+
+    /**
+     * Assign vacant RoomIDs with given number of rooms of each type.
+     * @param singleNum Number of Single-person rooms.
+     * @param doubleNum Number of Double-person rooms.
+     * @param quadNum Number of Quad-person rooms.
+     * @return ArrayList of Integers represents assigned vacant RoomIDs.
+     */
+    public ArrayList<Integer> assignRooms(int singleNum, int doubleNum, int quadNum) {
+        ArrayList<Integer> roomIDs = new ArrayList<Integer>();
+        for ( int i=0; i<this.singleRooms.size() && singleNum>0; ++i ) {
+            if ( !this.singleRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.singleRooms.get(i).getRoomID());
+                --singleNum;
+            }
+        }
+        for ( int i=0; i<this.doubleRooms.size() && doubleNum>0; ++i ) {
+            if ( !this.doubleRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.doubleRooms.get(i).getRoomID());
+                --doubleNum;
+            }
+        }
+        for ( int i=0; i<this.quadRooms.size() && quadNum>0; ++i ) {
+            if ( !this.quadRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.quadRooms.get(i).getRoomID());
+                --quadNum;
+            }
+        }
+        return roomIDs;
+    }
+
+    public boolean checkAvailable(int singleNum, int doubleNum, int quadNum) {
+        this.calcVacantNum();
+        if ( singleNum <= this.vacantSingleNum ) { return false; }
+        if ( doubleNum <= this.vacantDoubleNum ) { return false; }
+        if ( quadNum <= this.vacantQuadNum ) { return false; }
+        return true;
     }
 
     public String toString() {
@@ -96,4 +147,39 @@ public class Hotel {
         }
         return s;
     }
+
+
+    // Code from StackOverflow used to jointly sort two ArrayList.
+    public static <T extends Comparable<T>> void keySort(
+        final List<T> key, List<?>... lists){
+        // Create a List of indices
+        List<Integer> indices = new ArrayList<Integer>();
+        for(int i = 0; i < key.size(); i++)
+            indices.add(i);
+
+        // Sort the indices list based on the key
+        Collections.sort(indices, new Comparator<Integer>(){
+            @Override public int compare(Integer i, Integer j) {
+                return key.get(i).compareTo(key.get(j));
+            }
+        });
+
+        // Create a mapping that allows sorting of the List by N swaps.
+        Map<Integer,Integer> swapMap = new HashMap<Integer, Integer>(indices.size());
+
+        // Only swaps can be used b/c we cannot create a new List of type <?>
+        for(int i = 0; i < indices.size(); i++){
+            int k = indices.get(i);
+            while(swapMap.containsKey(k))
+                k = swapMap.get(k);
+
+            swapMap.put(i, k);
+        }
+
+        // for each list, swap elements to sort according to key list
+        for(Map.Entry<Integer, Integer> e : swapMap.entrySet())
+            for(List<?> list : lists)
+                Collections.swap(list, e.getKey(), e.getValue());
+    }
+    
 }

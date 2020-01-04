@@ -116,6 +116,7 @@ public class InitDB {
                     "`OrderID` INT NOT NULL," +
                     "`Rating` INT NOT NULL," +
                     "`Review` VARCHAR(256)," +
+                    "`ReviewTime` TIMESTAMP," +
                     "PRIMARY KEY (`HotelID`, `UserID`, `OrderID`)," +
                     "FOREIGN KEY (`HotelID`) REFERENCES Hotels (`HotelID`)," +
                     "FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)" +

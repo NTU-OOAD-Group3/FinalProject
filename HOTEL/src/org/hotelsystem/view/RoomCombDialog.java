@@ -11,7 +11,9 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private int hotelID;
     private int page = 0;
     private int totalPage = 0;
-    private ArrayList<ArrayList<Integer>> roomCombination;
+    private ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>(0);
+    private ArrayList<Integer> combinationPrice = new ArrayList<Integer>(0);
+    private JFrame parent;
     private JPanel hotelPanel;
     private JPanel listPanel;
     private JPanel bottomPanel;
@@ -22,12 +24,12 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private JLabel labelHotelStar;
     private JLabel labelLocality;
     private JLabel labelAddress;
-    private ButtonGroup btnGroupCombinations;
-    private JRadioButton[] rbtnCombination = new JRadioButton[10];
+    private JButton[] btnCombination = new JButton[10];
     private JLabel labelPageNum;
 
     public RoomCombDialog(AvailableHotel availableHotel, JFrame parent, String name){
         super(parent, name, true);
+        this.parent = parent;
         initUI(availableHotel);
     }
 
@@ -42,9 +44,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         listPanelScroll.setBorder(new LineBorder(Color.black));
         
         this.roomCombination = availableHotel.getRoomCombination();
-        this.btnGroupCombinations = new ButtonGroup();
-        for(int i=0;i<11;i++)
-            this.roomCombination.add(new ArrayList<Integer>(Arrays.asList(1, 2, 3)));
+        this.combinationPrice = availableHotel.getCombinationPrice();
         this.totalPage = (this.roomCombination.size() - 1) / 10;
         this.labelHotelID = new JLabel(String.format("Hotel: %d", availableHotel.getHotelID()));
         this.addWithConstraints(hotelPanel, labelHotelID, 0, 0, 1, 1, 1, 1,
@@ -62,23 +62,19 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         this.addWithConstraints(hotelPanel, labelAddress, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        for ( int i=0; i<10 && i<this.roomCombination.size(); ++i ) {
+        for ( int i=0; i<10 && i < this.roomCombination.size(); ++i ) {
             ArrayList<Integer> combination = this.roomCombination.get(i);
-            rbtnCombination[i] = new JRadioButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), 7777));
-            this.btnGroupCombinations.add(rbtnCombination[i]);
+            btnCombination[i] = new JButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
+            btnCombination[i].addActionListener(this);
             // commentArray[i].setVisible(false);
-            this.addWithConstraints(listPanel, rbtnCombination[i],
+            this.addWithConstraints(listPanel, btnCombination[i],
                 0, i+2, 1, 1, 1, 1,
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         }
-        this.rbtnCombination[0].setSelected(true);
+        
 
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
-
-        this.btnReserve = new JButton("Reserve");
-        this.btnReserve.addActionListener(this);
-        this.add(btnReserve, BorderLayout.CENTER);
 
         this.btnPrevPage = new JButton("<< Previous");
         this.btnPrevPage.addActionListener(this);
@@ -91,7 +87,6 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         this.btnNextPage.addActionListener(this);
         this.bottomPanel.add(this.btnNextPage);
 
-        // this.add(listPanel);
         this.add(hotelPanel, BorderLayout.NORTH);
         this.add(listPanelScroll, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
@@ -115,17 +110,29 @@ public class RoomCombDialog extends JDialog implements ActionListener{
 		p.add(c, gbc);
     }
 
+    public void setAvailableHotel(AvailableHotel availableHotel){
+        this.labelHotelID.setText(String.format("Hotel: %d", availableHotel.getHotelID()));
+        this.labelHotelStar.setText(String.format("Star: %d", availableHotel.getHotelStar()));
+        this.labelLocality.setText(String.format("Locality: %s", availableHotel.getLocality()));
+        this.labelAddress.setText(String.format("Address: %s", availableHotel.getStreetAddress()));
+        this.roomCombination = availableHotel.getRoomCombination();
+        this.page = 0;
+        this.totalPage = ( this.roomCombination.size() - 1) / 10;
+        System.out.println(this.totalPage);
+        this.refreshUI();
+    }
+
     private void refreshUI(){
         int round = 10, base = 10 * this.page;
         if( this.page == this.totalPage ){
             round = this.roomCombination.size() % 10;
             for( int i=round;i<10;++i )
-                this.rbtnCombination[i].setVisible(false);
+                this.btnCombination[i].setVisible(false);
         }
         for( int i=0;i<round;++i ){
             ArrayList<Integer> combination = this.roomCombination.get(base + i);
-            this.rbtnCombination[i].setVisible(true);
-            this.rbtnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), 7777));
+            this.btnCombination[i].setVisible(true);
+            this.btnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
         }
     }
 
@@ -151,6 +158,16 @@ public class RoomCombDialog extends JDialog implements ActionListener{
                 System.out.println("Already the final page.");
             }
         }
+
+        else{
+            for(int i=0; i<10; ++i){
+                if( e.getSource() == this.btnCombination[i] ){
+                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this.parent, "Are you sure to reserve?", this.btnCombination[i].getText());
+                    reserveCheckDialog.setVisible(true);
+                }
+            }
+        }
+
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
     }
 }
