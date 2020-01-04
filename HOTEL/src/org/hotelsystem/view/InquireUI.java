@@ -1,5 +1,8 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.model.User;
+import org.hotelsystem.control.InquireControl;
+
 
 import java.awt.*;
 import javax.swing.*;
@@ -8,35 +11,58 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class InquireUI extends JPanel implements ActionListener{
+  private InquireControl inquireControl;
+
   private JPanel userInfo;
   private JPanel searchOrder;
   private JPanel showGeneralOrder;
   private JButton searchOrderButton;
   private JTextField searchOrderTextField;
+  private JLabel userNameLabel;
+  private JLabel orderSumLabel;
+  private JLabel orderQuickView;
+
   private MainFrame mainFrame;
   private ModifyUI modifyUI;
 
-  private String userName;
+  private User user;
   private ArrayList<Order> orders = new ArrayList<Order>();
 
   
-  public InquireUI(MainFrame mainFrame, ModifyUI modifyUI) {
+  public InquireUI(InquireControl inquireControl) {
     this.setLayout(new GridBagLayout());
-    this.mainFrame = mainFrame;
-    this.modifyUI = modifyUI;
-    initUI();
-  }
-    
-  private void initUI() {
+    this.inquireControl = inquireControl;
     //mock Data
+    ArrayList<Order> orders = new ArrayList<Order>();
     for (int i=0;i<10;i++){
       ArrayList<Integer> a= new ArrayList<Integer>();
       a.add(12);
       a.add(15);
-      orders.add(new Order(i, 0, 0, a, 1250, 1350, 666*i));
+      orders.add(new Order(i, 0, 0, a, 20200112, 20200118, 666*i));
     }
-    this.userName = "Default";
+    User user = new User(0,0,"cooool","");
+    this.orders = orders;
+    this.user = user;
+    initUI();
+  }
 
+  public void refreshUI(ArrayList<Order> orders, User user) {
+    this.orders = orders;
+    this.user = user;
+
+    this.userNameLabel.setText(" User Name: " + user.getUsername());
+    this.orderSumLabel.setText(" Total Order: " + this.orders.size());
+    this.orderQuickView.setText(" Order ID: " + orderIDsToString());
+
+    this.remove(this.showGeneralOrder);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.mainFrame, this.modifyUI);
+    this.showGeneralOrder.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+    this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
+        GridBagConstraints.BOTH, GridBagConstraints.CENTER);
+  }
+    
+  public void initUI() {
+    
     LineBorder line = new LineBorder(Color.BLACK);
     EmptyBorder empty = new EmptyBorder(10, 10, 10, 10);
 
@@ -73,26 +99,22 @@ public class InquireUI extends JPanel implements ActionListener{
     this.addWithConstraints(this.userInfo, userOverview, 0, 0, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-    JLabel userNameLabel = new JLabel(" User Name: " + userName);
-    this.addWithConstraints(this.userInfo, userNameLabel, 0, 1, 1, 1, 1, 1,
+    this.userNameLabel = new JLabel(" User Name: " + this.user.getUsername());
+    this.addWithConstraints(this.userInfo, this.userNameLabel, 0, 1, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         
-    JLabel orderSumLabel = new JLabel(" Total Order: " + this.orders.size());
-    this.addWithConstraints(this.userInfo, orderSumLabel, 0, 2, 1, 1, 1, 1,
+    this.orderSumLabel = new JLabel(" Total Order: " + this.orders.size());
+    this.addWithConstraints(this.userInfo, this.orderSumLabel, 0, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
-    JLabel orderQuickView = new JLabel(" Order ID: " + orderIDsToString());
-    this.addWithConstraints(this.userInfo, orderQuickView, 0, 3, 1, 1, 1, 2,
+    this.orderQuickView = new JLabel(" Order ID: " + orderIDsToString());
+    this.addWithConstraints(this.userInfo, this.orderQuickView, 0, 3, 1, 1, 1, 2,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
-        
 
-    
-    
     this.showGeneralOrder = new InquireOrders(this.orders, this.mainFrame, this.modifyUI);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
-    
   }
     
 
@@ -164,8 +186,16 @@ public class InquireUI extends JPanel implements ActionListener{
             if (this.orders.get(i).getOrderID() == orderID) {
               int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
               if (modify == JOptionPane.YES_OPTION) {
-                this.modifyUI.setOrder(orders.get(orderID));
-                this.mainFrame.switchPanal(3);
+                //mock data
+                ArrayList<Order> orders = new ArrayList<Order>();
+                for (int j=0;j<5;j++){
+                    ArrayList<Integer> a= new ArrayList<Integer>();
+                    a.add(12);
+                    a.add(15);
+                    orders.add(new Order(j, 0, 0, a, 19980112, 20200118, 666*i));
+                }
+                User user = new User(0,0,"nool","");
+                this.refreshUI(orders,user);
               }
               return;
             }
