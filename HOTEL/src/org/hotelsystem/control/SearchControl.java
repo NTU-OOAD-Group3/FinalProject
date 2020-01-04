@@ -174,8 +174,8 @@ public class SearchControl {
         return this.checkout;
     }
 
-    public void getReviews(int hotelID){
-        ArrayList<Review> ans = dbutils.getReviews(hotelID);
+    public void getHotelReviews(int hotelID){
+        ArrayList<Review> ans = dbutils.getHotelReviews(hotelID);
         this.reviewPage = 0;
         this.reviewTotalPage = (ans.size() - 1) / 10;
         this.review = ans;
