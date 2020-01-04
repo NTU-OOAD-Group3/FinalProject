@@ -40,7 +40,7 @@ public class DBUtil {
             System.exit(1);
         }
     }
-
+    
     /**
      * Get User instance from DB with corresponding username & password.
      * @param username The username to login.

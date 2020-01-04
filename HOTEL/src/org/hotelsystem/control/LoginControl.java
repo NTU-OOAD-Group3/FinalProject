@@ -38,8 +38,18 @@ public class LoginControl {
             return false;
         }
     }
-    public boolean verifySignup(String username, String password){
-        return false;
+    public boolean verifySignup(String username, String password,int usertype){
+        String passwordCode=encoder.crypt(password);
+        System.out.println("Try signup with"+username+password);
+        try{
+            DBUtil db=this.mainControl.getDbutil();
+            return db.insertUser(usertype,username,passwordCode);
+
+        }
+        catch(Exception e){
+            return false;
+        }
+        
     }
 
  
