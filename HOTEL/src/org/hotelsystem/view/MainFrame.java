@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
         this.modifyControl.setUI(modifyUI);
         tabbedPane.addTab("ModifyUI",this.modifyUI);      
         
-        this.inquireUI = new InquireUI(this.inquireControl);
+        this.inquireUI = new InquireUI(this, this.inquireControl);
         this.inquireControl.setUI(this.inquireUI);
         tabbedPane.addTab("InquireUI",this.inquireUI);
 

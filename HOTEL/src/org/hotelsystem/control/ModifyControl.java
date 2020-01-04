@@ -14,7 +14,6 @@ public class ModifyControl{
         this.mainControl = mainControl;
         this.dbutil = dbutil;
     }
-
     public void setUI(ModifyUI modifyUI){
         this.modifyUI = modifyUI;
     }
