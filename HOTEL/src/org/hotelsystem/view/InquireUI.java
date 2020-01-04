@@ -33,7 +33,7 @@ public class InquireUI extends JPanel implements ActionListener{
       ArrayList<Integer> a= new ArrayList<Integer>();
       a.add(12);
       a.add(15);
-      orders.add(new Order(i, 0, 0, a, 1250, 1350, 666*i));
+      orders.add(new Order(i, 0, 0, a, 20200112, 20200118, 666*i));
     }
     this.userName = "Default";
 

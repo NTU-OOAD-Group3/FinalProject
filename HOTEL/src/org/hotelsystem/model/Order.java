@@ -27,6 +27,29 @@ public class Order {
     public int getCheckinTime() { return this.checkinTime; }
     public int getCheckoutTime() { return this.checkoutTime; }
     public int getPrice() { return this.price; }
+    public ArrayList<Integer> getRoomsNum(){
+        ArrayList<Integer> rooms = new ArrayList<Integer>();
+        int singleNum = 0;
+        int doubleNum = 0;
+        int quadNum = 0;
+        for (int i=0;i<this.roomIDs.size();i++){
+            String tmp = Integer.toString(this.roomIDs.get(i));
+            if (tmp.charAt(0) == '1'){
+                singleNum ++;
+            }
+            else if (tmp.charAt(0) == '2'){
+                doubleNum ++;
+            }
+            else if (tmp.charAt(0) == '3'){
+                quadNum ++;
+            }
+        }
+        rooms.add(singleNum);
+        rooms.add(doubleNum);
+        rooms.add(quadNum);
+        return rooms;
+    }
+
 
     public void setOrderID(int orderID) { this.orderID = orderID; }
     public void setRoomIDs(ArrayList<Integer> roomIDs) { this.roomIDs = roomIDs; }
