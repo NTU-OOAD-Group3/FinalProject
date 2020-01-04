@@ -21,12 +21,13 @@ public class LoginControl {
 
         try{
             DBUtil db=this.mainControl.getDbutil();
-            db.getUser(username,password);
+            user=db.getUser(username,password);
             if(user==null){
                 return false;
             }
             else{
-                this.mainControl.currentUserID=user.getID();
+                this.mainControl.currentUserID=user.getUserID();
+                return true;
                 }
         } catch (Exception e) {
             System.out.println(e);
@@ -35,12 +36,6 @@ public class LoginControl {
     }
     public boolean verifySignup(String username, String password){
         return false;
-    }
-    public void setLoggedIn(){
-
-    }
-    public void setLoggedOut(){
-
     }
 
  
