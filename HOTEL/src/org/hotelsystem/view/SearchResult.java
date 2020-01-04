@@ -89,6 +89,7 @@ public class SearchResult extends JPanel implements ActionListener{
     }
 
     public void refreshUI(AvailableHotel availableHotel, ImageIcon imageIcon){
+        this.availableHotel = availableHotel;
         this.labelHotelImage.setIcon(imageIcon);
         this.labelHotelName.setText(Integer.toString(availableHotel.getHotelID()));
         this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
