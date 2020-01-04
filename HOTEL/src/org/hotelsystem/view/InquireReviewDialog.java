@@ -88,6 +88,7 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
             System.out.println(this.reviewText.getText());
             System.out.println(this.reviewStar.getSelectedItem());
             this.setVisible(false);
+            this.inquireControl.setReview(this.order, (String)this.reviewStar.getSelectedItem(), this.reviewText.getText());
         }
     }
     private void addWithConstraints(JPanel p, JComponent c,
