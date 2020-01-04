@@ -1,4 +1,5 @@
 package org.hotelsystem.control;
+import org.hotelsystem.model.DBUtil;
 
 import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Order;
@@ -8,9 +9,15 @@ import java.util.ArrayList;
 public class ModifyControl{
     private ModifyUI modifyUI;
     private MainControl mainControl;
+<<<<<<< HEAD
     private DBUtil dbutils = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
     ModifyControl(MainControl mainControl){
+=======
+    private DBUtil dbutil;
+    public ModifyControl(MainControl mainControl, DBUtil dbutil){
+>>>>>>> 5d4a829898af9accdea7716e5a15e2b510b2c3a5
         this.mainControl = mainControl;
+        this.dbutil = dbutil;
     }
 
     public void setUI(ModifyUI modifyUI){

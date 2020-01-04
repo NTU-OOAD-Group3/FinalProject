@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 public class InquireControl {
     private InquireUI inquireUI;
-    private DBUtil dbutils = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
+    private DBUtil dbutils;
     private User user;
     private MainControl mainControl;
 
-    InquireControl(MainControl mainControl){
+    InquireControl(MainControl mainControl, DBUtil dbutils){
         this.mainControl = mainControl;
+        this.dbutils = dbutils;
         //mock data
         this.user = new User(0,0,"NO cool","");
     }

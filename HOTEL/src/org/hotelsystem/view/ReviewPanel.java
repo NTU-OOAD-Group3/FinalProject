@@ -1,6 +1,6 @@
 package org.hotelsystem.view;
 
-import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.model.Review;
 import java.util.ArrayList;
 
 import java.awt.*;
@@ -36,10 +36,10 @@ public class ReviewPanel extends JPanel{
             GridBagConstraints.NONE, GridBagConstraints.WEST);
     }
 
-    public void setReview(HotelReview hotelReview){
-        this.labelUserID.setText(String.format("User: %d", hotelReview.getUserID()));
-        this.labelRating.setText(String.format("Rating: %d", hotelReview.getRating()));
-        this.taReview.setText(String.format("comment: \n    " + hotelReview.getReview()));
+    public void setReview(Review review){
+        this.labelUserID.setText(String.format("User: %d", review.getUserID()));
+        this.labelRating.setText(String.format("Rating: %d", review.getRating()));
+        this.taReview.setText(String.format("comment: \n    " + review.getReview()));
     }
 
     private void addWithConstraints(JComponent parent, JComponent c, int gridx, int gridy,

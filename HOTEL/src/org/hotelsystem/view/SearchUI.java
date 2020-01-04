@@ -2,7 +2,7 @@ package org.hotelsystem.view;
 
 import org.hotelsystem.control.SearchControl;
 import org.hotelsystem.model.AvailableHotel;
-import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.model.Review;
 
 import java.awt.*;
 import javax.swing.*;
@@ -50,8 +50,8 @@ public class SearchUI extends JPanel {
 		this.searchResult.setAvailableHotel(availableHotels, page, totalPage);
 	}
 
-	public void showReview(int hotelID, String dialogName, ArrayList<HotelReview> hotelReview, int page, int totalPage){
-		this.reviewDialogs.refresh(hotelID, hotelReview, page, totalPage);
+	public void showReview(int hotelID, String dialogName, ArrayList<Review> review, int page, int totalPage){
+		this.reviewDialogs.refresh(hotelID, review, page, totalPage);
 		this.reviewDialogs.setVisible(true);
 	}
 

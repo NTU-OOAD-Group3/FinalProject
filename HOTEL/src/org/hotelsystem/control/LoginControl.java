@@ -1,6 +1,7 @@
 package org.hotelsystem.control;
 
 import org.hotelsystem.model.LoginStatus;
+import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Users;
 import org.hotelsystem.model.User;
 import java.util.*;
@@ -8,8 +9,8 @@ public class LoginControl {
     private Encoder encoder;
    // private LoginUI login;
     private MainControl mainControl;
-
-    public LoginControl(MainControl mainControl){
+    private DBUtil dbutil;
+    public LoginControl(MainControl mainControl, DBUtil dbutil){
         this.mainControl = mainControl;
         this.encoder = new Encoder();
     }
