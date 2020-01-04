@@ -6,6 +6,7 @@ import org.hotelsystem.model.User;
 import java.util.*;
 public class LoginControl {
 
+   // private LoginUI login;
 
 
 	public boolean verifyLogin(String username, String password) {
