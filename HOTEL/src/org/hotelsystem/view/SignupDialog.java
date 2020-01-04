@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.control.LoginControl;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -20,14 +21,15 @@ public class SignupDialog extends JDialog implements ActionListener{
     private JPasswordField tfRepeatPassword;//get repeatpassword
     private JButton cancleButton; //cancle this dialog
     private JButton signUpButton; //signup
-
+    private LoginControl loginControl;
     private JRadioButton isHost;
     private int userType;
 
     private MainFrame parent;
 
-    public SignupDialog(MainFrame parent, String name){
+    public SignupDialog(MainFrame parent, String name,LoginControl lc){
         super(parent, name,true);
+        loginControl = lc;
         init();
     }
     private void init() {
@@ -88,13 +90,12 @@ public class SignupDialog extends JDialog implements ActionListener{
         this.signUpButton=new JButton("Sign up");
         this.addWithConstraints(signUpButton, 3, 4, 1, 1, 1, 1,
         GridBagConstraints.NONE, GridBagConstraints.CENTER);
-        this.cancleButton.addActionListener(this);
+        this.signUpButton.addActionListener(this);
 
         //line5
         this.isHost = new JRadioButton("Are you a Host?",false);
         this.addWithConstraints(isHost, 1, 5, 1, 1, 1, 1,
         GridBagConstraints.NONE, GridBagConstraints.CENTER);
-        this.cancleButton.addActionListener(this);
 
 
     }
@@ -116,7 +117,7 @@ public class SignupDialog extends JDialog implements ActionListener{
         if(e.getSource()==this.cancleButton){
             System.out.println("Cancle triggered");
            // System.out.println("test"+tfUsername.getText()+String.valueOf(tfPassword.getPassword()));
-            //JOptionPane.showMessageDialog(this,"Username cannot be empty");
+            JOptionPane.showMessageDialog(this,"Username cannot be empty");
             this.dispose();
         }
         else if(e.getSource()==this.signUpButton){
@@ -124,28 +125,41 @@ public class SignupDialog extends JDialog implements ActionListener{
             if(this.tfUsername.getText().equals("")){
                 JOptionPane.showMessageDialog(this,"Username cannot be empty");
             }
-            if(String.valueOf(this.tfPassword.getPassword()).equals("")||String.valueOf(this.tfRepeatPassword.getPassword()).equals("")){
+            else if(String.valueOf(this.tfPassword.getPassword()).equals("")||String.valueOf(this.tfRepeatPassword.getPassword()).equals("")){
                 JOptionPane.showMessageDialog(this,"Password cannot be empty");
             }
-            if(String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
+            else if(!String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
                 JOptionPane.showMessageDialog(this,"Repeat password is incorret");
             }
-            if(!this.tfUsername.getText().equals("")&&String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
+            else if(!this.tfUsername.getText().equals("")&&String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
                 //SIGN UP here
                 //throw username and password to controller.
                 System.out.println("Signup input is correct");
                 if(isHost.isSelected()){
-                    userType=1;
-                }
-                else{
                     userType=0;
                 }
-                if(this.parent.getLoginControl().verifySignup(this.tfUsername.getText(),String.valueOf(this.tfPassword.getPassword()),userType)){ 
+                else{
+                    userType=1;
+                }
+                boolean B= false;
+                try{
+                
+                System.out.println(this.tfUsername.getText());
+                System.out.println(String.valueOf(this.tfPassword.getPassword()));
+                System.out.println(userType);
+                B = loginControl.verifySignup(tfUsername.getText(),String.valueOf(this.tfPassword.getPassword()),userType);
+                }catch (Exception e1) {
+                    System.out.println(e1);
+                    
+                }
+                
+                
+                if(B){ 
                     JOptionPane.showMessageDialog(this,"Sign Up Successfully,please log in");
                     this.dispose();
                 }
                 else{
-                    JOptionPane.showMessageDialog(this,"Sign Up failed,this username is used");
+                    JOptionPane.showMessageDialog(this,"Sign Up failed,this username may be used");
                 }
             }
         }

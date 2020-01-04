@@ -127,7 +127,7 @@ public class LoginUI extends JPanel implements ActionListener{
         }
         else if( e.getSource() == this.signupButton ){
             System.out.println("signup triggered.");
-            SignupDialog signUpDlg = new SignupDialog(this.parent,"Sign Up");
+            SignupDialog signUpDlg = new SignupDialog(this.parent,"Sign Up",loginControl);
             signUpDlg.setVisible(true);
         }
     }

@@ -39,6 +39,7 @@ public class LoginControl {
         }
     }
     public boolean verifySignup(String username, String password,int usertype){
+        System.out.println("Controller is verifing sign up...");
         String passwordCode=encoder.crypt(password);
         System.out.println("Try signup with"+username+password);
         try{
