@@ -6,17 +6,15 @@ public class MainControl{
     private InquireControl inquireControl;
     private LoginControl loginControl;
     private ModifyControl modifyControl;
-    private ReserveControl reserveControl;
     private SearchControl searchControl;
     private MainFrame mainFrame;
 
     public MainControl(){
-        hostControl = new HostControl();
+        hostControl = new HostControl(this);
         inquireControl = new InquireControl(this);
-        loginControl = new LoginControl();
-        modifyControl = new ModifyControl();
-        reserveControl = new ReserveControl();
-        searchControl = new SearchControl();
+        loginControl = new LoginControl(this);
+        modifyControl = new ModifyControl(this);
+        searchControl = new SearchControl(this);
     }
 
     public HostControl getHostControl(){
@@ -33,10 +31,6 @@ public class MainControl{
 
     public ModifyControl getModifyControl(){
         return this.modifyControl;
-    }
-
-    public ReserveControl getReserveControl(){
-        return this.reserveControl;
     }
 
     public SearchControl getSearchControl(){

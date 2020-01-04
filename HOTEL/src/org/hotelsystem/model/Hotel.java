@@ -76,6 +76,8 @@ public class Hotel {
         for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
             for ( int y=0; y<=Math.min(roomNum - x, vacantDoubleNum); ++y ) {
                 int z = roomNum - x - y;
+                if ( z > vacantQuadNum )    
+                    continue;
                 if ( x + y + z == roomNum && x + 2*y + 4*z >= peopleNum ) {
                     ArrayList<Integer> comb = new ArrayList<Integer>();
                     comb.add(x); comb.add(y); comb.add(z);

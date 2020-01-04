@@ -73,6 +73,8 @@ public class SearchResults extends JPanel implements ActionListener{
         this.page = page;
         this.totalPage = totalPage;
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
+        if( availableHotels.size() == 0 )
+            JOptionPane.showMessageDialog(this, "No result found, please modify time, room number, or people number.", "No result.", JOptionPane.INFORMATION_MESSAGE);
         this.refreshUI(availableHotels);
     }
 

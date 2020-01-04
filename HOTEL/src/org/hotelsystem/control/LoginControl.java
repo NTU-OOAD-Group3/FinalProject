@@ -7,7 +7,11 @@ import java.util.*;
 public class LoginControl {
 
    // private LoginUI login;
+    private MainControl mainControl;
 
+    public LoginControl(MainControl mainControl){
+        this.mainControl = mainControl;
+    }
 
 	public boolean verifyLogin(String username, String password) {
         Users users=new Users();//removed into main.java
