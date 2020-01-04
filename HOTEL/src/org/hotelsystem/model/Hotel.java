@@ -86,6 +86,7 @@ public class Hotel {
                 }
             }
         }
+        keySort(combinationPrice, combinationPrice, roomCombination);
         AvailableHotel availableHotel = new AvailableHotel(
             this.hotelID, this.hotelStar, this.locality, this.address,
             roomCombination, combinationPrice);
@@ -116,4 +117,39 @@ public class Hotel {
         }
         return s;
     }
+
+
+    // Code from StackOverflow used to jointly sort two ArrayList.
+    public static <T extends Comparable<T>> void keySort(
+        final List<T> key, List<?>... lists){
+        // Create a List of indices
+        List<Integer> indices = new ArrayList<Integer>();
+        for(int i = 0; i < key.size(); i++)
+            indices.add(i);
+
+        // Sort the indices list based on the key
+        Collections.sort(indices, new Comparator<Integer>(){
+            @Override public int compare(Integer i, Integer j) {
+                return key.get(i).compareTo(key.get(j));
+            }
+        });
+
+        // Create a mapping that allows sorting of the List by N swaps.
+        Map<Integer,Integer> swapMap = new HashMap<Integer, Integer>(indices.size());
+
+        // Only swaps can be used b/c we cannot create a new List of type <?>
+        for(int i = 0; i < indices.size(); i++){
+            int k = indices.get(i);
+            while(swapMap.containsKey(k))
+                k = swapMap.get(k);
+
+            swapMap.put(i, k);
+        }
+
+        // for each list, swap elements to sort according to key list
+        for(Map.Entry<Integer, Integer> e : swapMap.entrySet())
+            for(List<?> list : lists)
+                Collections.swap(list, e.getKey(), e.getValue());
+    }
+    
 }
