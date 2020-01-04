@@ -37,7 +37,7 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
         this.labelCombination = new JLabel("    " + this.combinationInfo);
         this.btnReserve = new JButton("Reserve!");
         this.btnReserve.addActionListener(this);
-        this.add(this.labelCombination, BorderLayout.NORTH);
+        this.add(this.labelCombination, BorderLayout.CENTER);
         this.add(this.btnReserve, BorderLayout.SOUTH);
         this.setSize(300, 90);
     }
@@ -46,7 +46,7 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
         if( e.getSource() == this.btnReserve ){
             System.out.println("RESERVE !!!!!");
             this.dispose();
-            Order order = new Order(0, 0, this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
+            Order order = new Order(-1, this.searchControl.getUserID(), this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
             if( this.searchControl.insertOrder(order, this.combination.get(0), this.combination.get(1), this.combination.get(2)) ){
             }
             else{

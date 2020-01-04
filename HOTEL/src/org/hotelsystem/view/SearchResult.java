@@ -119,7 +119,7 @@ public class SearchResult extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnReview ){
             System.out.println("Review triggered.");
-            this.searchControl.getReviews( this.availableHotel.getHotelID() );
+            this.searchControl.getHotelReviews( this.availableHotel.getHotelID() );
         } 
         else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");

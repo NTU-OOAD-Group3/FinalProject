@@ -193,15 +193,16 @@ public class DBUtil {
         return hotels;
     }
 
-    public ArrayList<Review> getReviews(int hotelID) {
+    public ArrayList<Review> getHotelReviews(int hotelID) {
         ArrayList<Review> reviews = new ArrayList<Review>();
         String cmd = null;
         try {
             this.stmt = this.conn.createStatement();
-            cmd = "SELECT UserID, Rating, Review " +
+            cmd = "SELECT OrderID, UserID, Rating, Review " +
                 "FROM Reviews " +
                 "WHERE HotelID = " + String.valueOf(hotelID) + " " +
                 "ORDER BY ReviewTime DESC;";
+            System.out.println(cmd);
             this.result = this.stmt.executeQuery(cmd);
             if ( !this.result.isBeforeFirst() ) {
                 // System.err.println("EMPTY_QUERY");
