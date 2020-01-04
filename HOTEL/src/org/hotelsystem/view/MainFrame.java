@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
     public MainFrame(MainControl mainControl) {
         
         super("Main Frame");
-
+        mainControl.setUI(this);
         this.searchControl = mainControl.getSearchControl();
         this.reserveControl = mainControl.getReserveControl();
         this.loginControl = mainControl.getLoginControl();
@@ -57,8 +57,10 @@ public class MainFrame extends JFrame {
         this.modifyUI = new ModifyUI();
         tabbedPane.addTab("ModifyUI",this.modifyUI);      
         
-        this.inquireUI = new InquireUI(this, this.modifyUI);
+        this.inquireUI = new InquireUI(this.inquireControl);
+        this.inquireControl.setUI(this.inquireUI);
         tabbedPane.addTab("InquireUI",this.inquireUI);
+
 
         
         add(tabbedPane, BorderLayout.CENTER);
@@ -66,7 +68,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    public void switchPanal(int switchTo){
+    public void switchPane(int switchTo){
         this.tabbedPane.setSelectedIndex(switchTo);
     } 
 

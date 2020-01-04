@@ -1,6 +1,7 @@
 ./org/hotelsystem/control/ModifyControl.java
 ./org/hotelsystem/control/LoginControl.java
 ./org/hotelsystem/control/ReserveControl.java
+./org/hotelsystem/control/MainControl.java
 ./org/hotelsystem/control/SearchControl.java
 ./org/hotelsystem/control/HostControl.java
 ./org/hotelsystem/control/InquireControl.java
@@ -27,6 +28,7 @@
 ./org/hotelsystem/view/SearchResults.java
 ./org/hotelsystem/view/HostMenuUI.java
 ./org/hotelsystem/view/MainFrame.java
+./org/hotelsystem/view/ReserveCheckDialog.java
 ./org/hotelsystem/view/SearchUI.java
 ./org/hotelsystem/view/DatePickerDialog.java
 ./org/hotelsystem/view/SearchBar.java

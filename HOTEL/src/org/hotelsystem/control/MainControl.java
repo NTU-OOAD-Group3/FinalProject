@@ -8,10 +8,11 @@ public class MainControl{
     private ModifyControl modifyControl;
     private ReserveControl reserveControl;
     private SearchControl searchControl;
+    private MainFrame mainFrame;
 
     public MainControl(){
         hostControl = new HostControl();
-        inquireControl = new InquireControl();
+        inquireControl = new InquireControl(this);
         loginControl = new LoginControl();
         modifyControl = new ModifyControl();
         reserveControl = new ReserveControl();
@@ -40,5 +41,13 @@ public class MainControl{
 
     public SearchControl getSearchControl(){
         return this.searchControl;
+    }
+
+    public void setUI(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
+    }
+
+    public void switchPane(int switchTo){
+        this.mainFrame.switchPane(switchTo);
     }
 }
