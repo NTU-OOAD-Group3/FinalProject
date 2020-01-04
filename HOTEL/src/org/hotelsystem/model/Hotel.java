@@ -92,6 +92,36 @@ public class Hotel {
         return availableHotel;
     }
 
+    /**
+     * Assign vacant RoomIDs with given number of rooms of each type.
+     * @param singleNum Number of Single-person rooms.
+     * @param doubleNum Number of Double-person rooms.
+     * @param quadNum Number of Quad-person rooms.
+     * @return ArrayList of Integers represents assigned vacant RoomIDs.
+     */
+    public ArrayList<Integer> assignRooms(int singleNum, int doubleNum, int quadNum) {
+        ArrayList<Integer> roomIDs = new ArrayList<Integer>();
+        for ( int i=0; i<this.singleRooms.size() && singleNum>0; ++i ) {
+            if ( !this.singleRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.singleRooms.get(i).getRoomID());
+                --singleNum;
+            }
+        }
+        for ( int i=0; i<this.doubleRooms.size() && doubleNum>0; ++i ) {
+            if ( !this.doubleRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.doubleRooms.get(i).getRoomID());
+                --doubleNum;
+            }
+        }
+        for ( int i=0; i<this.quadRooms.size() && quadNum>0; ++i ) {
+            if ( !this.quadRooms.get(i).isOccupied() ) {
+                roomIDs.add(this.quadRooms.get(i).getRoomID());
+                --quadNum;
+            }
+        }
+        return roomIDs;
+    }
+
     public boolean checkAvailable(int singleNum, int doubleNum, int quadNum) {
         this.calcVacantNum();
         if ( singleNum <= this.vacantSingleNum ) { return false; }
