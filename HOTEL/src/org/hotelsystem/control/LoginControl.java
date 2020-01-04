@@ -16,14 +16,21 @@ public class LoginControl {
     }
 
 	public boolean verifyLogin(String username, String password) {
-        Users users=new Users();//removed into main.java
+        User user =null;
         //users.getUsers().size();
-        for(User tmp:users.getUsers()){//DB interface will replace this.
-            if(tmp.getUsername().equals(username)&&tmp.getPassword().equals(password)){
-                return true;
+
+        try{
+            user=this.mainControl.DBUtil.getUsers(username,password)
+            if(user==null){
+                return false;
             }
+            else{
+                this.mainControl.currentUserID=user.getID();
+                }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
-        return false;
     }
     public boolean verifySignup(String username, String password){
         return false;

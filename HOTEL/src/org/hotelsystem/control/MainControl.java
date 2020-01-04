@@ -9,6 +9,7 @@ public class MainControl{
     private LoginControl loginControl;
     private ModifyControl modifyControl;
     private SearchControl searchControl;
+    private AccountControl accountControl;
     private MainFrame mainFrame;
     private DBUtil dbutil;
     public int currentUserID;
@@ -39,6 +40,9 @@ public class MainControl{
 
     public SearchControl getSearchControl(){
         return this.searchControl;
+    }
+    public AccountControl getAccountControl(){
+        return this.accountControl;
     }
 
     public void setUI(MainFrame mainFrame){
