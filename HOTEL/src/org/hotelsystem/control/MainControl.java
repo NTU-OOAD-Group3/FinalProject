@@ -8,13 +8,17 @@ public class MainControl{
     private ModifyControl modifyControl;
     private SearchControl searchControl;
     private MainFrame mainFrame;
-
+    public int currentUserID;
     public MainControl(){
         hostControl = new HostControl(this);
         inquireControl = new InquireControl(this);
         loginControl = new LoginControl(this);
         modifyControl = new ModifyControl(this);
         searchControl = new SearchControl(this);
+    }
+
+    public Encoder getEncoder(){
+        return this.encoder;
     }
 
     public HostControl getHostControl(){
