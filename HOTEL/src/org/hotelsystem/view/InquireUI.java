@@ -14,6 +14,7 @@ import java.text.*;
 
 public class InquireUI extends JPanel implements ActionListener{
   private InquireControl inquireControl;
+  private JFrame parent;
 
   private JPanel userInfo;
   private JPanel searchOrder;
@@ -23,14 +24,16 @@ public class InquireUI extends JPanel implements ActionListener{
   private JLabel userNameLabel;
   private JLabel orderSumLabel;
   private JLabel orderQuickView;
+  private InquireReviewDialog inquireReviewDialog;
 
   private User user;
   private ArrayList<Order> orders = new ArrayList<Order>();
 
   
-  public InquireUI(InquireControl inquireControl) {
+  public InquireUI(JFrame parent, InquireControl inquireControl) {
     this.setLayout(new GridBagLayout());
     this.inquireControl = inquireControl;
+    this.parent = parent;
     //mock Data
     ArrayList<Order> orders = new ArrayList<Order>();
     for (int i=0;i<10;i++){
@@ -54,7 +57,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.orderQuickView.setText(" Order ID: " + orderIDsToString());
 
     this.remove(this.showGeneralOrder);
-    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl, this.parent);
     this.showGeneralOrder.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -110,7 +113,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.addWithConstraints(this.userInfo, this.orderQuickView, 0, 3, 1, 1, 1, 2,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
-    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl, this.parent);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -200,12 +203,16 @@ public class InquireUI extends JPanel implements ActionListener{
                 int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
                 if (modify == JOptionPane.YES_OPTION) {
                   this.inquireControl.switchToModify(this.orders.get(i));
+                  System.out.println("Modify!!!");
                   //this.inquireControl.setOrders();
                 }
               }
               else{
                 int review =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to leave a review?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
                 if (review == JOptionPane.YES_OPTION) {
+                  this.inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.orders.get(i));
+                  this.inquireReviewDialog.setLocationRelativeTo(this);
+                  this.inquireReviewDialog.setVisible(true);
                   System.out.println("Review!!!");
                 }
               }

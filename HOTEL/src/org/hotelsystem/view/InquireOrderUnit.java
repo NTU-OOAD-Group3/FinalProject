@@ -20,11 +20,13 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     private boolean haveLived = true;
     private JButton btnModify;
     private Order order;
+    private JFrame parent;
 
 
-    public InquireOrderUnit(Order order, InquireControl inquireControl) {
+    public InquireOrderUnit(Order order, InquireControl inquireControl, JFrame parent) {
         this.inquireControl = inquireControl;
         this.order = order;
+        this.parent = parent;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))) this.haveLived = false;
 
@@ -112,7 +114,10 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnModify){
             if (this.haveLived){
-                System.out.println("Jump out event");
+                InquireReviewDialog inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.order);
+                inquireReviewDialog.setLocationRelativeTo(this);
+                inquireReviewDialog.setVisible(true);
+                System.out.println("Review!!!");
             }
             else{
                 this.inquireControl.switchToModify(this.order);
