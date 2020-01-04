@@ -6,13 +6,13 @@ import org.hotelsystem.model.Users;
 import org.hotelsystem.model.User;
 import java.util.*;
 public class LoginControl {
-
+    private Encoder encoder;
    // private LoginUI login;
     private MainControl mainControl;
     private DBUtil dbutil;
     public LoginControl(MainControl mainControl, DBUtil dbutil){
         this.mainControl = mainControl;
-        this.dbutil = dbutil;
+        this.encoder = new Encoder();
     }
 
 	public boolean verifyLogin(String username, String password) {

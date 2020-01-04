@@ -166,8 +166,8 @@ public class DBUtil {
         return hotels;
     }
 
-    public ArrayList<HotelReview> getHotelReviews(int hotelID) {
-        ArrayList<HotelReview> hotelReviews = new ArrayList<HotelReview>();
+    public ArrayList<Review> getHotelReviews(int hotelID) {
+        ArrayList<Review> hotelReviews = new ArrayList<Review>();
         String cmd = null;
         try {
             this.stmt = this.conn.createStatement();
@@ -180,12 +180,12 @@ public class DBUtil {
                 // System.err.println("EMPTY_QUERY");
             }
             while ( this.result.next() ) {
+                int orderID = this.result.getInt("OrderID");
                 int userID = this.result.getInt("UserID");
                 int rating = this.result.getInt("Rating");
-                String review = this.result.getString("Review");
-                hotelReviews.add(new HotelReview(hotelID, userID, rating, review));
+                String reviewStr = this.result.getString("Review");
+                hotelReviews.add(new Review(orderID, hotelID, userID, rating, reviewStr));
             }
-
             this.stmt.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -194,6 +194,52 @@ public class DBUtil {
         }
         System.out.printf("get %d reviews\n", hotelReviews.size());
         return hotelReviews;
+    }
+
+    public Review getOrderReview(int orderID) {
+        Review review = null;
+        try {
+            this.stmt = this.conn.createStatement();
+            String cmd = "SELECT * FROM Reviews " +
+                "WHERE OrderID = " + String.valueOf(orderID) + ";";
+            this.result = this.stmt.executeQuery(cmd);
+            if ( this.result.isBeforeFirst() ) {
+                this.result.next();
+                int hotelID = this.result.getInt("HotelID");
+                int userID = this.result.getInt("UserID");
+                int rating = this.result.getInt("Rating");
+                String reviewStr = this.result.getString("Review");
+                review = new Review(orderID, hotelID, userID, rating, reviewStr);
+            }
+            this.stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            System.exit(1);
+        }
+        return review;
+    }
+
+    public boolean insertReview(Review review) {
+        try {
+            this.stmt = this.conn.createStatement();
+            String cmd = "INSERT INTO Reviews " +
+                "(HotelID, UserID, OrderID, Rating, Review) VALUES (" +
+                String.valueOf(review.getHotelID()) + ", " +
+                String.valueOf(review.getUserID()) + ", " +
+                String.valueOf(review.getOrderID()) + ", " +
+                String.valueOf(review.getRating()) + ", " +
+                "\"" + review.getReview() + "\");";
+            // System.out.println(cmd);
+            int rowCount = this.stmt.executeUpdate(cmd);
+            this.stmt.close();
+            if ( rowCount != 1 ) { return false; }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public ArrayList<String> getLocality() {
@@ -372,6 +418,7 @@ public class DBUtil {
             this.stmt = this.conn.createStatement();
             this.result = this.stmt.executeQuery("SELECT MAX(OrderID) AS MaxOrderID FROM Orders FOR UPDATE;");
             while ( this.result.next() ) { order.setOrderID(this.result.getInt("MaxOrderID") + 1); }
+            this.stmt.close();
             // Insert rows to table
             PreparedStatement ps = this.conn.prepareStatement(cmd);
             for ( int i=0; i<order.getRoomIDs().size(); ++i ) {
@@ -479,8 +526,16 @@ public class DBUtil {
         // dbutil.insertOrder(order, 3, 2, 2);
         // boolean rtn = dbutil.modifyOrder(order, 2, 1, 1, 20200103, 20200105);
         // System.out.println(rtn);
-        User user = dbutil.getUser("Howard", "123");
-        System.out.println(user);
+        // User user = dbutil.getUser("Howard", "123");
+        // System.out.println(user);
+        // Order order = new Order(11, 0, 148, null, 202001015, 20200124, 0);
+        Review review = dbutil.getOrderReview(11);
+        System.out.println(review);
+        // if ( review == null ) {
+        review = new Review(11, 148, 0, 5, "Awesome!");
+        boolean rtn = dbutil.insertReview(review);
+        System.out.println(rtn);
+        // }
         long time2 = System.currentTimeMillis();
         System.out.println("Time cost: " + String.valueOf(time2 - time1) + " ms.");
         // System.out.println(orders.size());
