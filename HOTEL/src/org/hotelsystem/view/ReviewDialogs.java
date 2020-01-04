@@ -1,6 +1,6 @@
 package org.hotelsystem.view;
 
-import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.model.Review;
 import org.hotelsystem.control.SearchControl;
 import java.util.ArrayList;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class ReviewDialogs extends JDialog implements ActionListener{
     private int page = 0;
     private int totalPage = 0;
     private ReviewPanel[] ReviewArray = new ReviewPanel[10];
-    private ArrayList<HotelReview> hotelReviews = new ArrayList<HotelReview>(0) ;
+    private ArrayList<Review> reviews = new ArrayList<Review>(0) ;
     private JPanel listPanel;
     private JPanel bottomPanel;
     private JButton btnPrevPage;
@@ -20,9 +20,9 @@ public class ReviewDialogs extends JDialog implements ActionListener{
     private JLabel labelPageNum;
     private SearchControl searchControl;
 
-    public ReviewDialogs(int hotelID, JFrame parent, String name, ArrayList<HotelReview> hotelReviews, int page, int totalPage, SearchControl searchControl){
+    public ReviewDialogs(int hotelID, JFrame parent, String name, ArrayList<Review> reviews, int page, int totalPage, SearchControl searchControl){
         super(parent, name, true);
-        this.hotelReviews = hotelReviews;
+        this.reviews = reviews;
         this.page = page;
         this.totalPage = totalPage;
         this.searchControl = searchControl;
@@ -66,12 +66,12 @@ public class ReviewDialogs extends JDialog implements ActionListener{
         this.setSize(800, 600);
     }
 
-    public void refresh(int hotelID, ArrayList<HotelReview> hotelReviews, int page, int totalPage){
-        for ( int i=0; i<10 && i<hotelReviews.size(); ++i ) {
-            this.ReviewArray[i].setReview(hotelReviews.get(i));
+    public void refresh(int hotelID, ArrayList<Review> reviews, int page, int totalPage){
+        for ( int i=0; i<10 && i<reviews.size(); ++i ) {
+            this.ReviewArray[i].setReview(reviews.get(i));
             this.ReviewArray[i].setVisible(true);
         }
-        for( int i=hotelReviews.size(); i<10; ++i){
+        for( int i=reviews.size(); i<10; ++i){
             this.ReviewArray[i].setVisible(false);
         }
         this.labelPageNum.setText(String.format("%d/%d", page + 1, totalPage + 1));
