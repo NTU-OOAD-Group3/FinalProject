@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 public class Encoder{
 
 
-    public static String crypt(String str) {
+    public String crypt(String str) {
 		if (str == null || str.length() == 0) {
 			throw new IllegalArgumentException("String to encript cannot be null or zero length");
 		}
@@ -25,4 +25,5 @@ public class Encoder{
 		}
 		return hexString.toString();
 	}
+
 }

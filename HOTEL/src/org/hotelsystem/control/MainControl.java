@@ -52,6 +52,9 @@ public class MainControl{
     public void switchPane(int switchTo){
         this.mainFrame.switchPane(switchTo);
     }
+    public DBUtil getDbutil(){
+        return this.dbutil;
+    }
 
     public int getcurrentUserId(){ return this.currentUserID;}
     public void setcurrentUserId(int id){this.currentUserID=id;}

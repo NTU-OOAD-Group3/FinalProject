@@ -18,14 +18,20 @@ public class LoginControl {
 	public boolean verifyLogin(String username, String password) {
         User user =null;
         //users.getUsers().size();
+        String passwordCode=encoder.crypt(password);
 
         try{
-            user=this.mainControl.DBUtil.getUsers(username,password)
+            DBUtil db=this.mainControl.getDbutil();
+            System.out.println("Try login with");
+            System.out.println(username);
+            System.out.println(passwordCode);
+            user=db.getUser(username,passwordCode);
             if(user==null){
                 return false;
             }
             else{
-                this.mainControl.currentUserID=user.getID();
+                this.mainControl.currentUserID=user.getUserID();
+                return true;
                 }
         } catch (Exception e) {
             System.out.println(e);
@@ -34,12 +40,6 @@ public class LoginControl {
     }
     public boolean verifySignup(String username, String password){
         return false;
-    }
-    public void setLoggedIn(){
-
-    }
-    public void setLoggedOut(){
-
     }
 
  

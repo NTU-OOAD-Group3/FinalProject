@@ -56,4 +56,7 @@ public class AccountUI extends JPanel implements ActionListener{
             
         }
     }
+    public void setName(String name) {
+        this.nameLabel.setText(name);
+    }
 }
