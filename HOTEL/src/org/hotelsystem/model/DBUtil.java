@@ -41,6 +41,36 @@ public class DBUtil {
         }
     }
 
+    /**
+     * Get User instance from DB with corresponding username & password.
+     * @param username The username to login.
+     * @param password The password to login.
+     * @return A User object if retrieve successfully, null if failed.
+     */
+    public User getUser(String username, String password) {
+        User user = null;
+        try {
+            this.stmt = this.conn.createStatement();
+            this.result = this.stmt.executeQuery(
+                "SELECT UserID, UserType FROM Users " +
+                "WHERE Username = \"" + username + "\" " +
+                "AND Password = \"" + password + "\";"
+            );
+            if ( this.result.isBeforeFirst() ) {
+                this.result.next();
+                int userID = this.result.getInt("UserID");
+                int userType = this.result.getInt("UserType");
+                user = new User(userID, userType, username, password);
+            }
+            this.stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            System.exit(1);
+        }
+        return user;
+    }
+
     public ArrayList<Hotel> getHotels(String locality, int checkin, int checkout) {
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
         String cmd = null;
@@ -311,17 +341,24 @@ public class DBUtil {
         return hotel;
     }
 
-    public void insertOrder(Order order, int singleNum, int doubleNum, int quadNum) {
-        // Set incremental orderID
-        order.setOrderID(this.getLastOrderID() + 1);
+    /**
+     * Insert order with given arguments into DB.
+     * @param order The order instance to insert into DB. (orderID should be -1, roomIDs should be null)
+     * @param singleNum The target number of 1-person rooms.
+     * @param doubleNum The target number of 2-person rooms.
+     * @param quadNum The target number of 4-person rooms.
+     * @return True if the insertion was successful, False if some errors occured.
+     */
+    public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum) {
         // Assign vacant rooms
         Hotel hotel = this.getHotel(order.getHotelID(), order.getCheckinTime(), order.getCheckoutTime());
         ArrayList<Integer> roomIDs = hotel.assignRooms(singleNum, doubleNum, quadNum);
         order.setRoomIDs(roomIDs);
+        if ( order.getRoomIDs().size() != singleNum + doubleNum + quadNum ) { return false; }
         // Insert order
         String cmd = "INSERT INTO Orders " +
-            String.format("SELECT %d, %d, %d, ?, \"%s\", \"%s\" FROM dual ",
-                order.getOrderID(), order.getUserID(), order.getHotelID(),
+            String.format("SELECT ?, %d, %d, ?, \"%s\", \"%s\" FROM dual ",
+                order.getUserID(), order.getHotelID(),
                 this.dateIntToString(order.getCheckinTime()),
                 this.dateIntToString(order.getCheckoutTime())) +
             "WHERE NOT EXISTS (SELECT OrderID FROM Orders " +
@@ -331,17 +368,23 @@ public class DBUtil {
                 this.dateIntToString(order.getCheckinTime()));
         try {
             this.conn.setAutoCommit(false);
+            // Set incremental orderID
+            this.stmt = this.conn.createStatement();
+            this.result = this.stmt.executeQuery("SELECT MAX(OrderID) AS MaxOrderID FROM Orders FOR UPDATE;");
+            while ( this.result.next() ) { order.setOrderID(this.result.getInt("MaxOrderID") + 1); }
+            // Insert rows to table
             PreparedStatement ps = this.conn.prepareStatement(cmd);
             for ( int i=0; i<order.getRoomIDs().size(); ++i ) {
                 System.out.println(order.getRoomIDs());
-                ps.setInt(1, order.getRoomIDs().get(i));
+                ps.setInt(1, order.getOrderID());
                 ps.setInt(2, order.getRoomIDs().get(i));
+                ps.setInt(3, order.getRoomIDs().get(i));
                 int rowCount = ps.executeUpdate();
                 if ( rowCount == 0 ) {
                     System.err.println("Rollback!");
                     this.conn.rollback();
                     this.conn.setAutoCommit(true);
-                    return ;
+                    return false;
                 }
             }
             this.conn.commit();
@@ -351,6 +394,7 @@ public class DBUtil {
             e.getStackTrace();
             System.exit(1);
         }
+        return true;
     }
 
     private String dateIntToString(int date) {
@@ -363,14 +407,80 @@ public class DBUtil {
         }
     }
 
+    /**
+     * Modify order with given arguments & apply changes to database.
+     * @param order The original order instance to modify.
+     * @param newSN The target number of 1-person rooms.
+     * @param newDN The target number of 2-person rooms.
+     * @param newQN The target number of 4-person rooms.
+     * @param newCheckin The target checkin time.
+     * @param newCheckout The target checkout time.
+     * @return True if the modification was successful, False if some errors occured.
+     */
+    public boolean modifyOrder(Order order, int newSN, int newDN, int newQN, int newCheckin, int newCheckout) {
+        // Check new numbers of rooms are less than the original ones
+        int oriSN = 0, oriDN = 0, oriQN = 0;
+        for ( int i=0; i<order.getRoomIDs().size(); ++i ) {
+            int roomType = order.getRoomIDs().get(i) / 10000;
+            if ( roomType == 1 ) { ++oriSN; }
+            if ( roomType == 2 ) { ++oriDN; }
+            if ( roomType == 4 ) { ++oriQN; }
+        }
+        if ( newSN > oriSN || newDN > oriDN || newQN > oriQN ) { System.err.println("Rooms"); return false; }
+        // Check the new date interval is in the original one
+        if ( newCheckin < order.getCheckinTime() ) { System.err.println("Checkin"); return false; }
+        if ( newCheckout > order.getCheckoutTime() ) { System.err.println("Checkout"); return false; }
+        // Retrieve roomIDs to cancel (if any)
+        ArrayList<Integer> cancelRoomIDs = new ArrayList<Integer>();
+        int start = 0;
+        for ( int i=start+newSN; i<start+oriSN; ++i ) { cancelRoomIDs.add(order.getRoomIDs().get(i)); }
+        start += oriSN;
+        for ( int i=start+newDN; i<start+oriDN; ++i ) { cancelRoomIDs.add(order.getRoomIDs().get(i)); }
+        start += oriDN;
+        for ( int i=start+newQN; i<start+oriQN; ++i ) { cancelRoomIDs.add(order.getRoomIDs().get(i)); }
+        String cancelRoomIDStr = cancelRoomIDs.toString();
+        cancelRoomIDStr = cancelRoomIDStr.substring(1, cancelRoomIDStr.length()-1);
+        // Update the database
+        try {
+            this.stmt = this.conn.createStatement();
+            // Delete cancelled rooms
+            String cmd = "DELETE FROM Orders " +
+                "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
+                "AND UserID = " + String.valueOf(order.getUserID()) + " " +
+                "AND HotelID = " + String.valueOf(order.getHotelID()) + " " +
+                "AND RoomID IN (" + cancelRoomIDStr + ");";
+            System.out.println(cmd);
+            this.stmt.executeUpdate(cmd);
+            // Update checkin, checkout
+            cmd = "UPDATE Orders " +
+                "SET CheckIn = \"" + this.dateIntToString(newCheckin) + "\" " +
+                "SET CheckOut = \"" + this.dateIntToString(newCheckout) + "\" " +
+                "WHERE OrderID = " + String.valueOf(order.getOrderID()) + " " +
+                "AND UserID = " + String.valueOf(order.getUserID()) + " " +
+                "AND HotelID = " + String.valueOf(order.getHotelID()) + ";";
+            System.out.println(cmd);
+            this.stmt.executeUpdate(cmd);
+            this.stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         DBUtil dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
         long time1 = System.currentTimeMillis();
         // ArrayList<Hotel> hotels = dbutil.getHotels("台北", 20200103, 20200105);
         // ArrayList<Order> orders = dbutil.getOrders(-1, 0, -1);
         // ArrayList<Integer> roomIDs = new ArrayList<Integer>();
-        Order order = new Order(-1, 0, 0, null, 20200103, 20200105, 0);
-        dbutil.insertOrder(order, 2, 1, 1);
+        // Order order = new Order(-1, 0, 0, null, 20200103, 20200106, 0);
+        // dbutil.insertOrder(order, 3, 2, 2);
+        // boolean rtn = dbutil.modifyOrder(order, 2, 1, 1, 20200103, 20200105);
+        // System.out.println(rtn);
+        User user = dbutil.getUser("Howard", "123");
+        System.out.println(user);
         long time2 = System.currentTimeMillis();
         System.out.println("Time cost: " + String.valueOf(time2 - time1) + " ms.");
         // System.out.println(orders.size());
