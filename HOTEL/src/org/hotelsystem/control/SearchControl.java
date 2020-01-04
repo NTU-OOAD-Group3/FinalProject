@@ -16,15 +16,16 @@ public class SearchControl {
     private ArrayList<AvailableHotel> availableHotel = new ArrayList<AvailableHotel>();
     private ArrayList<HotelReview> hotelReview = new ArrayList<HotelReview>();
     //
-    private DBUtil dbutils = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
+    private DBUtil dbutils;
     private int resultsPage = 0, resultsTotalPage = 0;
     private int reviewPage = 0, reviewTotalPage = 0;
     private int reviewHotelID = 0;
     private int searchPeople, searchRoom, searchNight;
     private int checkin, checkout;
     //
-	public SearchControl(MainControl mainControl){
+	public SearchControl(MainControl mainControl, DBUtil dbutils){
         this.mainControl = mainControl;
+        this.dbutils = dbutils;
     }
 
     public void setUI(SearchUI searchUI){

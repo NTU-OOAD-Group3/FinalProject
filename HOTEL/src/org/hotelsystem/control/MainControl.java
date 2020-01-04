@@ -1,4 +1,6 @@
 package org.hotelsystem.control;
+
+import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.view.MainFrame;
 
 public class MainControl{
@@ -8,13 +10,15 @@ public class MainControl{
     private ModifyControl modifyControl;
     private SearchControl searchControl;
     private MainFrame mainFrame;
+    private DBUtil dbutil;
 
     public MainControl(){
-        hostControl = new HostControl(this);
-        inquireControl = new InquireControl(this);
-        loginControl = new LoginControl(this);
-        modifyControl = new ModifyControl(this);
-        searchControl = new SearchControl(this);
+        this.dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
+        hostControl = new HostControl(this, this.dbutil);
+        inquireControl = new InquireControl(this, this.dbutil);
+        loginControl = new LoginControl(this, this.dbutil);
+        modifyControl = new ModifyControl(this, this.dbutil);
+        searchControl = new SearchControl(this, this.dbutil);
     }
 
     public HostControl getHostControl(){
