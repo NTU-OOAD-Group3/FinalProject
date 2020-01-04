@@ -32,7 +32,7 @@ public class SearchResults extends JPanel implements ActionListener{
         this.totalPage = 0;
         for ( int i=0; i<10 ; ++i ){
             resultArray[i] = new SearchResult(this.parent, new AvailableHotel(i, i, "test", "test", null, null), searchControl);
-            // resultArray[i].setVisible(false);
+            resultArray[i].setVisible(false);
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -63,7 +63,7 @@ public class SearchResults extends JPanel implements ActionListener{
             for( int i=round; i<10; ++i )
                 this.resultArray[i].setVisible(false);
         }
-        for( int i=0; i<10; ++i ){
+        for( int i=0; i<10 && i<availableHotels.size(); ++i ){
             this.resultArray[i].setVisible(true);
             this.resultArray[i].refreshUI(availableHotels.get(i));
         }

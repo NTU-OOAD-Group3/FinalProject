@@ -6,7 +6,7 @@ import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.HotelReview;
 import org.hotelsystem.view.SearchUI;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class SearchControl {
     private ArrayList<Hotel> hotels = new ArrayList<Hotel>(0);
@@ -39,10 +39,29 @@ public class SearchControl {
             if( temp.getRoomCombination().size() > 0 )
                 tmp.add(temp);
         }
+        Collections.sort(tmp);
         this.availableHotel = tmp;
         this.resultsTotalPage = (tmp.size() - 1) / 10;  
         this.setSearchResults(this.availableHotel, 0, (tmp.size() -1) / 10);
     }
+
+    public void applySearchFilter(int lower, int upper, int star, int priceOrder){
+        ArrayList<AvailableHotel> sortedAvailableHotel = new ArrayList<AvailableHotel>();
+        Collections.sort(availableHotel);
+        
+        for(int i=0;i<availableHotel.size();i++){
+            if(availableHotel.get(i).getMinPrice() >= lower && availableHotel.get(i).getMinPrice() <= upper && (availableHotel.get(i).getHotelStar() == star || star == 0)){
+                sortedAvailableHotel.add(availableHotel.get(i));
+            }
+        }
+            
+        if( priceOrder == 1)
+            Collections.reverse(sortedAvailableHotel);
+        this.resultsPage = 0;
+        this.resultsTotalPage = (sortedAvailableHotel.size() - 1) / 10;
+        this.setSearchResults(sortedAvailableHotel, this.resultsPage, this.resultsTotalPage);
+    }
+
 
     public void setSearchResults(ArrayList<AvailableHotel> availableHotel, int page, int totalPage){
         this.searchUI.setAvailableHotels(availableHotel, page, totalPage);

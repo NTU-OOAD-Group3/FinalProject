@@ -2,7 +2,7 @@ package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.control.SearchControl;
-import java.util.ArrayList;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -93,7 +93,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
         this.labelHotelLocality.setText(availableHotel.getLocality());
         this.labelHotelAddress.setText(availableHotel.getStreetAddress());
-        this.labelPrice.setText(Integer.toString(availableHotel.getCombinationPrice().get(0)));
+        this.labelPrice.setText(Integer.toString(Collections.min(availableHotel.getCombinationPrice())));
         this.labelSummary.setText(String.format("(%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), this.searchControl.getSearchRoom()));
         this.roomCombination = availableHotel.getRoomCombination();
         this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates");
