@@ -13,17 +13,13 @@ public class MainControl{
     private DBUtil dbutil;
     public int currentUserID;
     
-    public MainControl(){
+    public MainControl(){   
         this.dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
         hostControl = new HostControl(this, this.dbutil);
         inquireControl = new InquireControl(this, this.dbutil);
         loginControl = new LoginControl(this, this.dbutil);
         modifyControl = new ModifyControl(this, this.dbutil);
         searchControl = new SearchControl(this, this.dbutil);
-    }
-
-    public Encoder getEncoder(){
-        return this.encoder;
     }
 
     public HostControl getHostControl(){

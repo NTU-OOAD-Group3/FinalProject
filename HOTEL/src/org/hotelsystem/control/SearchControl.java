@@ -4,7 +4,7 @@ import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.model.Hotel;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.model.DBUtil;
-import org.hotelsystem.model.HotelReview;
+import org.hotelsystem.model.Review;
 import org.hotelsystem.view.SearchUI;
 
 import java.util.*;
@@ -14,7 +14,7 @@ public class SearchControl {
     private SearchUI searchUI;
     private MainControl mainControl;
     private ArrayList<AvailableHotel> availableHotel = new ArrayList<AvailableHotel>();
-    private ArrayList<HotelReview> hotelReview = new ArrayList<HotelReview>();
+    private ArrayList<Review> review = new ArrayList<Review>();
     //
     private DBUtil dbutils;
     private int resultsPage = 0, resultsTotalPage = 0;
@@ -103,7 +103,7 @@ public class SearchControl {
     }
 
     public void setReviewPage(int direction){
-        ArrayList<HotelReview> newHotelReview;
+        ArrayList<Review> newReview;
         if(direction > 0){
             if( this.reviewPage == this.reviewTotalPage ){
                 System.out.println("Already the final page.");
@@ -111,8 +111,8 @@ public class SearchControl {
             }
             else{
                 this.reviewPage += 1;
-                newHotelReview = new ArrayList<HotelReview>(this.hotelReview.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.hotelReview.size())));
-                this.showReview(this.reviewHotelID, "Hotel Reviews", newHotelReview, this.reviewPage, this.reviewTotalPage);
+                newReview = new ArrayList<Review>(this.review.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.review.size())));
+                this.showReview(this.reviewHotelID, "Hotel Reviews", newReview, this.reviewPage, this.reviewTotalPage);
             }
         }
         else{
@@ -121,15 +121,15 @@ public class SearchControl {
             }
             else{
                 this.reviewPage -= 1;
-                newHotelReview = new ArrayList<HotelReview>(this.hotelReview.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.hotelReview.size())));
-                this.showReview(this.reviewHotelID, "Hotel Reviews", newHotelReview, this.reviewPage, this.reviewTotalPage);
+                newReview = new ArrayList<Review>(this.review.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.review.size())));
+                this.showReview(this.reviewHotelID, "Hotel Reviews", newReview, this.reviewPage, this.reviewTotalPage);
             }
         }
     }
 
-    public void showReview(int hotelID, String dialogName, ArrayList<HotelReview> hotelReview, int page, int totalPage){
+    public void showReview(int hotelID, String dialogName, ArrayList<Review> review, int page, int totalPage){
         this.reviewHotelID = hotelID;
-        this.searchUI.showReview(hotelID, dialogName, hotelReview, page, totalPage);
+        this.searchUI.showReview(hotelID, dialogName, review, page, totalPage);
     }
 
     public ArrayList<String> getLocality(){
@@ -156,11 +156,11 @@ public class SearchControl {
         return this.checkout;
     }
 
-    public void getHotelReviews(int hotelID){
-        ArrayList<HotelReview> ans = dbutils.getHotelReviews(hotelID);
+    public void getReviews(int hotelID){
+        ArrayList<Review> ans = dbutils.getReviews(hotelID);
         this.reviewPage = 0;
         this.reviewTotalPage = (ans.size() - 1) / 10;
-        this.hotelReview = ans;
-        this.showReview(hotelID, "Hotel Reviews", ans, this.reviewPage, this.reviewTotalPage);
+        this.review = ans;
+        this.showReview(hotelID, "Reviews", ans, this.reviewPage, this.reviewTotalPage);
     }
 }

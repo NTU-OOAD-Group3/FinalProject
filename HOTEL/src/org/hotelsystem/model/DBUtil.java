@@ -166,8 +166,8 @@ public class DBUtil {
         return hotels;
     }
 
-    public ArrayList<Review> getHotelReviews(int hotelID) {
-        ArrayList<Review> hotelReviews = new ArrayList<Review>();
+    public ArrayList<Review> getReviews(int hotelID) {
+        ArrayList<Review> reviews = new ArrayList<Review>();
         String cmd = null;
         try {
             this.stmt = this.conn.createStatement();
@@ -184,7 +184,7 @@ public class DBUtil {
                 int userID = this.result.getInt("UserID");
                 int rating = this.result.getInt("Rating");
                 String reviewStr = this.result.getString("Review");
-                hotelReviews.add(new Review(orderID, hotelID, userID, rating, reviewStr));
+                reviews.add(new Review(orderID, hotelID, userID, rating, reviewStr));
             }
             this.stmt.close();
         } catch (Exception e) {
@@ -192,8 +192,8 @@ public class DBUtil {
             e.getStackTrace();
             System.exit(1);
         }
-        System.out.printf("get %d reviews\n", hotelReviews.size());
-        return hotelReviews;
+        System.out.printf("get %d reviews\n", reviews.size());
+        return reviews;
     }
 
     public Review getOrderReview(int orderID) {
