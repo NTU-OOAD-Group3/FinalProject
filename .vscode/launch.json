@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Encoder",
+            "request": "launch",
+            "mainClass": "org.hotelsystem.control.Encoder",
+            "projectName": "FinalProject_f9a64fb5"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - LoginUI",
             "request": "launch",
             "mainClass": "org.hotelsystem.view.LoginUI",

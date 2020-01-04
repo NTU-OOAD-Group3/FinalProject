@@ -25,4 +25,5 @@ public class Encoder{
 		}
 		return hexString.toString();
 	}
+
 }

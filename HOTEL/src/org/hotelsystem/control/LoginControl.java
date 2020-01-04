@@ -20,7 +20,8 @@ public class LoginControl {
         //users.getUsers().size();
 
         try{
-            user=this.mainControl.DBUtil.getUsers(username,password)
+            DBUtil db=this.mainControl.getDbutil();
+            db.getUser(username,password);
             if(user==null){
                 return false;
             }
