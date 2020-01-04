@@ -2,6 +2,7 @@ package org.hotelsystem.control;
 
 import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.model.Hotel;
+import org.hotelsystem.model.Order;
 import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.HotelReview;
 import org.hotelsystem.view.SearchUI;
@@ -19,6 +20,7 @@ public class SearchControl {
     private int reviewPage = 0, reviewTotalPage = 0;
     private int reviewHotelID = 0;
     private int searchPeople, searchRoom, searchNight;
+    private int checkin, checkout;
     //
 	public SearchControl(){
     }
@@ -40,6 +42,8 @@ public class SearchControl {
                 tmp.add(temp);
         }
         Collections.sort(tmp);
+        this.checkin = checkin;
+        this.checkout = checkout;
         this.availableHotel = tmp;
         this.resultsTotalPage = (tmp.size() - 1) / 10;  
         this.setSearchResults(this.availableHotel, 0, (tmp.size() -1) / 10);
@@ -67,6 +71,10 @@ public class SearchControl {
         this.searchUI.setAvailableHotels(availableHotel, page, totalPage);
     }
     
+    public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum){
+        return this.dbutils.insertOrder(order, singleNum, doubleNum, quadNum);
+    }
+
     public void setSearchResultsPage(int direction){
         ArrayList<AvailableHotel> newAvailableHotel;
         if(direction > 0){
@@ -135,6 +143,14 @@ public class SearchControl {
 
     public int getSearchNight(){
         return this.searchNight;
+    }
+
+    public int getCheckin(){
+        return this.checkin;
+    }
+
+    public int getCheckout(){
+        return this.checkout;
     }
 
     public void getHotelReviews(int hotelID){

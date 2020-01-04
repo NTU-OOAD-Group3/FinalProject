@@ -96,7 +96,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelPrice.setText(Integer.toString(Collections.min(availableHotel.getCombinationPrice())));
         this.labelSummary.setText(String.format("(%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), this.searchControl.getSearchRoom()));
         this.roomCombination = availableHotel.getRoomCombination();
-        this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates");
+        this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates", this.searchControl);
     }
     private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
@@ -121,6 +121,7 @@ public class SearchResult extends JPanel implements ActionListener{
         } 
         else if( e.getSource() == this.btnReserve ){
             System.out.println("Reserve triggered.");
+            this.roomCombDialog.setLocationRelativeTo(null);
             this.roomCombDialog.setVisible(true);
         }
     }  

@@ -135,7 +135,7 @@ public class SearchBar extends JPanel implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){ 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         if( e.getSource() == this.btnSearch ){
             System.out.println("Search triggered.");
@@ -147,11 +147,18 @@ public class SearchBar extends JPanel implements ActionListener{
                 
                 int checkin = Integer.valueOf(String.format("%4d%02d%02d", checkinDate.get(Calendar.YEAR), checkinDate.get(Calendar.MONTH) + 1, checkinDate.get(Calendar.DAY_OF_MONTH)));
                 int checkout = Integer.valueOf(String.format("%4d%02d%02d", checkoutDate.get(Calendar.YEAR), checkoutDate.get(Calendar.MONTH) + 1, checkoutDate.get(Calendar.DAY_OF_MONTH)));
-                this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
+                
+                if( (this.tfTotalNight.getText().isEmpty()) || (this.tfRoom.getText().isEmpty()) || (this.tfPeople.getText().isEmpty())){
+                    JOptionPane.showMessageDialog(this, "Please select dates, room number, people number before searching", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
+                    System.out.println("Search Comlete.");
+                }
             }
             catch(Exception error){
+                JOptionPane.showMessageDialog(this, "Please select dates, room number, people number before searching.", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            System.out.println("Search Comlete.");
             // searchAvailableHotel(this.jcmbLocality.getText(), checkin, checkout, Integer.valueOf(this.tfRoom), Integer.valueOf(this.tfPeople));
         }
         else if( e.getSource() == this.btnCheckinDate ){
@@ -175,12 +182,16 @@ public class SearchBar extends JPanel implements ActionListener{
                 Date checkinDate = sdf.parse(this.tfCheckin.getText());
                 Date checkoutDate = sdf.parse(this.tfCheckout.getText());
                 long diffInMillies = checkoutDate.getTime() - checkinDate.getTime();
-                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-                this.tfTotalNight.setText(String.valueOf(diff));
+                if( diffInMillies < 0)
+                    JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                else{
+                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                    this.tfTotalNight.setText(String.valueOf(diff));
+                }
             }
         }
         catch(Exception error){
-
+            
         }
     }  
 

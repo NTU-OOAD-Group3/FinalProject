@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 
 import org.hotelsystem.model.AvailableHotel;
+import org.hotelsystem.control.SearchControl;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -26,10 +27,14 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private JLabel labelAddress;
     private JButton[] btnCombination = new JButton[10];
     private JLabel labelPageNum;
+    private SearchControl searchControl;
+    private AvailableHotel availableHotel;
 
-    public RoomCombDialog(AvailableHotel availableHotel, JFrame parent, String name){
+    public RoomCombDialog(AvailableHotel availableHotel, JFrame parent, String name, SearchControl searchControl){
         super(parent, name, true);
         this.parent = parent;
+        this.searchControl = searchControl;
+        this.availableHotel = availableHotel;
         initUI(availableHotel);
     }
 
@@ -72,7 +77,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         }
         
-
+        
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
 
@@ -91,7 +96,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         this.add(listPanelScroll, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
     
-        this.setSize(300, 800);
+        this.setSize(320, 800);
     }
 
     private void addWithConstraints(JPanel p, JComponent c,
@@ -162,10 +167,12 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         else{
             for(int i=0; i<10; ++i){
                 if( e.getSource() == this.btnCombination[i] ){
-                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this.parent, "Are you sure to reserve?", this.btnCombination[i].getText());
+                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this.parent, "Are you sure to reserve?", this.availableHotel, 10 * this.page +i, this.searchControl);
+                    reserveCheckDialog.setLocationRelativeTo(null);
                     reserveCheckDialog.setVisible(true);
                 }
             }
+            dispose();
         }
 
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
