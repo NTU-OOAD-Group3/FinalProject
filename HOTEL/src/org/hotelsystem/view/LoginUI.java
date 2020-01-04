@@ -109,6 +109,9 @@ public class LoginUI extends JPanel implements ActionListener{
                 
                 if(this.loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
                     //ENCODER SHOULD BE HERE to deal with password.getText()
+
+                    
+                    this.parent.setName(this.tfUsername.getText());
                     this.parent.loginChange();
                     
                 }

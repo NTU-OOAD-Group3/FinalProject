@@ -18,10 +18,14 @@ public class LoginControl {
 	public boolean verifyLogin(String username, String password) {
         User user =null;
         //users.getUsers().size();
+        String passwordCode=encoder.crypt(password);
 
         try{
             DBUtil db=this.mainControl.getDbutil();
-            user=db.getUser(username,password);
+            System.out.println("Try login with");
+            System.out.println(username);
+            System.out.println(passwordCode);
+            user=db.getUser(username,passwordCode);
             if(user==null){
                 return false;
             }

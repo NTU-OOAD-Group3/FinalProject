@@ -73,6 +73,10 @@ public class MainFrame extends JFrame {
     public void setloggedout(){ 
         accountControl.setloggedout();
     }
+
+    public void setName(String name){
+        accountUI.setName(name);
+    }
     // public static void main(String[] args) {
     // 	MainFrame mainFrame = new MainFrame();
     // }
