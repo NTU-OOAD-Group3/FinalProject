@@ -16,23 +16,41 @@ public class LoginControl {
     }
 
 	public boolean verifyLogin(String username, String password) {
-        Users users=new Users();//removed into main.java
+        User user =null;
         //users.getUsers().size();
-        for(User tmp:users.getUsers()){//DB interface will replace this.
-            if(tmp.getUsername().equals(username)&&tmp.getPassword().equals(password)){
-                return true;
+        String passwordCode=encoder.crypt(password);
+
+        try{
+            DBUtil db=this.mainControl.getDbutil();
+            System.out.println("Try login with");
+            System.out.println(username);
+            System.out.println(passwordCode);
+            user=db.getUser(username,passwordCode);
+            if(user==null){
+                return false;
             }
+            else{
+                this.mainControl.currentUserID=user.getUserID();
+                return true;
+                }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
-        return false;
     }
-    public boolean verifySignup(String username, String password){
-        return false;
-    }
-    public void setLoggedIn(){
+    public boolean verifySignup(String username, String password,int usertype){
+        System.out.println("Controller is verifing sign up...");
+        String passwordCode=encoder.crypt(password);
+        System.out.println("Try signup with"+username+password);
+        try{
+            DBUtil db=this.mainControl.getDbutil();
+            return db.insertUser(usertype,username,passwordCode);
 
-    }
-    public void setLoggedOut(){
-
+        }
+        catch(Exception e){
+            return false;
+        }
+        
     }
 
  

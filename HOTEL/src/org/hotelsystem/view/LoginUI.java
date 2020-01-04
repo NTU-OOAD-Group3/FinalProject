@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 
+
 public class LoginUI extends JPanel implements ActionListener{
     private JLabel blankLableL;
     private JLabel blankLableR;
@@ -18,6 +19,7 @@ public class LoginUI extends JPanel implements ActionListener{
     private JPasswordField tfPassword; //get password input
     private JButton loginButton; //login  event 
     private JButton signupButton; //open up a new dialog
+
 
     private MainFrame parent;
     private LoginControl loginControl;
@@ -70,7 +72,7 @@ public class LoginUI extends JPanel implements ActionListener{
         this.signupButton.addActionListener(this);
         this.addWithConstraints(signupButton, 4, 3, 1, 1, 1, 1, 
         GridBagConstraints.NONE, GridBagConstraints.WEST);
-        
+      
  
     }
 
@@ -109,6 +111,9 @@ public class LoginUI extends JPanel implements ActionListener{
                 
                 if(this.loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
                     //ENCODER SHOULD BE HERE to deal with password.getText()
+
+                    
+                    this.parent.setName(this.tfUsername.getText());
                     this.parent.loginChange();
                     
                 }
@@ -122,7 +127,7 @@ public class LoginUI extends JPanel implements ActionListener{
         }
         else if( e.getSource() == this.signupButton ){
             System.out.println("signup triggered.");
-            SignupDialog signUpDlg = new SignupDialog(this.parent,"Sign Up");
+            SignupDialog signUpDlg = new SignupDialog(this.parent,"Sign Up",loginControl);
             signUpDlg.setVisible(true);
         }
     }

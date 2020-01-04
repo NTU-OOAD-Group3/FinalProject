@@ -1,16 +1,14 @@
 package org.hotelsystem.view;
 
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
+import org.hotelsystem.control.LoginControl;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.JRadioButton;
 public class SignupDialog extends JDialog implements ActionListener{
 
 
-    private JPanel signupPanel;
-    private JPanel bottomPanel;
 
     private JLabel blankLableL;
     private JLabel blankLableR;
@@ -19,13 +17,19 @@ public class SignupDialog extends JDialog implements ActionListener{
     private JLabel repeatpasswordLable;//repeatpassword:
     private JLabel textLable;//add instruction
     private JTextField tfUsername;/*get username input */
-    private JTextField tfPassword; //get password input
-    private JTextField tfRepeatPassword;//get repeatpassword
+    private JPasswordField tfPassword; //get password input
+    private JPasswordField tfRepeatPassword;//get repeatpassword
     private JButton cancleButton; //cancle this dialog
     private JButton signUpButton; //signup
+    private LoginControl loginControl;
+    private JRadioButton isHost;
+    private int userType;
 
-    public SignupDialog(JFrame parent, String name){
+    private MainFrame parent;
+
+    public SignupDialog(MainFrame parent, String name,LoginControl lc){
         super(parent, name,true);
+        loginControl = lc;
         init();
     }
     private void init() {
@@ -64,7 +68,7 @@ public class SignupDialog extends JDialog implements ActionListener{
         this.addWithConstraints(passwordLable, 1, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
         
-        this.tfPassword = new JTextField();
+        this.tfPassword = new JPasswordField();
         this.addWithConstraints(tfPassword, 2, 2, 2, 1, 2, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
 
@@ -73,7 +77,7 @@ public class SignupDialog extends JDialog implements ActionListener{
         this.addWithConstraints(repeatpasswordLable, 1, 3, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
-        this.tfRepeatPassword = new JTextField();
+        this.tfRepeatPassword = new JPasswordField();
         this.addWithConstraints(tfRepeatPassword, 2, 3, 2, 1, 2, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
@@ -86,8 +90,12 @@ public class SignupDialog extends JDialog implements ActionListener{
         this.signUpButton=new JButton("Sign up");
         this.addWithConstraints(signUpButton, 3, 4, 1, 1, 1, 1,
         GridBagConstraints.NONE, GridBagConstraints.CENTER);
-        this.cancleButton.addActionListener(this);
+        this.signUpButton.addActionListener(this);
 
+        //line5
+        this.isHost = new JRadioButton("Are you a Host?",false);
+        this.addWithConstraints(isHost, 1, 5, 1, 1, 1, 1,
+        GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
 
     }
@@ -108,22 +116,51 @@ public class SignupDialog extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==this.cancleButton){
             System.out.println("Cancle triggered");
+           // System.out.println("test"+tfUsername.getText()+String.valueOf(tfPassword.getPassword()));
+            JOptionPane.showMessageDialog(this,"Username cannot be empty");
             this.dispose();
         }
         else if(e.getSource()==this.signUpButton){
-            System.out.println("Sign Up triggered");
+            System.out.println("Sign Up triggered"+tfUsername.getText()+String.valueOf(tfPassword.getPassword()));
             if(this.tfUsername.getText().equals("")){
                 JOptionPane.showMessageDialog(this,"Username cannot be empty");
             }
-            if(this.tfPassword.getText().equals("")||this.tfRepeatPassword.getText().equals("")){
+            else if(String.valueOf(this.tfPassword.getPassword()).equals("")||String.valueOf(this.tfRepeatPassword.getPassword()).equals("")){
                 JOptionPane.showMessageDialog(this,"Password cannot be empty");
             }
-            if(this.tfPassword.getText().equals(this.tfRepeatPassword.getText())){
+            else if(!String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
                 JOptionPane.showMessageDialog(this,"Repeat password is incorret");
             }
-            if(!this.tfUsername.getText().equals("")&&this.tfPassword.getText().equals(this.tfRepeatPassword.getText())){
+            else if(!this.tfUsername.getText().equals("")&&String.valueOf(this.tfPassword.getPassword()).equals(String.valueOf(this.tfRepeatPassword.getPassword()))){
                 //SIGN UP here
                 //throw username and password to controller.
+                System.out.println("Signup input is correct");
+                if(isHost.isSelected()){
+                    userType=0;
+                }
+                else{
+                    userType=1;
+                }
+                boolean B= false;
+                try{
+                
+                System.out.println(this.tfUsername.getText());
+                System.out.println(String.valueOf(this.tfPassword.getPassword()));
+                System.out.println(userType);
+                B = loginControl.verifySignup(tfUsername.getText(),String.valueOf(this.tfPassword.getPassword()),userType);
+                }catch (Exception e1) {
+                    System.out.println(e1);
+                    
+                }
+                
+                
+                if(B){ 
+                    JOptionPane.showMessageDialog(this,"Sign Up Successfully,please log in");
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Sign Up failed,this username may be used");
+                }
             }
         }
 
