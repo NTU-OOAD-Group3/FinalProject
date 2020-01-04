@@ -5,9 +5,13 @@ import org.hotelsystem.model.Order;
 import org.hotelsystem.view.ModifyUI;
 import java.util.ArrayList;
 
-public class ModifyControl {
+public class ModifyControl{
     private ModifyUI modifyUI;
+    private MainControl mainControl;
     private DBUtil dbutils = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
+    ModifyControl(MainControl mainControl){
+        this.mainControl = mainControl;
+    }
 
     public void setUI(ModifyUI modifyUI){
         this.modifyUI = modifyUI;

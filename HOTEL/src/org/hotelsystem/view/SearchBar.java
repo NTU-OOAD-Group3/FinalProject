@@ -182,8 +182,8 @@ public class SearchBar extends JPanel implements ActionListener{
                 Date checkinDate = sdf.parse(this.tfCheckin.getText());
                 Date checkoutDate = sdf.parse(this.tfCheckout.getText());
                 long diffInMillies = checkoutDate.getTime() - checkinDate.getTime();
-                if( diffInMillies < 0)
-                    JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                if( diffInMillies < 1)
+                    JOptionPane.showMessageDialog(this, "Checkout time must be later than checkin time.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 else{
                     long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
                     this.tfTotalNight.setText(String.valueOf(diff));
