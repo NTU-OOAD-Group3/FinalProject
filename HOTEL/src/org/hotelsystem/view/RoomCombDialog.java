@@ -13,6 +13,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private int totalPage = 0;
     private ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>(0);
     private ArrayList<Integer> combinationPrice = new ArrayList<Integer>(0);
+    private JFrame parent;
     private JPanel hotelPanel;
     private JPanel listPanel;
     private JPanel bottomPanel;
@@ -23,12 +24,12 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private JLabel labelHotelStar;
     private JLabel labelLocality;
     private JLabel labelAddress;
-    private ButtonGroup btnGroupCombinations;
-    private JRadioButton[] rbtnCombination = new JRadioButton[10];
+    private JButton[] btnCombination = new JButton[10];
     private JLabel labelPageNum;
 
     public RoomCombDialog(AvailableHotel availableHotel, JFrame parent, String name){
         super(parent, name, true);
+        this.parent = parent;
         initUI(availableHotel);
     }
 
@@ -44,7 +45,6 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         
         this.roomCombination = availableHotel.getRoomCombination();
         this.combinationPrice = availableHotel.getCombinationPrice();
-        this.btnGroupCombinations = new ButtonGroup();
         this.totalPage = (this.roomCombination.size() - 1) / 10;
         this.labelHotelID = new JLabel(String.format("Hotel: %d", availableHotel.getHotelID()));
         this.addWithConstraints(hotelPanel, labelHotelID, 0, 0, 1, 1, 1, 1,
@@ -64,23 +64,17 @@ public class RoomCombDialog extends JDialog implements ActionListener{
 
         for ( int i=0; i<10 && i < this.roomCombination.size(); ++i ) {
             ArrayList<Integer> combination = this.roomCombination.get(i);
-            rbtnCombination[i] = new JRadioButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
-            this.btnGroupCombinations.add(rbtnCombination[i]);
+            btnCombination[i] = new JButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
+            btnCombination[i].addActionListener(this);
             // commentArray[i].setVisible(false);
-            this.addWithConstraints(listPanel, rbtnCombination[i],
+            this.addWithConstraints(listPanel, btnCombination[i],
                 0, i+2, 1, 1, 1, 1,
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         }
-        this.rbtnCombination[0].setSelected(true);
+        
 
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
-
-        this.btnReserve = new JButton("Reserve");
-        this.btnReserve.addActionListener(this);
-        this.addWithConstraints(listPanel, this.btnReserve,
-            0, 2 + Math.min(10, this.roomCombination.size()), 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.btnPrevPage = new JButton("<< Previous");
         this.btnPrevPage.addActionListener(this);
@@ -133,12 +127,12 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         if( this.page == this.totalPage ){
             round = this.roomCombination.size() % 10;
             for( int i=round;i<10;++i )
-                this.rbtnCombination[i].setVisible(false);
+                this.btnCombination[i].setVisible(false);
         }
         for( int i=0;i<round;++i ){
             ArrayList<Integer> combination = this.roomCombination.get(base + i);
-            this.rbtnCombination[i].setVisible(true);
-            this.rbtnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
+            this.btnCombination[i].setVisible(true);
+            this.btnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
         }
     }
 
@@ -164,6 +158,16 @@ public class RoomCombDialog extends JDialog implements ActionListener{
                 System.out.println("Already the final page.");
             }
         }
+
+        else{
+            for(int i=0; i<10; ++i){
+                if( e.getSource() == this.btnCombination[i] ){
+                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this.parent, "Are you sure to reserve?", this.btnCombination[i].getText());
+                    reserveCheckDialog.setVisible(true);
+                }
+            }
+        }
+
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
     }
 }

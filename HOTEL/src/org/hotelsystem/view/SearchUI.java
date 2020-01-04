@@ -32,7 +32,7 @@ public class SearchUI extends JPanel {
 		this.addWithConstraints(this.searchBar, 0, 0, 7, 1, 7, 1,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-		this.searchFilter = new SearchFilter(this);
+		this.searchFilter = new SearchFilter(this.searchControl);
 		this.addWithConstraints(this.searchFilter, 0, 1, 1, 6, 1, 6,
 				GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 		
