@@ -22,9 +22,6 @@ public class InquireUI extends JPanel implements ActionListener{
   private JLabel orderSumLabel;
   private JLabel orderQuickView;
 
-  private MainFrame mainFrame;
-  private ModifyUI modifyUI;
-
   private User user;
   private ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -38,7 +35,7 @@ public class InquireUI extends JPanel implements ActionListener{
       ArrayList<Integer> a= new ArrayList<Integer>();
       a.add(12);
       a.add(15);
-      orders.add(new Order(i, 0, 0, a, 20200112, 20200118, 666*i));
+      orders.add(new Order(i, 0, 0, a, 20200104, 20200105, 666*i));
     }
     User user = new User(0,0,"cooool","");
     this.orders = orders;
@@ -55,7 +52,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.orderQuickView.setText(" Order ID: " + orderIDsToString());
 
     this.remove(this.showGeneralOrder);
-    this.showGeneralOrder = new InquireOrders(this.orders, this.mainFrame, this.modifyUI);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl);
     this.showGeneralOrder.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -111,7 +108,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.addWithConstraints(this.userInfo, this.orderQuickView, 0, 3, 1, 1, 1, 2,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
-    this.showGeneralOrder = new InquireOrders(this.orders, this.mainFrame, this.modifyUI);
+    this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -186,16 +183,8 @@ public class InquireUI extends JPanel implements ActionListener{
             if (this.orders.get(i).getOrderID() == orderID) {
               int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
               if (modify == JOptionPane.YES_OPTION) {
-                //mock data
-                ArrayList<Order> orders = new ArrayList<Order>();
-                for (int j=0;j<5;j++){
-                    ArrayList<Integer> a= new ArrayList<Integer>();
-                    a.add(12);
-                    a.add(15);
-                    orders.add(new Order(j, 0, 0, a, 19980112, 20200118, 666*i));
-                }
-                User user = new User(0,0,"nool","");
-                this.refreshUI(orders,user);
+                this.inquireControl.switchToModify(this.orders.get(i));
+                //this.inquireControl.setOrders();
               }
               return;
             }

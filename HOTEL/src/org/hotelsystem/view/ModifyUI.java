@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.control.ModifyControl;
 
 import java.awt.*;
 import javax.swing.*;
@@ -10,7 +11,10 @@ import java.util.*;
 import java.text.*;
 
 
+
 public class ModifyUI extends JPanel implements ActionListener{
+    private ModifyControl modifyControl;
+
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
     private JPanel modifiedOrderbar;
@@ -18,24 +22,25 @@ public class ModifyUI extends JPanel implements ActionListener{
     private JButton btnQueryOrder;
     private JButton btnCheckAndSend;
 
-    JTextField tfOriHotelName;
-    JTextField tfOriCheckInTime;
-    JTextField tfOriCheckOutTime;
-    JTextField tfOriSingleNum;
-    JTextField tfOriDoubleNum;
-    JTextField tfOriQuadNum;
-    JTextField tfOriPrice;
+    private JTextField tfOriHotelName;
+    private JTextField tfOriCheckInTime;
+    private JTextField tfOriCheckOutTime;
+    private JTextField tfOriSingleNum;
+    private JTextField tfOriDoubleNum;
+    private JTextField tfOriQuadNum;
+    private JTextField tfOriPrice;
 
-    JTextField tfModHotelName;
-    JTextField tfModCheckInTime;
-    JTextField tfModCheckOutTime;
-    JTextField tfModSingleNum;
-    JTextField tfModDoubleNum;
-    JTextField tfModQuadNum;
+    private JTextField tfModHotelName;
+    private JTextField tfModCheckInTime;
+    private JTextField tfModCheckOutTime;
+    private JTextField tfModSingleNum;
+    private JTextField tfModDoubleNum;
+    private JTextField tfModQuadNum;
 
 	
-	public ModifyUI() {
-		this.setLayout(new GridBagLayout());
+	public ModifyUI(ModifyControl modifyControl) {
+        this.setLayout(new GridBagLayout());
+        this.modifyControl = modifyControl;
 		initUI();
 	}
 	
@@ -281,11 +286,24 @@ public class ModifyUI extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == this.btnQueryOrder){
             //Mock Data
-            ArrayList<Integer> a= new ArrayList<Integer>();
-            a.add(1);
-            Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
-            this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
+            // ArrayList<Integer> a= new ArrayList<Integer>();
+            // a.add(1);
+            // Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
+            // this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
             //Todo
+            Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
+            if (order == null){
+                JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            else{
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
+                    JOptionPane.showMessageDialog(this, "Cannot modify order equal or after checkin date!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                this.setOrder(order);
+            }
             System.out.println("Perform Query");
         }
         else if (e.getSource() == this.btnCheckAndSend){
@@ -301,7 +319,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                 if (java.sql.Date.valueOf(this.tfModCheckInTime.getText()).before(java.sql.Date.valueOf(this.tfOriCheckInTime.getText()))) simpleCheckPass =false;
                 if (java.sql.Date.valueOf(this.tfModCheckOutTime.getText()).after(java.sql.Date.valueOf(this.tfOriCheckOutTime.getText()))) simpleCheckPass =false;
                 if (simpleCheckPass == false){
-                    JOptionPane.showMessageDialog(this, "Modify date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Modified date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 //Todo

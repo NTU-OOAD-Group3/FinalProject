@@ -16,20 +16,22 @@ public class InquireControl {
     InquireControl(MainControl mainControl){
         this.mainControl = mainControl;
         //mock data
-        this.user = new User(0,0,"cool","");
+        this.user = new User(0,0,"NO cool","");
     }
     public void setUI(InquireUI inquireUI){
         this.inquireUI = inquireUI;
     }
-    public void switchToModify(){
-        System.out.println("Switch to  modify");
+    public void switchToModify(Order order){
+        this.mainControl.getModifyControl().setOrder(order);
+        this.mainControl.switchPane(3);
+        System.out.println("Switch to modify");
     }
     public void setOrders(){
         //this.inquireUI.refreshUI(dbutils.getOrders(-1, this.user.getUserID(), -1), this.user);
         System.out.println("Set InquireUI");
-        //mock daata
+        //mock data
         ArrayList<Order> orders = new ArrayList<Order>();
-        for (int i=0;i<10;i++){
+        for (int i=0;i<5;i++){
             ArrayList<Integer> a= new ArrayList<Integer>();
             a.add(12);
             a.add(15);

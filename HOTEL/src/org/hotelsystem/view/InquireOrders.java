@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.control.InquireControl;
 
 import java.awt.*;
 import javax.swing.*;
@@ -9,7 +10,7 @@ public class InquireOrders extends JPanel{
     private JPanel listPanel;
     private InquireOrderUnit[] arrs = new InquireOrderUnit[10];
 
-    public InquireOrders(ArrayList<Order> orders, MainFrame mainFrame, ModifyUI modifyUI) {
+    public InquireOrders(ArrayList<Order> orders, InquireControl inquireControl) {
         this.setLayout(new BorderLayout());
 
         this.listPanel = new JPanel();
@@ -17,7 +18,7 @@ public class InquireOrders extends JPanel{
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
 
         for ( int i=0; i<orders.size(); i++ ) {
-            arrs[i] = new InquireOrderUnit(orders.get(i), mainFrame, modifyUI);
+            arrs[i] = new InquireOrderUnit(orders.get(i), inquireControl);
             this.addWithConstraints(listPanel, arrs[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);

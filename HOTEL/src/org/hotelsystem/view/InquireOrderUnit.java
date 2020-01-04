@@ -1,27 +1,32 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.control.InquireControl;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import java.util.*;
+import java.text.*;
 
 public class InquireOrderUnit extends JPanel implements ActionListener{
+    private InquireControl inquireControl;
     private JLabel labelHotelImage;
     private JLabel labelHotelName;
     private JLabel labelRoomType;
     private JLabel checkInAndOut;
     private JLabel labelOrderID;
     private JLabel labelPrice;
+    private boolean haveLived = true;
     private JButton btnModify;
-    private MainFrame mainFrame;
-    private ModifyUI modifyUI;
     private Order order;
 
-    public InquireOrderUnit(Order order, MainFrame mainFrame, ModifyUI modifyUI) {
-        this.mainFrame = mainFrame;
-        this.modifyUI = modifyUI;
+
+    public InquireOrderUnit(Order order, InquireControl inquireControl) {
+        this.inquireControl = inquireControl;
         this.order = order;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))) this.haveLived = false;
 
         LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
@@ -42,7 +47,7 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
         this.addWithConstraints(labelRoomType, 8, 3, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.checkInAndOut = new JLabel("Check in/out: " + order.getCheckinTime() + " ~ " + order.getCheckoutTime());
+        this.checkInAndOut = new JLabel("Check in/out: " + dateToString(order.getCheckinTime()) + " ~ " + dateToString(order.getCheckoutTime()));
         this.addWithConstraints(checkInAndOut, 8, 2, 8, 1, 8, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
@@ -56,7 +61,12 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
         this.addWithConstraints(labelPrice, 12, 1, 4, 1, 12, 1,
             GridBagConstraints.CENTER, GridBagConstraints.EAST);
 
-        this.btnModify = new JButton("Modify");
+        if (this.haveLived) {
+            this.btnModify = new JButton("Review");
+        }
+        else {
+            this.btnModify = new JButton("Modify");
+        }
         this.btnModify.addActionListener(this);
         this.addWithConstraints(btnModify, 12, 3, 4, 1, 8, 1,
             GridBagConstraints.NONE, GridBagConstraints.EAST);
@@ -87,10 +97,25 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
         return buf;
     }
 
+    public String dateToString(int date){
+        String tmp = "";
+        tmp += String.valueOf(date/10000);
+        tmp +="-";
+        tmp += String.valueOf((date%10000)/100);
+        tmp +="-";
+        tmp += String.valueOf(date%100);
+        return tmp;
+    }
+
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnModify){
-            this.modifyUI.setOrder(this.order);
-            this.mainFrame.switchPane(3);
+            if (this.haveLived){
+                System.out.println("Jump out event");
+            }
+            else{
+                this.inquireControl.switchToModify(this.order);
+            }
+            
         } 
     }  
 
