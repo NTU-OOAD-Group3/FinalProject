@@ -78,6 +78,11 @@ public class MainFrame extends JFrame {
     public void setName(String name){
         accountUI.setName(name);
     }
+
+
+    public LoginControl getLoginControl(){ 
+        return this.loginControl;
+    }
     // public static void main(String[] args) {
     // 	MainFrame mainFrame = new MainFrame();
     // }
