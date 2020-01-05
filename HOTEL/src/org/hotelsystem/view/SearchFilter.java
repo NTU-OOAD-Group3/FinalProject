@@ -67,10 +67,12 @@ public class SearchFilter extends JPanel implements ActionListener {
         
         this.rbtnPriceL2H = new JRadioButton("Low to High");
         this.rbtnPriceL2H.setSelected(true);
+        this.rbtnPriceL2H.setOpaque(false);
         this.addWithConstraints(this, this.rbtnPriceL2H, 1, 6, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
         this.rbtnPriceH2L = new JRadioButton("High to Low");
+        this.rbtnPriceH2L.setOpaque(false);
         this.addWithConstraints(this, this.rbtnPriceH2L, 1, 8, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
@@ -80,6 +82,7 @@ public class SearchFilter extends JPanel implements ActionListener {
 
         this.btnGroupStars = new ButtonGroup();
         this.rbtnStars[0] = new JRadioButton("ALL");
+        this.rbtnStars[0].setOpaque(false);
         this.rbtnStars[0].setSelected(true);
         this.btnGroupStars.add(rbtnStars[0]);
         this.addWithConstraints(this, this.rbtnStars[0], 0, 4, 1, 1, 1, 1,
@@ -87,6 +90,7 @@ public class SearchFilter extends JPanel implements ActionListener {
 
         for ( int i=5; i>0; --i ) {
             this.rbtnStars[i] = new JRadioButton(String.valueOf(i));
+            this.rbtnStars[i].setOpaque(false);
             this.btnGroupStars.add(rbtnStars[i]);
             this.addWithConstraints(this, this.rbtnStars[i], 0, 10-i, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.CENTER);
