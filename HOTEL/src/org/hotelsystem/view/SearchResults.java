@@ -20,6 +20,7 @@ public class SearchResults extends JPanel implements ActionListener{
     public SearchResults(JFrame parent, SearchControl searchControl, ArrayList<ImageIcon> imageIcons) {
         this.parent = parent;
         this.searchControl = searchControl;
+        this.setOpaque(false);
         initUI();
     }
 
@@ -27,12 +28,16 @@ public class SearchResults extends JPanel implements ActionListener{
         this.setLayout(new BorderLayout());
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
+        this.listPanel.setOpaque(false);
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
+        listPanelScroll.getViewport().setOpaque(false);
+        listPanelScroll.setOpaque(false);
 
         this.totalPage = 0;
         for ( int i=0; i<10 ; ++i ){
             resultArray[i] = new SearchResult(this.parent, new AvailableHotel(i, i, "test", "test", null, null), searchControl);
-            resultArray[i].setVisible(false);
+            resultArray[i].setOpaque(false);
+            // resultArray[i].setVisible(false);
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -40,6 +45,7 @@ public class SearchResults extends JPanel implements ActionListener{
 
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
+        this.bottomPanel.setOpaque(false);
 
         this.btnPrevPage = new JButton("<< Previous");
         this.btnPrevPage.addActionListener(this);

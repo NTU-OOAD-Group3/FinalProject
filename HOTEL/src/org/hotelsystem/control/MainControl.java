@@ -31,7 +31,6 @@ public class MainControl{
         this.modifyControl = new ModifyControl(this, this.dbutil);
         this.searchControl = new SearchControl(this, this.dbutil);
         this.accountControl = new AccountControl(this, this.dbutil);
-        this.setBackGroundImage();
     }
 
     public AccountControl getAccountControl(){ return this.accountControl; }
@@ -46,22 +45,7 @@ public class MainControl{
     public Image getBackGroundImage() { return this.img; }
     public UserInfo getCurrentUserInfo() { return this.currentUserInfo; }
 
-    public void setBackGroundImage(){
-        BufferedImage tmpImg = new BufferedImage(1200, 600, 
-                                                  BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = (Graphics2D) tmpImg.getGraphics();
-        g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f)); 
-                    // set the transparency level in range 0.0f - 1.0f 
-        g2d.drawImage(this.img, 0, 0, null);
-        this.img = tmpImg;
-    }
     public void setUI(MainFrame mainFrame) { this.mainFrame = mainFrame; }
-    
-    public void setCurrentUser(User user) { 
-        this.currentUser = user; 
-        this.img = new ImageIcon("resources/transparent_open.jpg").getImage();
-        this.setBackGroundImage();
-    }
     
     public void setcurrentUserId(int id) { this.currentUserID = id; }   // TODO: replace by User object
     public void setCurrentUser(User user) {
@@ -69,7 +53,8 @@ public class MainControl{
         this.refreshCurrentUserInfo();
         System.out.println(this.currentUser);
         System.out.println(this.currentUserInfo);
-        if ( this.currentUser != null ) {
+        if ( this.currentUser != null ) {    
+            this.img = new ImageIcon("resources/transparent_open.jpg").getImage();
             this.accountControl.triggerLogin();
             this.mainFrame.loginChange();
         } else {

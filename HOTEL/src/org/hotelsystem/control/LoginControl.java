@@ -5,6 +5,8 @@ import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Users;
 import org.hotelsystem.model.User;
 import java.util.*;
+import java.awt.*;
+
 public class LoginControl {
     private Encoder encoder;
    // private LoginUI login;
@@ -13,6 +15,10 @@ public class LoginControl {
     public LoginControl(MainControl mainControl, DBUtil dbutil){
         this.mainControl = mainControl;
         this.encoder = new Encoder();
+    }
+
+    public Image getBackGroundImage(){
+        return this.mainControl.getBackGroundImage();
     }
 
 	public boolean verifyLogin(String username, String password) {
