@@ -44,12 +44,12 @@ public class SignupDialog extends JDialog implements ActionListener{
         this.blankLableL = new JLabel();
         this.addWithConstraints(blankLableL, 0, 0, 1, 5, 1, 5,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
-        this.blankLableL.setBorder(new LineBorder(Color.BLACK));
+       // this.blankLableL.setBorder(new LineBorder(Color.BLACK));
         
         this.blankLableR = new JLabel();
         this.addWithConstraints(blankLableR,4,0,1,5,1,5,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
-        this.blankLableR.setBorder(new LineBorder(Color.BLACK));
+       // this.blankLableR.setBorder(new LineBorder(Color.BLACK));
         //line0
         
         this.textLable =new JLabel("Fill your info here:");
