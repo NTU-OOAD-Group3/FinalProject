@@ -129,6 +129,13 @@ public class SearchFilter extends JPanel implements ActionListener {
         }
     }
 
+    public void refresh(){
+        this.tfPriceLower.setText("");
+        this.tfPriceUpper.setText("");
+        this.rbtnStars[0].setSelected(true);
+        this.rbtnPriceL2H.setSelected(true);
+    }
+
     private void addWithConstraints(JPanel p, JComponent c,
         int gridx, int gridy, int gridwidth, int gridheight,
         int weightx, int weighty, int fill, int anchor) {

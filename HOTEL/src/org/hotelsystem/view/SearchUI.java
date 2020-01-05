@@ -48,6 +48,10 @@ public class SearchUI extends JPanel {
 		this.searchControl.searchAvailableHotel(locality, checkin, checkout, room, people);
 	}
 
+	public void refreshFilter(){
+		this.searchFilter.refresh();
+	}
+
 	public void setAvailableHotels(ArrayList<AvailableHotel> availableHotels, int page, int totalPage, ArrayList<ImageIcon> imageIcons){
         this.searchResult.setAvailableHotel(availableHotels, page, totalPage, imageIcons);
 	}

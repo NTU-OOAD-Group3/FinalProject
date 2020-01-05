@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.time.LocalDate; 
 
 public class SearchBar extends JPanel implements ActionListener{
     private SearchUI searchUI;
@@ -27,6 +28,7 @@ public class SearchBar extends JPanel implements ActionListener{
     private JButton btnCheckoutDate;
     private JFrame parent;
     private JComboBox jcmbLocality;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");  
     
     public SearchBar(JFrame parent, SearchUI searchUI) {
         this.parent = parent;
@@ -173,7 +175,10 @@ public class SearchBar extends JPanel implements ActionListener{
             datePickDlg.setVisible(true);
             if (datePickDlg.isPicked()) {
                 System.out.println("select checkin date.");
-            	this.tfCheckin.setText(datePickDlg.getPickedDate());
+                if( datePickDlg.getPickedDate().compareTo(LocalDate.now().toString()) > 0)
+                    this.tfCheckin.setText(datePickDlg.getPickedDate());
+                else
+                    JOptionPane.showMessageDialog(this, "Must be later than today", "Error", JOptionPane.INFORMATION_MESSAGE);                    
             }
         }
         else if( e.getSource() == this.btnCheckoutDate ){
@@ -181,7 +186,10 @@ public class SearchBar extends JPanel implements ActionListener{
             datePickDlg.setVisible(true);
             if (datePickDlg.isPicked()) {
                 System.out.println("select checkout date.");
-            	this.tfCheckout.setText(datePickDlg.getPickedDate());
+                if( datePickDlg.getPickedDate().compareTo(LocalDate.now().toString()) > 0)
+                    this.tfCheckout.setText(datePickDlg.getPickedDate());
+                else
+                    JOptionPane.showMessageDialog(this, "Must be later than today", "Error", JOptionPane.INFORMATION_MESSAGE);                    
             }
         }
         try{
