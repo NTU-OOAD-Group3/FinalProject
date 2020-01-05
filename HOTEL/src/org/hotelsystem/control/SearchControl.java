@@ -2,6 +2,7 @@ package org.hotelsystem.control;
 
 import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.model.Hotel;
+import org.hotelsystem.model.User;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Review;
@@ -173,14 +174,14 @@ public class SearchControl {
         return this.checkout;
     }
 
-    public int getUserID(){
-        return this.mainControl.getcurrentUserId();
+    public User getUser(){
+        return this.mainControl.getCurrentUser();
     }
 
     public Image getBackGroundImage(){
         return this.mainControl.getBackGroundImage();
     }
-    
+
     public void getHotelReviews(int hotelID){
         ArrayList<Review> ans = dbutils.getHotelReviews(hotelID);
         this.reviewPage = 0;

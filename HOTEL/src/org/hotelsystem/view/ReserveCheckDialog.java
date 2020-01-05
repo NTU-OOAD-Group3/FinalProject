@@ -1,5 +1,6 @@
 package org.hotelsystem.view;
 
+import org.hotelsystem.model.User;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.model.AvailableHotel;
 import org.hotelsystem.control.SearchControl;
@@ -54,21 +55,28 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
         if( e.getSource() == this.btnReserve ){
             System.out.println("RESERVE !!!!!");
             this.dispose();
-            Order order = new Order(-1, this.searchControl.getUserID(), this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
-            if( this.searchControl.insertOrder(order, this.combination.get(0), this.combination.get(1), this.combination.get(2)) ){
+            User user = this.searchControl.getUser();
+            if( user != null){
+                System.out.println("WTF");
+                Order order = new Order(-1, user.getUserID(), this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
+                if( this.searchControl.insertOrder(order, this.combination.get(0), this.combination.get(1), this.combination.get(2)) ){
+                }
+                else{
+                    this.errorDialog = new JDialog(this.parent, "Reserve fail", true);
+                    this.labelErrorMessage = new JLabel("<html>Someone just ordered while you're considering.<br/>Please select another one, or Search again.</html>");
+
+                    this.btnErrorOK = new JButton("OK");
+                    this.btnErrorOK.addActionListener(this);
+                    this.errorDialog.setSize(300,100);
+
+                    this.errorDialog.add(labelErrorMessage, BorderLayout.CENTER);
+                    this.errorDialog.add(btnErrorOK, BorderLayout.SOUTH);
+                    this.errorDialog.setLocationRelativeTo(null);
+                    this.errorDialog.setVisible(true);
+                }
             }
             else{
-                this.errorDialog = new JDialog(this.parent, "Reserve fail", true);
-                this.labelErrorMessage = new JLabel("<html>Someone just ordered while you're considering.<br/>Please select another one, or Search again.</html>");
-
-                this.btnErrorOK = new JButton("OK");
-                this.btnErrorOK.addActionListener(this);
-                this.errorDialog.setSize(300,100);
-
-                this.errorDialog.add(labelErrorMessage, BorderLayout.CENTER);
-                this.errorDialog.add(btnErrorOK, BorderLayout.SOUTH);
-                this.errorDialog.setLocationRelativeTo(null);
-                this.errorDialog.setVisible(true);
+                JOptionPane.showMessageDialog(new JFrame(), "Please login first", "Not login error", JOptionPane.ERROR_MESSAGE);
             }
         }
         else if( e.getSource() == this.btnCancel ){

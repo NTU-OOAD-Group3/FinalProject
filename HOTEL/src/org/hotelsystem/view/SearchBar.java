@@ -153,6 +153,11 @@ public class SearchBar extends JPanel implements ActionListener{
                 if( (this.tfTotalNight.getText().isEmpty()) || (this.tfRoom.getText().isEmpty()) || (this.tfPeople.getText().isEmpty())){
                     JOptionPane.showMessageDialog(this, "Please select dates, room number, people number before searching", "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
+                else if( Integer.valueOf(this.tfRoom.getText()) == 0 || Integer.valueOf(this.tfPeople.getText()) == 0 ){
+                    JOptionPane.showMessageDialog(new JFrame(), "Number of room and people must be greater than zero.", "Zero number error", JOptionPane.ERROR_MESSAGE);
+                    this.tfRoom.setText("");
+                    this.tfPeople.setText("");
+                }
                 else{
                     this.searchUI.triggerSearch((String)this.jcmbLocality.getSelectedItem(), checkin, checkout, Integer.valueOf(tfRoom.getText()), Integer.valueOf(tfPeople.getText()));
                     System.out.println("Search Comlete.");

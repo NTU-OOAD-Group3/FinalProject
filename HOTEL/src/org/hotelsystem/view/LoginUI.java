@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 
-
 public class LoginUI extends JPanel implements ActionListener{
     private JLabel blankLableL;
     private JLabel blankLableR;
@@ -34,10 +33,11 @@ public class LoginUI extends JPanel implements ActionListener{
         this.setLayout(new GridBagLayout());
         
         //line0
-        this.textLable = new JLabel("welcome to xxxxxxxxxxxxxxxxxx");
+        this.textLable = new JLabel("Welcome to H0te1s.c0m!");
+        this.textLable.setFont(new Font("Serif", Font.BOLD, 18));
         //this.textLable.setBorder(new LineBorder(Color.BLACK));
         this.addWithConstraints(textLable, 3, 0, 2, 1, 1, 1,
-        GridBagConstraints.NONE, GridBagConstraints.WEST);
+        GridBagConstraints.NONE, GridBagConstraints.CENTER);
         //line1
         this.blankLableL = new JLabel();
         //this.blankLableL.setBorder(new LineBorder(Color.GREEN));

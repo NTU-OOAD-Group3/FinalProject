@@ -38,6 +38,7 @@ public class SearchFilter extends JPanel implements ActionListener {
 
         this.labelTitle = new JLabel("Search Filter");
         this.labelTitle.setHorizontalAlignment(JLabel.CENTER);
+        this.labelTitle.setFont(new Font("Serif", Font.BOLD, 18));
         this.addWithConstraints(this, this.labelTitle, 0, 0, 2, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 

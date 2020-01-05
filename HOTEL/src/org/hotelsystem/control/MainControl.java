@@ -18,7 +18,7 @@ public class MainControl{
     private MainFrame mainFrame;
     private DBUtil dbutil;
     public int currentUserID;
-    private User currentUser;
+    private User currentUser = null;
     private Image img = new ImageIcon("resources/transparent_close.jpg").getImage();
     private UserInfo currentUserInfo;
     

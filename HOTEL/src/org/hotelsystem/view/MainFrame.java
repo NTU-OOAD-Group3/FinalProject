@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame(MainControl mainControl) {
         
-        super("Main Frame");
+        super("Main UI");
         mainControl.setUI(this);
         this.searchControl = mainControl.getSearchControl();
         this.loginControl = mainControl.getLoginControl();
