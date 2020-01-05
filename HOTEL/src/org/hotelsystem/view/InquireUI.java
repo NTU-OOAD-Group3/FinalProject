@@ -33,7 +33,8 @@ public class InquireUI extends JPanel implements ActionListener{
   private ArrayList<Order> orders;
   private User emptyUser;
   private ArrayList<Order> emptyOrders = new ArrayList<Order>();
-
+  
+  private Image img;
 
   
   public InquireUI(JFrame parent, InquireControl inquireControl) {
@@ -70,6 +71,7 @@ public class InquireUI extends JPanel implements ActionListener{
     this.remove(this.showGeneralOrder);
     this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl, this.parent);
     this.showGeneralOrder.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+    this.showGeneralOrder.setOpaque(false);
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);    
   }
@@ -82,6 +84,7 @@ public class InquireUI extends JPanel implements ActionListener{
     //Search Order Part
     this.searchOrder = new JPanel();
     this.searchOrder.setBorder(new CompoundBorder(line, new EmptyBorder(10, 20, 10, 20)));
+    this.searchOrder.setOpaque(false);
     this.searchOrder.setLayout(new GridBagLayout());
     this.addWithConstraints(this.searchOrder, 0, 0, 1, 2, 2, 1,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -106,6 +109,7 @@ public class InquireUI extends JPanel implements ActionListener{
     //User Overview Part
     this.userInfo = new JPanel();
     this.userInfo.setBorder(new CompoundBorder(line, empty));
+    this.userInfo.setOpaque(false);
     this.userInfo.setLayout(new GridBagLayout());
     this.addWithConstraints(this.userInfo, 0, 2, 1, 3, 2, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
@@ -129,6 +133,7 @@ public class InquireUI extends JPanel implements ActionListener{
 
     this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl, this.parent);
     this.showGeneralOrder.setBorder(new CompoundBorder(line, empty));
+    this.showGeneralOrder.setOpaque(false);
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
         GridBagConstraints.BOTH, GridBagConstraints.CENTER);
   }
@@ -204,6 +209,11 @@ public class InquireUI extends JPanel implements ActionListener{
     showMessage += "Rooms: " + intArrToString(order.getRoomIDs()) + "\n";
     showMessage += "Price: " + order.getPrice() + "\n" + "\n";
     return showMessage;
+  }
+
+  public void paintComponent(Graphics g) {
+    this.img = this.inquireControl.getBackGroundImage();
+    g.drawImage(this.img, 0, 0, null);
   }
 
   public void actionPerformed(ActionEvent e){  

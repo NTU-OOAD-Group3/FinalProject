@@ -1,6 +1,7 @@
 package org.hotelsystem.control;
 
 import org.hotelsystem.model.DBUtil;
+import java.awt.*;
 import org.hotelsystem.model.UserInfo;
 import org.hotelsystem.view.AccountUI;
 
@@ -12,6 +13,10 @@ public class AccountControl{
     public AccountControl(MainControl mainControl, DBUtil dbutil) {
         this.mainControl = mainControl;
         this.dbutil = dbutil;
+    }
+
+    public Image getBackGroundImage(){
+        return this.mainControl.getBackGroundImage();
     }
 
     public void setUI(AccountUI accountUI) {

@@ -31,6 +31,7 @@ public class SearchBar extends JPanel implements ActionListener{
     public SearchBar(JFrame parent, SearchUI searchUI) {
         this.parent = parent;
         this.searchUI = searchUI;
+        this.setOpaque(false);
         initUI();
     }
 

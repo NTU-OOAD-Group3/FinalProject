@@ -1,10 +1,11 @@
 package org.hotelsystem.control;
 
 import org.hotelsystem.model.DBUtil;
+import org.hotelsystem.model.User;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.view.ModifyUI;
 import java.util.ArrayList;
-import org.hotelsystem.model.User;
+import java.awt.*;
 
 public class ModifyControl{
     private ModifyUI modifyUI;
@@ -35,6 +36,10 @@ public class ModifyControl{
         boolean success = dbutil.modifyOrder(order, newSN, newDN, newQN, newCheckin, newCheckout);
         if (success) this.mainControl.getInquireControl().refreshUI();
         return success;
+    }
+
+    public Image getBackGroundImage(){
+        return this.mainControl.getBackGroundImage();
     }
 
     public void setUser(User user){

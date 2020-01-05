@@ -16,6 +16,8 @@ public class SearchUI extends JPanel {
 	private SearchResults searchResult;
 	private JFrame parent;
 	private ReviewDialogs reviewDialogs;
+	private Image img;
+	
 	public SearchUI(JFrame parent, SearchControl searchControl) {
 		this.setLayout(new GridBagLayout());
 		this.parent = parent;
@@ -58,7 +60,12 @@ public class SearchUI extends JPanel {
 	public ArrayList<String> getLocality(){
 		return this.searchControl.getLocality();
 	}
-
+	
+	public void paintComponent(Graphics g) {
+        this.img = this.searchControl.getBackGroundImage();
+        g.drawImage(this.img, 0, 0, null);
+	}
+	
 	private void addWithConstraints(JComponent c, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty,
 			int fill, int anchor) {
