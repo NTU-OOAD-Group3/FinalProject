@@ -2,6 +2,7 @@ package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.model.User;
 import org.hotelsystem.control.InquireControl;
+import org.hotelsystem.model.Review;
 
 
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
 import java.text.*;
+
 
 public class InquireUI extends JPanel implements ActionListener{
   private InquireControl inquireControl;
@@ -216,16 +218,14 @@ public class InquireUI extends JPanel implements ActionListener{
                 if (modify == JOptionPane.YES_OPTION) {
                   this.inquireControl.switchToModify(this.orders.get(i));
                   System.out.println("Modify!!!");
-                  //this.inquireControl.setOrders();
                 }
               }
               else{
-                int review =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to leave a review?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
+                int review =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(i)) + "Do you want to leave a review?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
                 if (review == JOptionPane.YES_OPTION) {
-                  this.inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.orders.get(i));
+                  this.inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.orders.get(i), this.inquireControl.getReview(this.orders.get(i)));
                   this.inquireReviewDialog.setLocationRelativeTo(this);
                   this.inquireReviewDialog.setVisible(true);
-                  System.out.println("Review!!!");
                 }
               }
               return;
