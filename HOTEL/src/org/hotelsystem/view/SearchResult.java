@@ -68,18 +68,20 @@ public class SearchResult extends JPanel implements ActionListener{
         this.addWithConstraints(btnReview, 8, 0, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.labelPriceTitle = new JLabel("Min Price");
+        this.labelPriceTitle = new JLabel("Strongly recommend!");
         this.labelPriceTitle.setHorizontalAlignment(JLabel.LEFT);
         this.addWithConstraints(labelPriceTitle, 12, 0, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.EAST);
 
-        this.labelPrice = new JLabel("NTD 168,000");
-        this.addWithConstraints(labelPrice, 12, 1, 4, 1, 4, 1,
+        this.labelSummary = new JLabel("(2 people, 3 nights, 3 rooms)");
+        this.addWithConstraints(labelSummary, 12, 1, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.EAST);
 
-        this.labelSummary = new JLabel("(2 people, 3 nights, 3 rooms)");
-        this.addWithConstraints(labelSummary, 12, 2, 4, 1, 4, 1,
+        this.labelPrice = new JLabel("NTD 168,000");
+        this.addWithConstraints(labelPrice, 12, 2, 4, 1, 4, 1,
             GridBagConstraints.NONE, GridBagConstraints.EAST);
+
+        
 
         this.btnReserve = new JButton("Reserve It!");
         this.btnReserve.addActionListener(this);
@@ -91,13 +93,15 @@ public class SearchResult extends JPanel implements ActionListener{
     public void refreshUI(AvailableHotel availableHotel, ImageIcon imageIcon){
         this.availableHotel = availableHotel;
         this.labelHotelImage.setIcon(imageIcon);
-        this.labelHotelName.setText(Integer.toString(availableHotel.getHotelID()));
-        this.labelHotelStar.setText(Integer.toString(availableHotel.getHotelStar()));
-        this.labelHotelLocality.setText(availableHotel.getLocality());
-        this.labelHotelAddress.setText(availableHotel.getStreetAddress());
-        this.labelPrice.setText(Integer.toString(Collections.min(availableHotel.getCombinationPrice())));
-        this.labelSummary.setText(String.format("(%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), this.searchControl.getSearchRoom()));
+        this.labelHotelName.setText("Hotel: " + Integer.toString(availableHotel.getHotelID()));
+        this.labelHotelStar.setText("Star: " + Integer.toString(availableHotel.getHotelStar()));
+        this.labelHotelLocality.setText("Locality: " + availableHotel.getLocality());
+        this.labelHotelAddress.setText("Address: " + availableHotel.getStreetAddress());
+        this.labelPrice.setText("Price: " + Integer.toString(availableHotel.getCombinationPrice().get(0)));
         this.roomCombination = availableHotel.getRoomCombination();
+        int minRoomNum = roomCombination.get(0).get(0) + roomCombination.get(0).get(1) + roomCombination.get(0).get(2);
+        this.labelSummary.setText(String.format("Room sets: (%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), minRoomNum));
+        
         this.roomCombDialog = new RoomCombDialog(availableHotel, this.parent, "Reserve candidates", this.searchControl);
     }
     private void addWithConstraints(JComponent c, int gridx, int gridy,

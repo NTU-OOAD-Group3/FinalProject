@@ -73,6 +73,27 @@ public class Hotel {
         this.retrieveRoomPrice();
         ArrayList<ArrayList<Integer>> roomCombination = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> combinationPrice = new ArrayList<Integer>();
+        
+        boolean flag = true;
+        for( int r = 1; r < roomNum && flag; ++r ){
+            for ( int x=0; x<=Math.min(r, vacantSingleNum) && flag; ++x ) {
+                for ( int y=0; y<=Math.min(r - x, vacantDoubleNum) && flag; ++y ) {
+                    int z = r - x - y;
+                    if ( z > vacantQuadNum )    
+                        continue;
+                    if ( x + 2*y + 4*z >= peopleNum ){
+                        ArrayList<Integer> comb = new ArrayList<Integer>();
+                        comb.add(x); comb.add(y); comb.add(z);
+                        roomCombination.add(comb);
+                        combinationPrice.add(x * this.singleRoomPrice +
+                                             y * this.doubleRoomPrice +
+                                             z * this.quadRoomPrice);
+                        flag = false;
+                    }
+                }
+            }
+        }
+
         for ( int x=0; x<=Math.min(roomNum, vacantSingleNum); ++x ) {
             for ( int y=0; y<=Math.min(roomNum - x, vacantDoubleNum); ++y ) {
                 int z = roomNum - x - y;
