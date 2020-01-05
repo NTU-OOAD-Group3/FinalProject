@@ -2,6 +2,7 @@ package org.hotelsystem.view;
 
 import org.hotelsystem.control.InquireControl;
 import org.hotelsystem.model.Order;
+import org.hotelsystem.model.Review;
 
 import java.util.*;
 import java.awt.*;
@@ -17,10 +18,12 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
     private JComboBox reviewStar;
     private JTextArea reviewText;
     private JButton btnSendReview;
-    public InquireReviewDialog(JFrame parent, InquireControl inquireControl, Order order){
+    private Review review;
+    public InquireReviewDialog(JFrame parent, InquireControl inquireControl, Order order, Review review){
         super(parent, "Review", true);
         this.inquireControl = inquireControl;
         this.order = order;
+        this.review = review;
         this.initUI();
     }
     public void initUI(){
@@ -50,20 +53,36 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
         this.reviewPanal.setBorder(new LineBorder(Color.black));
         this.add(this.reviewPanal, BorderLayout.CENTER);
 
-        String ranting [] = new String[5];
-        for (int i=0;i<5;i++){
-            ranting[i] = String.valueOf(5-i) + " star";
+        
+
+        if (this.review != null) {
+            JLabel ranting = new JLabel("Rating: " + this.review.getRating()+" star");
+            this.addWithConstraints(this.reviewPanal, ranting, 0, 0, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.WEST);
+
+            JLabel review = new JLabel("review: " + this.review.getReview());
+            this.addWithConstraints(this.reviewPanal, review, 0, 1, 1, 2, 1, 2,
+                GridBagConstraints.NONE, GridBagConstraints.WEST);
+
         }
-        this.reviewStar = new JComboBox(ranting);
-        this.addWithConstraints(this.reviewPanal, this.reviewStar, 0, 0, 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.CENTER);
+        else{
+            String ranting[]  = new String[5];
+            for (int i=0;i<5;i++){
+                ranting[i] = String.valueOf(5-i) + " star";
+            }
+            this.reviewStar = new JComboBox(ranting);
+            this.addWithConstraints(this.reviewPanal, this.reviewStar, 0, 0, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.reviewText = new JTextArea();
-        this.reviewText.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Comment", 0, 0, Font.getFont("Times New Roman"), Color.BLUE));
-        this.addWithConstraints(this.reviewPanal, this.reviewText, 0, 1, 1, 2, 1, 2,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+            this.reviewText = new JTextArea();
+            this.reviewText.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Comment", 0, 0, Font.getFont("Times New Roman"), Color.BLUE));
+            this.addWithConstraints(this.reviewPanal, this.reviewText, 0, 1, 1, 2, 1, 2,
+                GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
+        }
 
-        this.btnSendReview = new JButton("Send review!");
+        String tmp = "Send review!";
+        if (this.review != null) tmp = "Close";
+        this.btnSendReview = new JButton(tmp);
         this.btnSendReview.addActionListener(this);
         this.addWithConstraints(this.reviewPanal, this.btnSendReview, 0, 2, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.SOUTH);
@@ -85,10 +104,14 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         if( e.getSource() == this.btnSendReview){
-            System.out.println(this.reviewText.getText());
-            System.out.println(this.reviewStar.getSelectedItem());
-            this.setVisible(false);
-            this.inquireControl.setReview(this.order, (String)this.reviewStar.getSelectedItem(), this.reviewText.getText());
+            if (this.review != null) {
+                this.setVisible(false);
+                return;
+            }
+            else{
+                this.setVisible(false);
+                this.inquireControl.setReview(this.order, (String)this.reviewStar.getSelectedItem(), this.reviewText.getText());
+            }
         }
     }
     private void addWithConstraints(JPanel p, JComponent c,

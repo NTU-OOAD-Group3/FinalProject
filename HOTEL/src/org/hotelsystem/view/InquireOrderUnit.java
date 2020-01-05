@@ -35,11 +35,6 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
         this.setBorder(new CompoundBorder(line, empty));
         this.setLayout(new GridBagLayout());
 
-        this.labelHotelImage = new JLabel("Hotel Image");
-        this.labelHotelImage.setHorizontalAlignment(JLabel.CENTER);
-        this.labelHotelImage.setBorder(new LineBorder(Color.BLACK));
-        this.addWithConstraints(labelHotelImage, 0, 0, 4, 4, 4, 4,
-            GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
         this.labelHotelName = new JLabel("Hotel Name: " + order.getHotelID());
         this.addWithConstraints(labelHotelName, 8, 1, 4, 1, 4, 1,
@@ -114,7 +109,7 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){  
         if( e.getSource() == this.btnModify){
             if (this.haveLived){
-                InquireReviewDialog inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.order);
+                InquireReviewDialog inquireReviewDialog = new InquireReviewDialog(this.parent, this.inquireControl, this.order, this.inquireControl.getReview(this.order));
                 inquireReviewDialog.setLocationRelativeTo(this);
                 inquireReviewDialog.setVisible(true);
                 System.out.println("Review!!!");

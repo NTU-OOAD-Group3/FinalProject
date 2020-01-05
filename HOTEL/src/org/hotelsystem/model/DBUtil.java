@@ -98,6 +98,83 @@ public class DBUtil {
         return true;
     }
 
+    public boolean updateUserPassword(int userID, String originPW, String newPW) {
+        try {
+            this.stmt = this.conn.createStatement();
+            String cmd = "UPDATE Users " +
+                "SET Password = \"" + newPW + "\" " +
+                "WHERE UserID = " + String.valueOf(userID) + " " +
+                "AND Password = \"" + originPW + "\";";
+            System.out.println(cmd);
+            int rowCount = this.stmt.executeUpdate(cmd);
+            this.stmt.close();
+            if ( rowCount != 1 ) { return false; }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public UserInfo getUserInfo(int userID, String password) {
+        UserInfo userInfo = null;
+        try {
+            this.stmt = this.conn.createStatement();
+            String cmd = "SELECT I.Sex, I.PhoneNumber, I.Address, I.CardOwner, I.CardAccount, I.CardValidTime " +
+                "FROM Users AS U, UserInfo AS I " +
+                "WHERE U.UserID = I.UserID " +
+                "AND U.UserID = " + String.valueOf(userID) + " " +
+                "AND U.Password = \"" + String.valueOf(password) + "\";";
+            System.out.println(cmd);
+            this.result = this.stmt.executeQuery(cmd);
+            if ( this.result.isBeforeFirst() ) {
+                this.result.next();
+                int rowSex = this.result.getInt("Sex");
+                String rowPhoneNumber = this.result.getString("PhoneNumber");
+                rowPhoneNumber = (rowPhoneNumber == null ? "" : rowPhoneNumber);
+                String rowAddress = this.result.getString("Address");
+                rowAddress = (rowAddress == null ? "" : rowAddress);
+                String rowCardOwner = this.result.getString("CardOwner");
+                rowCardOwner = (rowCardOwner == null ? "" : rowCardOwner);
+                String rowCardAccount = this.result.getString("CardAccount");
+                rowCardAccount = (rowCardAccount == null ? "" : rowCardAccount);
+                String rowCardValidTime = this.result.getString("CardValidTime");
+                rowCardValidTime = (rowCardValidTime == null ? "" : rowCardValidTime);
+                userInfo = new UserInfo(userID, rowSex, rowPhoneNumber, rowAddress,
+                                        rowCardOwner, rowCardAccount, rowCardValidTime);
+            }
+            this.stmt.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+        }
+        return userInfo;
+    }
+
+    public boolean updateUserInfo(UserInfo userInfo) {
+        try {
+            this.stmt = this.conn.createStatement();
+            String cmd = "UPDATE UserInfo " +
+                "SET Sex = " + String.valueOf(userInfo.getSex()) + ", " +
+                    "PhoneNumber = \"" + userInfo.getPhoneNumber() + "\", " +
+                    "Address = \"" + userInfo.getAddress() + "\", " +
+                    "CardOwner = \"" + userInfo.getCardOwner() + "\", " +
+                    "CardAccount = \"" + userInfo.getCardAccount() + "\", " +
+                    "CardValidTime = \"" + userInfo.getCardValidTime() + "\" " +
+                "WHERE UserID = " + String.valueOf(userInfo.getUserID()) + ";";
+            System.out.println(cmd);
+            int rowCount = this.stmt.executeUpdate(cmd);
+            this.stmt.close();
+            if ( rowCount != 1 ) { return false; }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.getStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public ArrayList<Hotel> getHotels(String locality, int checkin, int checkout) {
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
         String cmd = null;
@@ -566,8 +643,14 @@ public class DBUtil {
         // boolean rtn = dbutil.insertReview(review);
         // System.out.println(rtn);
         // }
-        boolean rtn = dbutil.insertUser(0, "Howard", "456");
+        // boolean rtn = dbutil.insertUser(0, "Howard", "456");
+        // System.out.println(rtn);
+        UserInfo userInfo = dbutil.getUserInfo(6, "4b21f7f44b00fa08d1f05acbc6fd8d30");
+        System.out.println(userInfo);
+        boolean rtn = dbutil.updateUserInfo(userInfo);
         System.out.println(rtn);
+        // boolean rtn = dbutil.updateUserPassword(6, "4b21f7f44b00fa08d1f05acbc6fd8d30", "4b21f7f44b00fa08d1f05acbc6fd8d30");
+        // System.out.println(rtn);
         long time2 = System.currentTimeMillis();
         System.out.println("Time cost: " + String.valueOf(time2 - time1) + " ms.");
         // System.out.println(orders.size());
