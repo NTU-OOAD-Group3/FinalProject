@@ -57,7 +57,10 @@ public class ChangePasswordDialog extends JDialog implements ActionListener {
             this.originPW = new String(this.pfOriginPW.getPassword());
             this.newPW = new String(this.pfNewPW.getPassword());
             this.newPWAgain = new String(this.pfNewPWAgain.getPassword());
-            if ( this.newPW.isEmpty() ) {
+            if ( this.originPW.isEmpty() ) {
+                JOptionPane.showMessageDialog(this, "Please fill something in Origin Password!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            } else if ( this.newPW.isEmpty() ) {
                 JOptionPane.showMessageDialog(this, "Please fill something in New Password!",
                     "Error", JOptionPane.ERROR_MESSAGE);
             } else if ( this.newPW.compareTo(this.newPWAgain) != 0 ) {
