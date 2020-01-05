@@ -14,7 +14,7 @@ public class User {
     }
 
     public int getUserID() { return this.userID; }
-    public int userType() { return this.userType; }
+    public int getUserType() { return this.userType; }
     public String getUsername() { return this.username; }
     public String getPassword() { return this.password; }
 

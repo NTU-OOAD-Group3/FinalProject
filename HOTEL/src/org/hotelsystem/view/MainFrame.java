@@ -17,16 +17,6 @@ public class MainFrame extends JFrame {
     private ModifyControl modifyControl;
     private InquireControl inquireControl;
     private AccountControl accountControl;
-    
-    
-    public void logoutChange(){//will be called when user click `logout Button` in AccountUI
-        tabbedPane.remove(0);
-        tabbedPane.insertTab("login",null, this.loginUI,null, 0);
-    }
-    public void loginChange(){//will be called when controller pass the login/signup in LoginUI
-        tabbedPane.remove(0);
-        tabbedPane.insertTab("Account",null,this.accountUI,null,0);
-    }
 
     public MainFrame(MainControl mainControl) {
         
@@ -45,7 +35,7 @@ public class MainFrame extends JFrame {
         this.loginUI = new LoginUI(this, this.loginControl);
 
         this.accountUI=new AccountUI(this, this.accountControl);
-
+        this.accountControl.setUI(this.accountUI);
         tabbedPane.addTab("Account", this.loginUI);
         
         this.searchUI = new SearchUI(this, this.searchControl);
@@ -78,6 +68,18 @@ public class MainFrame extends JFrame {
 
     public LoginControl getLoginControl(){ 
         return this.loginControl;
+    }
+    
+    public void logoutChange() {    //will be called when user click `logout Button` in AccountUI
+        tabbedPane.remove(0);
+        tabbedPane.insertTab("login", null, this.loginUI, null, 0);
+        this.switchPane(0);
+    }
+
+    public void loginChange() {  //will be called when controller pass the login/signup in LoginUI
+        tabbedPane.remove(0);
+        tabbedPane.insertTab("Account", null, this.accountUI, null,0);
+        this.switchPane(0);
     }
     // public static void main(String[] args) {
     // 	MainFrame mainFrame = new MainFrame();

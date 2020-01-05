@@ -2,6 +2,7 @@ package org.hotelsystem.control;
 
 import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.User;
+import org.hotelsystem.model.UserInfo;
 import org.hotelsystem.view.MainFrame;
 
 public class MainControl{
@@ -15,6 +16,7 @@ public class MainControl{
     private DBUtil dbutil;
     public int currentUserID;
     private User currentUser;
+    private UserInfo currentUserInfo;
     
     public MainControl() {
         // Initialize DBUtil before initialization of any control!!!
@@ -36,10 +38,31 @@ public class MainControl{
     public DBUtil getDBUtil() { return this.dbutil; }
     public int getcurrentUserId() { return this.currentUserID; }    // TODO: replace by User object
     public User getCurrentUser() { return this.currentUser; }
+    public UserInfo getCurrentUserInfo() { return this.currentUserInfo; }
 
     public void setUI(MainFrame mainFrame) { this.mainFrame = mainFrame; }
     public void setcurrentUserId(int id) { this.currentUserID = id; }   // TODO: replace by User object
-    public void setCurrentUser(User user) { this.currentUser = user; }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        this.refreshCurrentUserInfo();
+        System.out.println(this.currentUser);
+        System.out.println(this.currentUserInfo);
+        if ( this.currentUser != null ) {
+            this.accountControl.triggerLogin();
+            this.mainFrame.loginChange();
+        } else {
+            this.mainFrame.logoutChange();
+        }
+    }
+    public void refreshCurrentUserInfo() {
+        if ( this.currentUser == null ) {
+            this.currentUserInfo = null;
+        } else {
+            this.currentUserInfo = dbutil.getUserInfo(
+                this.currentUser.getUserID(), this.currentUser.getPassword()
+            );
+        } 
+    }
 
     public void switchPane(int switchTo) {
         this.mainFrame.switchPane(switchTo);

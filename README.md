@@ -20,6 +20,18 @@ CREATE TABLE Users (
     PRIMARY KEY (`UserID`)
 );
 
+CREATE TABLE UserInfo (
+    `UserID` INT NOT NULL,
+    `Sex` INT NOT NULL, /* 1 = Male, 2 = Female, 0 = Secret */
+    `PhoneNumber` CHAR(16),
+    `Address` VARCHAR(128),
+    `CardOwner` VARCHAR(32),
+    `CardAccount` CHAR(16),
+    `CardValidTime` CHAR(5),
+    PRIMARY KEY (`UserID`),
+    FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)
+);
+
 CREATE TABLE Hotels (
     `HotelID` INT NOT NULL,
     `HotelStar` INT NOT NULL,
