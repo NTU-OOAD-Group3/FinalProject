@@ -99,50 +99,23 @@ public class SearchControl {
 
     public void setSearchResultsPage(int direction){
         ArrayList<AvailableHotel> newAvailableHotel;
-        if(direction > 0){
-            if( this.resultsPage == this.resultsTotalPage ){
-                System.out.println("Already the final page.");
-            }
-            else{
-                this.resultsPage += 1;
-                newAvailableHotel = new ArrayList<AvailableHotel>(this.availableHotel.subList(this.resultsPage * 10, Math.min(this.resultsPage * 10 + 10, this.availableHotel.size())));
-                this.setSearchResults(newAvailableHotel , this.resultsPage, this.resultsTotalPage);
-            }
-        }
+        if( this.resultsPage + direction > this.resultsTotalPage || this.resultsPage + direction < 0 )
+            System.out.println("Already the final page or the first page.");
         else{
-            if( this.resultsPage == 0 ){
-                System.out.println("Already the first page.");
-            }
-            else{
-                this.resultsPage -= 1;
-                newAvailableHotel = new ArrayList<AvailableHotel>(this.availableHotel.subList(this.resultsPage * 10, Math.min(this.resultsPage * 10 + 10, this.availableHotel.size())));
-                this.setSearchResults(newAvailableHotel , this.resultsPage, this.resultsTotalPage);
-            }
+            this.resultsPage += direction;
+            newAvailableHotel = new ArrayList<AvailableHotel>(this.availableHotel.subList(this.resultsPage * 10, Math.min(this.resultsPage * 10 + 10, this.availableHotel.size())));
+            this.setSearchResults(newAvailableHotel , this.resultsPage, this.resultsTotalPage);
         }
     }
 
     public void setReviewPage(int direction){
         ArrayList<Review> newReview;
-        if(direction > 0){
-            if( this.reviewPage == this.reviewTotalPage ){
-                System.out.println("Already the final page.");
-
-            }
-            else{
-                this.reviewPage += 1;
-                newReview = new ArrayList<Review>(this.review.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.review.size())));
-                this.showReview(this.reviewHotelID, "Hotel Reviews", newReview, this.reviewPage, this.reviewTotalPage);
-            }
-        }
+        if( this.reviewPage + direction > this.reviewTotalPage || this.reviewPage + direction < 0 )
+            System.out.println("Already the final page or the first page.");
         else{
-            if( this.reviewPage == 0 ){
-                System.out.println("Already the first page.");
-            }
-            else{
-                this.reviewPage -= 1;
-                newReview = new ArrayList<Review>(this.review.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.review.size())));
-                this.showReview(this.reviewHotelID, "Hotel Reviews", newReview, this.reviewPage, this.reviewTotalPage);
-            }
+            this.reviewPage += direction;
+            newReview = new ArrayList<Review>(this.review.subList(this.reviewPage * 10, Math.min(this.reviewPage * 10 + 10, this.review.size())));
+            this.showReview(this.reviewHotelID, "Hotel Reviews", newReview, this.reviewPage, this.reviewTotalPage);
         }
     }
 
