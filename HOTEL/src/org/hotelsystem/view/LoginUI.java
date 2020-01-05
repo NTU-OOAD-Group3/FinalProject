@@ -114,7 +114,7 @@ public class LoginUI extends JPanel implements ActionListener{
 
                     
                     this.parent.setName(this.tfUsername.getText());
-                    this.parent.loginChange();
+                    // this.parent.loginChange();
                     
                 }
                 else{
