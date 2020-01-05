@@ -57,11 +57,11 @@ public class MainFrame extends JFrame {
 
         this.modifyUI = new ModifyUI(this.modifyControl);
         this.modifyControl.setUI(modifyUI);
-        tabbedPane.addTab("ModifyUI",this.modifyUI);      
+        tabbedPane.addTab("Modify",this.modifyUI);      
         
         this.inquireUI = new InquireUI(this, this.inquireControl);
         this.inquireControl.setUI(this.inquireUI);
-        tabbedPane.addTab("InquireUI",this.inquireUI);
+        tabbedPane.addTab("Inquire",this.inquireUI);
 
         add(tabbedPane, BorderLayout.CENTER);
         

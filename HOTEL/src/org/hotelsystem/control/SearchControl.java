@@ -92,7 +92,6 @@ public class SearchControl {
     }
     
     public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum){
-        this.mainControl.getInquireControl().refreshUI();
         return this.dbutils.insertOrder(order, singleNum, doubleNum, quadNum);
     }
 
