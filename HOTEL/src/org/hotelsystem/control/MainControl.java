@@ -41,8 +41,14 @@ public class MainControl{
     public void setcurrentUserId(int id) { this.currentUserID = id; }   // TODO: replace by User object
     public void setCurrentUser(User user) {
         this.currentUser = user;
-        this.modifyControl.setUser(user);
-        this.inquireControl.refreshUI(user);
+    }
+
+    public void refreshInquireUI(){
+        this.inquireControl.refreshUI(this.currentUser);
+    }
+
+    public void refreshModifyUI(){
+        this.modifyControl.setUser(this.currentUser);
     }
 
     public void switchPane(int switchTo) {

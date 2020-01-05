@@ -54,30 +54,31 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
         this.add(this.reviewPanal, BorderLayout.CENTER);
 
         
-        String ranting [];
+
         if (this.review != null) {
-            ranting  = new String[1];
-            ranting[0] = "Rating: " + this.review.getRating()+"star";
+            JLabel ranting = new JLabel("Rating: " + this.review.getRating()+" star");
+            this.addWithConstraints(this.reviewPanal, ranting, 0, 0, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.WEST);
+
+            JLabel review = new JLabel("review: " + this.review.getReview());
+            this.addWithConstraints(this.reviewPanal, review, 0, 1, 1, 2, 1, 2,
+                GridBagConstraints.NONE, GridBagConstraints.WEST);
+
         }
         else{
-            ranting  = new String[5];
+            String ranting[]  = new String[5];
             for (int i=0;i<5;i++){
                 ranting[i] = String.valueOf(5-i) + " star";
             }
-        }
-        this.reviewStar = new JComboBox(ranting);
-        this.addWithConstraints(this.reviewPanal, this.reviewStar, 0, 0, 1, 1, 1, 1,
-            GridBagConstraints.NONE, GridBagConstraints.CENTER);
-        
+            this.reviewStar = new JComboBox(ranting);
+            this.addWithConstraints(this.reviewPanal, this.reviewStar, 0, 0, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
-        this.reviewText = new JTextArea();
-        if (this.review != null){
-            reviewText.append(this.review.getReview());
-            reviewText.setEditable(false);
+            this.reviewText = new JTextArea();
+            this.reviewText.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Comment", 0, 0, Font.getFont("Times New Roman"), Color.BLUE));
+            this.addWithConstraints(this.reviewPanal, this.reviewText, 0, 1, 1, 2, 1, 2,
+                GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         }
-        this.reviewText.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Comment", 0, 0, Font.getFont("Times New Roman"), Color.BLUE));
-        this.addWithConstraints(this.reviewPanal, this.reviewText, 0, 1, 1, 2, 1, 2,
-            GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
 
         String tmp = "Send review!";
         if (this.review != null) tmp = "Close";

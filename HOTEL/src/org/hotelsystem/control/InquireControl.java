@@ -30,6 +30,7 @@ public class InquireControl {
     }
 
     public void refreshUI(User user){
+        if (user == null) return;
         this.user = user;
         this.inquireUI.refreshUI(dbutils.getOrders(-1, user.getUserID(), -1), user);
     }

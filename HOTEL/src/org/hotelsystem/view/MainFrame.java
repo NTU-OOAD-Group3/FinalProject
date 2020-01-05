@@ -3,6 +3,7 @@ import org.hotelsystem.model.LoginStatus;
 import org.hotelsystem.control.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.*; 
 
 public class MainFrame extends JFrame {
 	private JTabbedPane tabbedPane; 
@@ -41,6 +42,18 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LoginStatus loginstatus = new LoginStatus();
         this.tabbedPane = new JTabbedPane();
+        this.tabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (tabbedPane.getSelectedIndex() == 2){
+                    mainControl.refreshModifyUI();
+                    System.out.println("Perform modify");
+                }
+                else if(tabbedPane.getSelectedIndex() == 3){
+                    mainControl.refreshInquireUI();
+                    System.out.println("Perform inquire");
+                }
+            }
+        });
         
         this.loginUI = new LoginUI(this, this.loginControl);
 
@@ -79,6 +92,7 @@ public class MainFrame extends JFrame {
     public LoginControl getLoginControl(){ 
         return this.loginControl;
     }
+
     // public static void main(String[] args) {
     // 	MainFrame mainFrame = new MainFrame();
     // }
