@@ -176,7 +176,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         else{
             for(int i=0; i<10; ++i){
                 if( e.getSource() == this.btnCombination[i] ){
-                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this.parent, "Are you sure to reserve?", this.availableHotel, 10 * this.page +i, this.searchControl);
+                    ReserveCheckDialog reserveCheckDialog = new ReserveCheckDialog(this, "Are you sure to reserve?", this.availableHotel, 10 * this.page +i, this.searchControl);
                     reserveCheckDialog.setLocationRelativeTo(this);
                     reserveCheckDialog.setVisible(true);
                 }

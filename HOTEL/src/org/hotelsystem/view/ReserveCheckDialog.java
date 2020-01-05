@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class ReserveCheckDialog extends JDialog implements ActionListener{
-    private JFrame parent;
+    private JDialog parent;
     private JPanel buttonPanel;
     private JLabel labelCombination;
     private JLabel labelErrorMessage;
@@ -25,7 +25,7 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
     private ArrayList<Integer> combination;
     private int price;
 
-    ReserveCheckDialog(JFrame parent, String name, AvailableHotel availableHotel, int index, SearchControl searchControl){
+    ReserveCheckDialog(JDialog parent, String name, AvailableHotel availableHotel, int index, SearchControl searchControl){
         super(parent, name, true);
         this.parent = parent;
         this.searchControl = searchControl;
@@ -57,9 +57,9 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
             this.dispose();
             User user = this.searchControl.getUser();
             if( user != null){
-                System.out.println("WTF");
                 Order order = new Order(-1, user.getUserID(), this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
                 if( this.searchControl.insertOrder(order, this.combination.get(0), this.combination.get(1), this.combination.get(2)) ){
+                    JOptionPane.showMessageDialog(new JFrame(), "Reserve successes.", "Congratulation!", JOptionPane.ERROR_MESSAGE);
                 }
                 else{
                     this.errorDialog = new JDialog(this.parent, "Reserve fail", true);
@@ -78,6 +78,7 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
             else{
                 JOptionPane.showMessageDialog(new JFrame(), "Please login first", "Not login error", JOptionPane.ERROR_MESSAGE);
             }
+            this.parent.dispose();
         }
         else if( e.getSource() == this.btnCancel ){
             dispose();
