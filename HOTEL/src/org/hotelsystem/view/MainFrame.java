@@ -44,7 +44,7 @@ public class MainFrame extends JFrame {
         
         this.loginUI = new LoginUI(this, this.loginControl);
 
-        this.accountUI=new AccountUI(this);
+        this.accountUI=new AccountUI(this, this.accountControl);
 
         tabbedPane.addTab("Account", this.loginUI);
         
@@ -69,10 +69,6 @@ public class MainFrame extends JFrame {
 
     public void switchPane(int switchTo){
         this.tabbedPane.setSelectedIndex(switchTo);
-    } 
-
-    public void setloggedout(){ 
-        accountControl.setloggedout();
     }
 
     public void setName(String name){

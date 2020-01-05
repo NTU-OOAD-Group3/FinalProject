@@ -21,7 +21,7 @@ public class LoginControl {
         String passwordCode=encoder.crypt(password);
 
         try{
-            DBUtil db=this.mainControl.getDbutil();
+            DBUtil db=this.mainControl.getDBUtil();
             System.out.println("Try login with");
             System.out.println(username);
             System.out.println(passwordCode);
@@ -30,9 +30,10 @@ public class LoginControl {
                 return false;
             }
             else{
+                this.mainControl.setCurrentUser(user);
                 this.mainControl.currentUserID=user.getUserID();
                 return true;
-                }
+            }
         } catch (Exception e) {
             System.out.println(e);
             return false;
@@ -43,7 +44,7 @@ public class LoginControl {
         String passwordCode=encoder.crypt(password);
         System.out.println("Try signup with"+username+password);
         try{
-            DBUtil db=this.mainControl.getDbutil();
+            DBUtil db=this.mainControl.getDBUtil();
             return db.insertUser(usertype,username,passwordCode);
 
         }
