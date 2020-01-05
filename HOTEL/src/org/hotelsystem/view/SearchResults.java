@@ -37,7 +37,7 @@ public class SearchResults extends JPanel implements ActionListener{
         for ( int i=0; i<10 ; ++i ){
             resultArray[i] = new SearchResult(this.parent, new AvailableHotel(i, i, "test", "test", null, null), searchControl);
             resultArray[i].setOpaque(false);
-            // resultArray[i].setVisible(false);
+            resultArray[i].setVisible(false);
             this.addWithConstraints(listPanel, resultArray[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);
