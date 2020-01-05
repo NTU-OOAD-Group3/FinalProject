@@ -6,6 +6,7 @@ import org.hotelsystem.model.User;
 import org.hotelsystem.model.Review;
 import org.hotelsystem.view.InquireUI;
 
+import java.awt.*;
 
 public class InquireControl {
 
@@ -46,6 +47,10 @@ public class InquireControl {
         this.dbutils.insertReview(review);
     }
 
+    public Image getBackGroundImage(){
+        return this.mainControl.getBackGroundImage();
+    }
+    
     public Review getReview(Order order){
         return this.dbutils.getOrderReview(order.getOrderID());
     }

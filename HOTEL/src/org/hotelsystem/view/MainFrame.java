@@ -63,9 +63,8 @@ public class MainFrame extends JFrame {
         this.inquireControl.setUI(this.inquireUI);
         tabbedPane.addTab("Inquire",this.inquireUI);
 
-
-        
         add(tabbedPane, BorderLayout.CENTER);
+        
         setSize(1200, 600);
         setVisible(true);
     }
@@ -78,6 +77,13 @@ public class MainFrame extends JFrame {
         accountUI.setName(name);
     }
 
+    public void repaintAll(){
+        System.out.println("Replacing background images");
+        this.accountUI.repaint();
+        this.searchUI.repaint();
+        this.modifyUI.repaint();
+        this.inquireUI.repaint();
+    }
 
     public LoginControl getLoginControl(){ 
         return this.loginControl;

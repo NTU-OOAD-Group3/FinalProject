@@ -19,7 +19,7 @@ public class LoginUI extends JPanel implements ActionListener{
     private JPasswordField tfPassword; //get password input
     private JButton loginButton; //login  event 
     private JButton signupButton; //open up a new dialog
-
+    private Image img = new ImageIcon("resources/transparent_close.jpg").getImage();
 
     private MainFrame parent;
     private LoginControl loginControl;
@@ -32,6 +32,7 @@ public class LoginUI extends JPanel implements ActionListener{
     private void initUI(){
         
         this.setLayout(new GridBagLayout());
+        
         //line0
         this.textLable = new JLabel("welcome to xxxxxxxxxxxxxxxxxx");
         //this.textLable.setBorder(new LineBorder(Color.BLACK));
@@ -43,7 +44,7 @@ public class LoginUI extends JPanel implements ActionListener{
         this.addWithConstraints(blankLableL, 1, 0, 2, 2, 3, 2,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
-        this.usernameLable = new JLabel("Username:");
+        this.usernameLable = new JLabel("Username:", JLabel.RIGHT);
         this.addWithConstraints(usernameLable, 3, 1, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
         this.tfUsername=new JTextField();
@@ -57,7 +58,7 @@ public class LoginUI extends JPanel implements ActionListener{
 
 
         //line2
-        this.passwordLable = new JLabel("Password:");
+        this.passwordLable = new JLabel("Password:", JLabel.RIGHT);
         this.addWithConstraints(passwordLable, 3, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);
         this.tfPassword=new JPasswordField();
@@ -72,7 +73,6 @@ public class LoginUI extends JPanel implements ActionListener{
         this.signupButton.addActionListener(this);
         this.addWithConstraints(signupButton, 4, 3, 1, 1, 1, 1, 
         GridBagConstraints.NONE, GridBagConstraints.WEST);
-      
  
     }
 
@@ -91,6 +91,11 @@ public class LoginUI extends JPanel implements ActionListener{
         this.add(c, gbc);
     }
     
+    public void paintComponent(Graphics g) {
+        this.img = this.loginControl.getBackGroundImage();
+        g.drawImage(this.img, 0, 0, null);
+    }
+
     public void actionPerformed(ActionEvent e){
         if( e.getSource() == this.loginButton ){
             System.out.println("login triggered.");
@@ -111,11 +116,9 @@ public class LoginUI extends JPanel implements ActionListener{
                 
                 if(this.loginControl.verifyLogin(this.tfUsername.getText(), String.valueOf(this.tfPassword.getPassword()))){
                     //ENCODER SHOULD BE HERE to deal with password.getText()
-
-                    
                     this.parent.setName(this.tfUsername.getText());
                     // this.parent.loginChange();
-                    
+                    this.parent.repaintAll();        
                 }
                 else{
                     JOptionPane.showMessageDialog(this,"Wrong username or password");

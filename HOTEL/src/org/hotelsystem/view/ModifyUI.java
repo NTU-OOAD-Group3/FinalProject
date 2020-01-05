@@ -40,7 +40,8 @@ public class ModifyUI extends JPanel implements ActionListener{
     private JTextField tfModDoubleNum;
     private JTextField tfModQuadNum;
 
-	
+    private Image img;
+
 	public ModifyUI(ModifyControl modifyControl) {
         this.setLayout(new GridBagLayout());
         this.modifyControl = modifyControl;
@@ -50,6 +51,7 @@ public class ModifyUI extends JPanel implements ActionListener{
 	private void initUI() {
         this.orderIDbar = new JPanel();
         this.orderIDbar.setLayout(new GridBagLayout());
+        this.orderIDbar.setOpaque(false);
 		this.addWithConstraints(this, this.orderIDbar, 0, 0, 7, 2, 7, 2,
 				GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);
 
@@ -60,6 +62,8 @@ public class ModifyUI extends JPanel implements ActionListener{
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 10, 10, 0, 0);
         
         this.tfOrderID = new JTextField(20);
+        this.tfOrderID.setText("Please login!");
+        this.tfOrderID.setEditable(false);
         this.tfOrderID.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.orderIDbar, this.tfOrderID, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 10, 10, 0, 0);
@@ -77,6 +81,7 @@ public class ModifyUI extends JPanel implements ActionListener{
 
         this.originalOrderbar = new JPanel();
         this.originalOrderbar.setLayout(new GridBagLayout());
+        this.originalOrderbar.setOpaque(false);
 		this.addWithConstraints(this, this.originalOrderbar, 0, 2, 7, 4, 7, 4,
 				GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);
         
@@ -157,6 +162,7 @@ public class ModifyUI extends JPanel implements ActionListener{
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.modifiedOrderbar = new JPanel();
+        this.modifiedOrderbar.setOpaque(false);
         this.modifiedOrderbar.setLayout(new GridBagLayout());
 		this.addWithConstraints(this, this.modifiedOrderbar, 0, 6, 7, 4, 7, 4,
                 GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);   
@@ -242,8 +248,16 @@ public class ModifyUI extends JPanel implements ActionListener{
 
     public void setUser(User user){
         this.user = user;
+        if( user != null ){
+            this.tfOrderID.setText("");
+            this.tfOrderID.setEditable(true);
+        }
     }
 
+    public void paintComponent(Graphics g) {
+        this.img = this.modifyControl.getBackGroundImage();
+        g.drawImage(this.img, 0, 0, null);
+    }
 
     public void setOrder(Order order){
         ArrayList<Integer> roomNums = order.getRoomsNum();

@@ -26,6 +26,7 @@ public class SearchFilter extends JPanel implements ActionListener {
 
     public SearchFilter(SearchControl searchControl) {
         this.searchControl = searchControl;
+        this.setOpaque(false);
         initUI();
     }
 

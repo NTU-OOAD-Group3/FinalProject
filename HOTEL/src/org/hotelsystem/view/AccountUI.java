@@ -34,6 +34,7 @@ public class AccountUI extends JPanel implements ActionListener {
     private JButton btnCancel;
     private JButton btnModify;
     private JButton btnSave;
+    private Image img;
     // others
     private int userID;
 
@@ -49,6 +50,7 @@ public class AccountUI extends JPanel implements ActionListener {
 
         JPanel statusPanel = new JPanel(new GridBagLayout());
         statusPanel.setBorder(new TitledBorder("Account Status"));
+        statusPanel.setOpaque(false);
 
         this.labelUsername = new JLabel("Hello, Sekiro!");
         this.addWithConstraints(statusPanel, this.labelUsername, 0, 0, 5, 1, 5, 1,
@@ -74,36 +76,44 @@ public class AccountUI extends JPanel implements ActionListener {
 
         JPanel personPanel = new JPanel(new GridLayout(3, 1));
         personPanel.setBorder(new TitledBorder("Personal Information"));
-        
+        personPanel.setOpaque(false);
+
         JPanel cBoxSexPanel = new JPanel(new GridLayout());
         cBoxSexPanel.setBorder(new TitledBorder("Sex"));
+        cBoxSexPanel.setOpaque(false);
         this.cBoxSex = new JComboBox(this.sexOptions);
         cBoxSexPanel.add(this.cBoxSex);
         personPanel.add(cBoxSexPanel);
 
         JPanel tfPhoneNumberPanel = new JPanel(new GridLayout());
         tfPhoneNumberPanel.setBorder(new TitledBorder("Phone Number"));
+        tfPhoneNumberPanel.setOpaque(false);
         this.tfPhoneNumber = new JTextField();
         tfPhoneNumberPanel.add(this.tfPhoneNumber);
         personPanel.add(tfPhoneNumberPanel);
 
+
         JPanel tfAddressPanel = new JPanel(new GridLayout());
         tfAddressPanel.setBorder(new TitledBorder("Address"));
+        tfAddressPanel.setOpaque(false);
         this.tfAddress = new JTextField();
         tfAddressPanel.add(this.tfAddress);
         personPanel.add(tfAddressPanel);
 
         JPanel paymentPanel = new JPanel(new GridLayout(3, 1));
         paymentPanel.setBorder(new TitledBorder("Payment Information"));
+        paymentPanel.setOpaque(false);
 
         JPanel tfCardOwnerPanel = new JPanel(new GridLayout());
         tfCardOwnerPanel.setBorder(new TitledBorder("Credit Card Owner"));
+        tfCardOwnerPanel.setOpaque(false);
         this.tfCardOwner = new JTextField();
         tfCardOwnerPanel.add(this.tfCardOwner);
         paymentPanel.add(tfCardOwnerPanel);
 
         JPanel tfCardAccountPanel = new JPanel(new GridLayout(1, 4));
         tfCardAccountPanel.setBorder(new TitledBorder("Credit Card Account"));
+        tfCardAccountPanel.setOpaque(false);
         for ( int i=0; i<this.tfCardAccount.length; ++i ) {
             this.tfCardAccount[i] = new JTextField();
             tfCardAccountPanel.add(this.tfCardAccount[i]);
@@ -112,6 +122,7 @@ public class AccountUI extends JPanel implements ActionListener {
         
         JPanel tfCardValidTimePanel = new JPanel(new GridLayout(1, 2));
         tfCardValidTimePanel.setBorder(new TitledBorder("Credit Card Valid Through"));
+        tfCardValidTimePanel.setOpaque(false);
         this.cBoxCardValidMonth = new JComboBox(this.monthOptions);
         tfCardValidTimePanel.add(this.cBoxCardValidMonth);
         this.cBoxCardValidYear = new JComboBox(this.yearOptions);
@@ -119,6 +130,7 @@ public class AccountUI extends JPanel implements ActionListener {
         paymentPanel.add(tfCardValidTimePanel);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setOpaque(false);
         this.btnCancel = new JButton("Cancel");
         this.btnCancel.addActionListener(this);
         buttonPanel.add(this.btnCancel);
@@ -159,10 +171,22 @@ public class AccountUI extends JPanel implements ActionListener {
         p.add(c, gbc);
     }
 
+    public void paintComponent(Graphics g) {
+        this.img = this.accountControl.getBackGroundImage();
+        g.drawImage(this.img, 0, 0, null);
+    }
+
     public void actionPerformed(ActionEvent e) {
         if ( e.getSource() == this.btnChangePassword ) {
             System.out.println("change password triggered");
-
+            ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(this.parent);
+            changePasswordDialog.setVisible(true);
+            if ( changePasswordDialog.getChangeStatus() ) {
+                this.accountControl.triggerChangePassword(
+                    changePasswordDialog.getOriginPassword(),
+                    changePasswordDialog.getNewPassword()
+                );
+            }
         } else if ( e.getSource() == this.btnLogout ) {
             System.out.println("logout triggered");
             this.accountControl.triggerLogout();

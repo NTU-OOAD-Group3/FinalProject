@@ -4,6 +4,9 @@ import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.User;
 import org.hotelsystem.model.UserInfo;
 import org.hotelsystem.view.MainFrame;
+import java.awt.*;
+import java.awt.image.*;
+import javax.swing.*;
 
 public class MainControl{
     private AccountControl accountControl;
@@ -16,6 +19,7 @@ public class MainControl{
     private DBUtil dbutil;
     public int currentUserID;
     private User currentUser;
+    private Image img = new ImageIcon("resources/transparent_close.jpg").getImage();
     private UserInfo currentUserInfo;
     
     public MainControl() {
@@ -38,16 +42,19 @@ public class MainControl{
     public DBUtil getDBUtil() { return this.dbutil; }
     public int getcurrentUserId() { return this.currentUserID; }    // TODO: replace by User object
     public User getCurrentUser() { return this.currentUser; }
+    public Image getBackGroundImage() { return this.img; }
     public UserInfo getCurrentUserInfo() { return this.currentUserInfo; }
 
     public void setUI(MainFrame mainFrame) { this.mainFrame = mainFrame; }
+    
     public void setcurrentUserId(int id) { this.currentUserID = id; }   // TODO: replace by User object
     public void setCurrentUser(User user) {
         this.currentUser = user;
         this.refreshCurrentUserInfo();
         System.out.println(this.currentUser);
         System.out.println(this.currentUserInfo);
-        if ( this.currentUser != null ) {
+        if ( this.currentUser != null ) {    
+            this.img = new ImageIcon("resources/transparent_open.jpg").getImage();
             this.accountControl.triggerLogin();
             this.mainFrame.loginChange();
         } else {
@@ -75,4 +82,6 @@ public class MainControl{
     public void switchPane(int switchTo) {
         this.mainFrame.switchPane(switchTo);
     }
+
+    
 }
