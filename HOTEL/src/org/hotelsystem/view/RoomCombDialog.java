@@ -18,7 +18,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
     private JPanel hotelPanel;
     private JPanel listPanel;
     private JPanel bottomPanel;
-    private JButton btnReserve;
+    private JButton btnCancel;
     private JButton btnPrevPage;
     private JButton btnNextPage;
     private JLabel labelHotelID;
@@ -77,6 +77,11 @@ public class RoomCombDialog extends JDialog implements ActionListener{
                 GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         }
         
+        this.btnCancel = new JButton("Cancel");
+        this.btnCancel.addActionListener(this);
+        this.addWithConstraints(listPanel, btnCancel,
+            0, Math.min(10, this.roomCombination.size()) + 2, 1, 1, 1, 1,
+            GridBagConstraints.NONE, GridBagConstraints.SOUTH);
         
         this.bottomPanel = new JPanel();
         this.bottomPanel.setLayout(new GridLayout(1, 3));
@@ -162,6 +167,10 @@ public class RoomCombDialog extends JDialog implements ActionListener{
             else{
                 System.out.println("Already the final page.");
             }
+        }
+
+        else if( e.getSource() == this.btnCancel ){
+            dispose();
         }
 
         else{
