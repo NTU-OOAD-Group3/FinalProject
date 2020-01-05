@@ -181,7 +181,6 @@ public class RoomCombDialog extends JDialog implements ActionListener{
                     reserveCheckDialog.setVisible(true);
                 }
             }
-            dispose();
         }
 
         this.labelPageNum.setText(String.format("%d/%d", this.page + 1, this.totalPage + 1));
