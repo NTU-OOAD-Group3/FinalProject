@@ -3,6 +3,9 @@
 ```
 ├─.vscode
 └─HOTEL
+    ├─data
+    ├─lib
+    ├─resources
     └─src
         └─org
             └─hotelsystem

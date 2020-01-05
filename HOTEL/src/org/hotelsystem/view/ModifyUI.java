@@ -249,8 +249,16 @@ public class ModifyUI extends JPanel implements ActionListener{
     public void setUser(User user){
         this.user = user;
         if( user != null ){
-            this.tfOrderID.setText("");
+            System.out.println(this.tfOrderID.getText());
+            if (this.tfOrderID.getText().length()>10) {
+                this.tfOrderID.setText("");
+            }
             this.tfOrderID.setEditable(true);
+        }
+        else{
+            this.resetOrder();
+            this.tfOrderID.setText("Please login!");
+            this.tfOrderID.setEditable(false);
         }
     }
 
