@@ -12,13 +12,16 @@ public class InquireOrders extends JPanel{
 
     public InquireOrders(ArrayList<Order> orders, InquireControl inquireControl, JFrame parent) {
         this.setLayout(new BorderLayout());
-
+        this.setOpaque(false);
         this.listPanel = new JPanel();
         this.listPanel.setLayout(new GridBagLayout());
+        this.listPanel.setOpaque(false);
         JScrollPane listPanelScroll = new JScrollPane(listPanel);
-
+        listPanelScroll.getViewport().setOpaque(false);
+        listPanelScroll.setOpaque(false);
         for ( int i=0; i<orders.size(); i++ ) {
             arrs[i] = new InquireOrderUnit(orders.get(i), inquireControl, parent);
+            arrs[i].setOpaque(false);
             this.addWithConstraints(listPanel, arrs[i],
                 0, i, 1, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER);

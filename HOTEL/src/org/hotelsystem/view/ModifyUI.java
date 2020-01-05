@@ -62,6 +62,8 @@ public class ModifyUI extends JPanel implements ActionListener{
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 10, 10, 0, 0);
         
         this.tfOrderID = new JTextField(20);
+        this.tfOrderID.setText("Please login!");
+        this.tfOrderID.setEditable(false);
         this.tfOrderID.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.orderIDbar, this.tfOrderID, 0, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 10, 10, 0, 0);
@@ -246,6 +248,10 @@ public class ModifyUI extends JPanel implements ActionListener{
 
     public void setUser(User user){
         this.user = user;
+        if( user != null ){
+            this.tfOrderID.setText("");
+            this.tfOrderID.setEditable(true);
+        }
     }
 
     public void paintComponent(Graphics g) {
