@@ -26,8 +26,12 @@ public class InquireUI extends JPanel implements ActionListener{
   private JLabel orderQuickView;
   private InquireReviewDialog inquireReviewDialog;
 
+  
   private User user;
-  private ArrayList<Order> orders = new ArrayList<Order>();
+  private ArrayList<Order> orders;
+  private User emptyUser;
+  private ArrayList<Order> emptyOrders = new ArrayList<Order>();
+
 
   
   public InquireUI(JFrame parent, InquireControl inquireControl) {
@@ -36,31 +40,36 @@ public class InquireUI extends JPanel implements ActionListener{
     this.parent = parent;
     //mock Data
     ArrayList<Order> orders = new ArrayList<Order>();
-    for (int i=0;i<10;i++){
-      ArrayList<Integer> a= new ArrayList<Integer>();
-      a.add(12);
-      a.add(15);
-      orders.add(new Order(i, 0, 0, a, 20200104, 20200105, 666*i));
-    }
-    User user = new User(0,0,"cooool","");
-    this.orders = orders;
-    this.user = user;
+    User user = new User(0,0,"Unknown","");
+    this.emptyUser = user;
+    this.emptyOrders = orders;
+    this.user = this.emptyUser;
+    this.orders = this.emptyOrders;
     initUI();
   }
 
   public void refreshUI(ArrayList<Order> orders, User user) {
-    this.orders = orders;
-    this.user = user;
-
-    this.userNameLabel.setText(" User Name: " + user.getUsername());
+    if (user!=null){
+      this.orders = orders;
+      this.user = user;
+      this.searchOrderTextField.setText("");
+      this.searchOrderTextField.setEditable(true);
+      
+    }
+    else{
+      this.orders = this.emptyOrders;
+      this.user = this.emptyUser;
+      this.searchOrderTextField.setText("Please login!");
+      this.searchOrderTextField.setEditable(false);
+    }
+    this.userNameLabel.setText(" User Name: " + this.user.getUsername());
     this.orderSumLabel.setText(" Total Order: " + this.orders.size());
     this.orderQuickView.setText(" Order ID: " + orderIDsToString());
-
     this.remove(this.showGeneralOrder);
     this.showGeneralOrder = new InquireOrders(this.orders, this.inquireControl, this.parent);
     this.showGeneralOrder.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
     this.addWithConstraints(this.showGeneralOrder, 1, 0, 4, 5, 30, 2,
-        GridBagConstraints.BOTH, GridBagConstraints.CENTER);
+        GridBagConstraints.BOTH, GridBagConstraints.CENTER);    
   }
     
   public void initUI() {
@@ -81,6 +90,9 @@ public class InquireUI extends JPanel implements ActionListener{
         GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH);
         
     this.searchOrderTextField = new JTextField();
+    this.searchOrderTextField.setHorizontalAlignment(JTextField.CENTER);
+    this.searchOrderTextField.setText("Please login!");
+    this.searchOrderTextField.setEditable(false);
     addWithConstraints(this.searchOrder, this.searchOrderTextField, 0, 1, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 

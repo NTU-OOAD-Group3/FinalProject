@@ -15,6 +15,7 @@ import java.text.*;
 public class ModifyUI extends JPanel implements ActionListener{
     private ModifyControl modifyControl;
     private int haveSetOrderID;
+    private boolean isLogin = true;
 
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
@@ -238,6 +239,10 @@ public class ModifyUI extends JPanel implements ActionListener{
         return Integer.valueOf(tmp);
     }
 
+    public void setLogin(boolean isLogin){
+        this.isLogin = isLogin;
+    }
+
 
     public void setOrder(Order order){
         ArrayList<Integer> roomNums = order.getRoomsNum();
@@ -315,73 +320,103 @@ public class ModifyUI extends JPanel implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-        if (e.getSource() == this.btnQueryOrder){
-            //Mock Data
-            // ArrayList<Integer> a= new ArrayList<Integer>();
-            // a.add(1);
-            // Order order = new Order(1, 0, 0, a, 1250, 1350, 666);
-            // this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
-            //Todo
-            Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
-            if (order == null){
-                this.resetOrder();
-                JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                return;
+        if (isLogin){
+            if (e.getSource() == this.btnQueryOrder){
+                try{
+                    Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
+                    if (order == null){
+                        this.resetOrder();
+                        JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    else{
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
+                            this.setOrder(order);
+                        }
+                        else{
+                            this.resetOrder();
+                            JOptionPane.showMessageDialog(this, "Cannot modify order equal or after checkin date!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                    }
+                }
+                catch(NumberFormatException f){
+                    System.out.println(f);
+                    JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
-            else{
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
-                    this.setOrder(order);
+            else if (e.getSource() == this.btnCheckAndSend){
+                try{
+                    if (this.haveSetOrderID != Integer.valueOf(this.tfOrderID.getText())){
+                        this.resetOrder();
+                        JOptionPane.showMessageDialog(this, "Order ID unmatched please first query!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    boolean simpleCheckPass = true;
+                    if (Integer.valueOf(this.tfModSingleNum.getText())>Integer.valueOf(this.tfOriSingleNum.getText())) simpleCheckPass = false;
+                    if (Integer.valueOf(this.tfModDoubleNum.getText())>Integer.valueOf(this.tfOriDoubleNum.getText())) simpleCheckPass = false;
+                    if (Integer.valueOf(this.tfModQuadNum.getText())>Integer.valueOf(this.tfOriQuadNum.getText())) simpleCheckPass = false;
+                    if (simpleCheckPass == false){
+                        JOptionPane.showMessageDialog(this, "Modify can only reduce room!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (java.sql.Date.valueOf(this.tfModCheckInTime.getText()).before(java.sql.Date.valueOf(this.tfOriCheckInTime.getText()))) simpleCheckPass =false;
+                    if (java.sql.Date.valueOf(this.tfModCheckOutTime.getText()).after(java.sql.Date.valueOf(this.tfOriCheckOutTime.getText()))) simpleCheckPass =false;
+                    if (simpleCheckPass == false){
+                        JOptionPane.showMessageDialog(this, "Modified date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (!java.sql.Date.valueOf(this.tfModCheckOutTime.getText()).after(java.sql.Date.valueOf(this.tfModCheckInTime.getText()))) {
+                        JOptionPane.showMessageDialog(this, "Modified date error!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+
+                    int confirmModify =  JOptionPane.showConfirmDialog(this, "Do you want to modify?", "Check modify!", JOptionPane.YES_NO_OPTION);
+                    if (confirmModify == JOptionPane.YES_OPTION){
+                        boolean success = modifyControl.modifyOrder(
+                        this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText())), 
+                        Integer.valueOf(this.tfModSingleNum.getText()).intValue(), 
+                        Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), 
+                        Integer.valueOf(this.tfModQuadNum.getText()).intValue(), 
+                        this.dateToInt(this.tfModCheckInTime.getText()), 
+                        this.dateToInt(this.tfModCheckOutTime.getText()));
+                        if (success) {
+                            Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
+                            if (order == null){
+                                this.resetOrder();
+                                JOptionPane.showMessageDialog(this, "Order has been deleted!", "Notify", JOptionPane.INFORMATION_MESSAGE);
+                                return;
+                            }
+                            else{
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                if (java.sql.Date.valueOf(dateToString(order.getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
+                                    this.setOrder(order);
+                                    JOptionPane.showMessageDialog(this, "Modify succeed!", "Notify", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                                else{
+                                    this.resetOrder();
+                                    JOptionPane.showMessageDialog(this, "Modify error!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                                    return;
+                                }
+                            }
+                        }
+                        else System.out.println("Modify fail");
+                    }
+                    return;                    
                 }
-                else{
-                    this.resetOrder();
-                    JOptionPane.showMessageDialog(this, "Cannot modify order equal or after checkin date!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
+                catch(NumberFormatException f){
+                    System.out.println(f);
+                    JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
-                
+                catch(Exception a){
+                    System.out.println(a);
+                    JOptionPane.showMessageDialog(this, "Input wrong date format!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
-        else if (e.getSource() == this.btnCheckAndSend){
-            try{
-                if (this.haveSetOrderID != Integer.valueOf(this.tfOrderID.getText())){
-                    this.resetOrder();
-                    JOptionPane.showMessageDialog(this, "Order ID unmatched please first query!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                boolean simpleCheckPass = true;
-                if (Integer.valueOf(this.tfModSingleNum.getText())>Integer.valueOf(this.tfOriSingleNum.getText())) simpleCheckPass = false;
-                if (Integer.valueOf(this.tfModDoubleNum.getText())>Integer.valueOf(this.tfOriDoubleNum.getText())) simpleCheckPass = false;
-                if (Integer.valueOf(this.tfModQuadNum.getText())>Integer.valueOf(this.tfOriQuadNum.getText())) simpleCheckPass = false;
-                if (simpleCheckPass == false){
-                    JOptionPane.showMessageDialog(this, "Modify can only reduce room!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (java.sql.Date.valueOf(this.tfModCheckInTime.getText()).before(java.sql.Date.valueOf(this.tfOriCheckInTime.getText()))) simpleCheckPass =false;
-                if (java.sql.Date.valueOf(this.tfModCheckOutTime.getText()).after(java.sql.Date.valueOf(this.tfOriCheckOutTime.getText()))) simpleCheckPass =false;
-                if (simpleCheckPass == false){
-                    JOptionPane.showMessageDialog(this, "Modified date out of original bound!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                //Todo
-                boolean success = modifyControl.modifyOrder(
-                    this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText())), 
-                    Integer.valueOf(this.tfModSingleNum.getText()).intValue(), 
-                    Integer.valueOf(this.tfModDoubleNum.getText()).intValue(), 
-                    Integer.valueOf(this.tfModQuadNum.getText()).intValue(), 
-                    this.dateToInt(this.tfModCheckInTime.getText()), 
-                    this.dateToInt(this.tfModCheckOutTime.getText()));
-                if (success) System.out.println("Modify succeed");
-                else System.out.println("Modify fail");
-                
-            }
-            catch(NumberFormatException f){
-                System.out.println(f);
-                JOptionPane.showMessageDialog(this, "Input is not a number!", "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
-            catch(Exception a){
-                System.out.println(a);
-                JOptionPane.showMessageDialog(this, "Input wrong date format!", "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
+        else{
+            JOptionPane.showMessageDialog(this, "Please login!", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
