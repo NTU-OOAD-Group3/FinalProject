@@ -19,7 +19,6 @@ public class AccountControl{
         return this.mainControl.getBackGroundImage();
     }
 
-    public void setLogout(){
     public void setUI(AccountUI accountUI) {
         this.accountUI = accountUI;
     }

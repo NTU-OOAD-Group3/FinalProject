@@ -78,6 +78,7 @@ public class MainFrame extends JFrame {
     }
 
     public void repaintAll(){
+        System.out.println("Replacing background images");
         this.accountUI.repaint();
         this.searchUI.repaint();
         this.modifyUI.repaint();

@@ -177,6 +177,10 @@ public class SearchControl {
     public int getUserID(){
         return this.mainControl.getcurrentUserId();
     }
+
+    public Image getBackGroundImage(){
+        return this.mainControl.getBackGroundImage();
+    }
     
     public void getHotelReviews(int hotelID){
         ArrayList<Review> ans = dbutils.getHotelReviews(hotelID);
