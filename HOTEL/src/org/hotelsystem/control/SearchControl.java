@@ -174,6 +174,10 @@ public class SearchControl {
         return this.checkout;
     }
 
+    public int getUserID(){
+        return this.mainControl.getcurrentUserId();
+    }
+
     public void getHotelReviews(int hotelID){
         ArrayList<Review> ans = dbutils.getHotelReviews(hotelID);
         this.reviewPage = 0;
