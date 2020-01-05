@@ -11,9 +11,11 @@ import javax.swing.border.*;
 
 public class ReserveCheckDialog extends JDialog implements ActionListener{
     private JFrame parent;
+    private JPanel buttonPanel;
     private JLabel labelCombination;
     private JLabel labelErrorMessage;
     private JButton btnReserve;
+    private JButton btnCancel;
     private JButton btnErrorOK;
     private JDialog errorDialog;
     private SearchControl searchControl;
@@ -34,11 +36,17 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
     }
 
     private void initUI(){
-        this.labelCombination = new JLabel("    " + this.combinationInfo);
+        this.labelCombination = new JLabel(this.combinationInfo);
+        this.labelCombination.setHorizontalAlignment(SwingConstants.CENTER);
+        this.buttonPanel = new JPanel(new FlowLayout());
         this.btnReserve = new JButton("Reserve!");
         this.btnReserve.addActionListener(this);
+        this.btnCancel = new JButton("Cancel");
+        this.btnCancel.addActionListener(this);
+        this.buttonPanel.add(this.btnCancel);
+        this.buttonPanel.add(this.btnReserve);
         this.add(this.labelCombination, BorderLayout.CENTER);
-        this.add(this.btnReserve, BorderLayout.SOUTH);
+        this.add(this.buttonPanel, BorderLayout.SOUTH);
         this.setSize(300, 90);
     }
 
@@ -62,6 +70,9 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
                 this.errorDialog.setLocationRelativeTo(null);
                 this.errorDialog.setVisible(true);
             }
+        }
+        else if( e.getSource() == this.btnCancel ){
+            dispose();
         }
         else{
             this.errorDialog.dispose();

@@ -186,6 +186,7 @@ public class SearchBar extends JPanel implements ActionListener{
                 if( diffInMillies < 1){
                     JOptionPane.showMessageDialog(this, "Checkout time must be later than checkin time.", "Error", JOptionPane.INFORMATION_MESSAGE);
                     this.tfTotalNight.setText("");
+                    this.tfCheckout.setText("");
                 }
                 else{
                     long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
