@@ -50,11 +50,11 @@ public class ModifyUI extends JPanel implements ActionListener{
 	private void initUI() {
         this.orderIDbar = new JPanel();
         this.orderIDbar.setLayout(new GridBagLayout());
-		this.orderIDbar.setBorder(new LineBorder(Color.RED));
 		this.addWithConstraints(this, this.orderIDbar, 0, 0, 7, 2, 7, 2,
 				GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);
 
         JLabel lbOrderID = new JLabel("Order ID");
+        lbOrderID.setFont(new Font("Serif", Font.BOLD, 18));
         lbOrderID.setHorizontalAlignment(JLabel.CENTER);
         this.addWithConstraints(this.orderIDbar, lbOrderID, 0, 0, 1, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 10, 10, 0, 0);
@@ -70,13 +70,13 @@ public class ModifyUI extends JPanel implements ActionListener{
             GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST, 0, 0, 1000, 50);
 
         JLabel lbOriginalOrder = new JLabel("Original order");
+        lbOriginalOrder.setFont(new Font("Serif", Font.BOLD, 18));
         lbOriginalOrder.setHorizontalAlignment(JLabel.CENTER);
         this.addWithConstraints(this, lbOriginalOrder, 0, 0, 7, 2, 7, 2,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.originalOrderbar = new JPanel();
         this.originalOrderbar.setLayout(new GridBagLayout());
-		this.originalOrderbar.setBorder(new LineBorder(Color.GREEN));
 		this.addWithConstraints(this, this.originalOrderbar, 0, 2, 7, 4, 7, 4,
 				GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);
         
@@ -151,13 +151,13 @@ public class ModifyUI extends JPanel implements ActionListener{
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
 
         JLabel lbModifiedOrder = new JLabel("Modified order");
+        lbModifiedOrder.setFont(new Font("Serif", Font.BOLD, 18));
         lbModifiedOrder.setHorizontalAlignment(JLabel.CENTER);
         this.addWithConstraints(this, lbModifiedOrder, 0, 2, 7, 2, 7, 2,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.modifiedOrderbar = new JPanel();
         this.modifiedOrderbar.setLayout(new GridBagLayout());
-		this.modifiedOrderbar.setBorder(new LineBorder(Color.BLUE));
 		this.addWithConstraints(this, this.modifiedOrderbar, 0, 6, 7, 4, 7, 4,
                 GridBagConstraints.BOTH, GridBagConstraints.WEST, 0, 20, 20, 20);   
 
