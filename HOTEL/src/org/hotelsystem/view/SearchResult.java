@@ -43,7 +43,7 @@ public class SearchResult extends JPanel implements ActionListener{
 
         this.labelHotelImage = new JLabel("");
         this.labelHotelImage.setHorizontalAlignment(JLabel.CENTER);
-        this.labelHotelImage.setBorder(new LineBorder(Color.BLACK));
+        // this.labelHotelImage.setBorder(new LineBorder(Color.BLACK));
         this.addWithConstraints(labelHotelImage, 0, 0, 4, 4, 4, 4,
             GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 

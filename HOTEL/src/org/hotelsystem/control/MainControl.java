@@ -64,6 +64,14 @@ public class MainControl{
         } 
     }
 
+    public void refreshInquireUI(){
+        this.inquireControl.refreshUI(this.currentUser);
+    }
+
+    public void refreshModifyUI(){
+        this.modifyControl.setUser(this.currentUser);
+    }
+
     public void switchPane(int switchTo) {
         this.mainFrame.switchPane(switchTo);
     }

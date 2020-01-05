@@ -55,7 +55,6 @@ public class SearchControl {
         this.checkout = checkout;
         this.availableHotel = tmp;
         this.resultsTotalPage = (tmp.size() - 1) / 10;  
-        System.out.println("in");
         this.setSearchResults(new ArrayList<AvailableHotel>(this.availableHotel.subList(0, Math.min(10, this.availableHotel.size()))), 0, (tmp.size() -1) / 10);
     }
 
@@ -93,6 +92,7 @@ public class SearchControl {
     }
     
     public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum){
+        this.mainControl.getInquireControl().refreshUI();
         return this.dbutils.insertOrder(order, singleNum, doubleNum, quadNum);
     }
 
