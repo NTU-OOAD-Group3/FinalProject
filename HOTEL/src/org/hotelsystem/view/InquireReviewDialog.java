@@ -85,8 +85,6 @@ public class InquireReviewDialog extends JDialog implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         if( e.getSource() == this.btnSendReview){
-            System.out.println(this.reviewText.getText());
-            System.out.println(this.reviewStar.getSelectedItem());
             this.setVisible(false);
             this.inquireControl.setReview(this.order, (String)this.reviewStar.getSelectedItem(), this.reviewText.getText());
         }

@@ -1,6 +1,7 @@
 package org.hotelsystem.view;
 import org.hotelsystem.model.Order;
 import org.hotelsystem.control.ModifyControl;
+import org.hotelsystem.model.User;
 
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +16,7 @@ import java.text.*;
 public class ModifyUI extends JPanel implements ActionListener{
     private ModifyControl modifyControl;
     private int haveSetOrderID;
-    private boolean isLogin = true;
+    private User user;
 
     private JPanel orderIDbar;
 	private JPanel originalOrderbar;
@@ -239,8 +240,8 @@ public class ModifyUI extends JPanel implements ActionListener{
         return Integer.valueOf(tmp);
     }
 
-    public void setLogin(boolean isLogin){
-        this.isLogin = isLogin;
+    public void setUser(User user){
+        this.user = user;
     }
 
 
@@ -320,13 +321,18 @@ public class ModifyUI extends JPanel implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-        if (isLogin){
+        if (this.user != null){
             if (e.getSource() == this.btnQueryOrder){
                 try{
                     Order order = this.modifyControl.getOrder(Integer.valueOf(this.tfOrderID.getText()));
                     if (order == null){
                         this.resetOrder();
                         JOptionPane.showMessageDialog(this, "No such order!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    else if(order.getUserID() != this.user.getUserID()){
+                        this.resetOrder();
+                        JOptionPane.showMessageDialog(this, "Not your order!", "Error", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
                     else{

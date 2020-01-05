@@ -212,7 +212,7 @@ public class InquireUI extends JPanel implements ActionListener{
             if (this.orders.get(i).getOrderID() == orderID) {
               DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
               if (java.sql.Date.valueOf(dateToString(this.orders.get(i).getCheckinTime())).after(java.sql.Date.valueOf(df.format(new Date())))){
-                int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(orderID)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
+                int modify =  JOptionPane.showConfirmDialog(this, showOrder(orders.get(i)) + "Do you want to modify order?", "Order " + orderID, JOptionPane.YES_NO_OPTION);
                 if (modify == JOptionPane.YES_OPTION) {
                   this.inquireControl.switchToModify(this.orders.get(i));
                   System.out.println("Modify!!!");
