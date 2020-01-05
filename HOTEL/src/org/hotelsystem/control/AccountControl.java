@@ -27,6 +27,24 @@ public class AccountControl{
         this.mainControl.currentUserID = -1;    // TODO: replace by User object
     }
 
+    public void triggerChangePassword(String originPW, String newPW) {
+        Encoder passwordEncoder = new Encoder();
+        boolean changeStatus = this.dbutil.updateUserPassword(
+            this.mainControl.getCurrentUser().getUserID(),
+            passwordEncoder.crypt(originPW),
+            passwordEncoder.crypt(newPW)
+        );
+        System.out.println("changeStatus: " + changeStatus);
+        if ( changeStatus == true ) {
+            this.accountUI.createMessageDialog("Update user password successfully. Please re-login.",
+                "Success!", "INFORMATION_MESSAGE");
+            this.triggerLogout();
+        } else {
+            this.accountUI.createMessageDialog("Update user password failed.",
+                "Failed!", "ERROR_MESSAGE");
+        }
+    }
+
     public void triggerCancel() {
         this.accountUI.setEntryEnabled(false);
         this.setDisplay();

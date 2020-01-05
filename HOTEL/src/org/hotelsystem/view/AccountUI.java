@@ -162,7 +162,14 @@ public class AccountUI extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ( e.getSource() == this.btnChangePassword ) {
             System.out.println("change password triggered");
-
+            ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(this.parent);
+            changePasswordDialog.setVisible(true);
+            if ( changePasswordDialog.getChangeStatus() ) {
+                this.accountControl.triggerChangePassword(
+                    changePasswordDialog.getOriginPassword(),
+                    changePasswordDialog.getNewPassword()
+                );
+            }
         } else if ( e.getSource() == this.btnLogout ) {
             System.out.println("logout triggered");
             this.accountControl.triggerLogout();
