@@ -60,9 +60,8 @@ public class MainFrame extends JFrame {
         this.inquireControl.setUI(this.inquireUI);
         tabbedPane.addTab("InquireUI",this.inquireUI);
 
-
-        
         add(tabbedPane, BorderLayout.CENTER);
+        
         setSize(1200, 600);
         setVisible(true);
     }
@@ -75,6 +74,12 @@ public class MainFrame extends JFrame {
         accountUI.setName(name);
     }
 
+    public void repaintAll(){
+        this.accountUI.repaint();
+        this.searchUI.repaint();
+        this.modifyUI.repaint();
+        this.inquireUI.repaint();
+    }
 
     public LoginControl getLoginControl(){ 
         return this.loginControl;
