@@ -9,6 +9,9 @@ import java.awt.event.*;
 import java.util.*;
 import java.text.*;
 
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
+
 public class InquireOrderUnit extends JPanel implements ActionListener{
     private InquireControl inquireControl;
     private JLabel labelHotelImage;
@@ -21,6 +24,7 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
     private JButton btnModify;
     private Order order;
     private JFrame parent;
+    
 
 
     public InquireOrderUnit(Order order, InquireControl inquireControl, JFrame parent) {
@@ -54,7 +58,18 @@ public class InquireOrderUnit extends JPanel implements ActionListener{
             GridBagConstraints.NONE, GridBagConstraints.CENTER);
 
 
-        this.labelPrice = new JLabel("NTD " + order.getPrice());
+    
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");  
+        long diffInMillies = 0;
+        try{
+            diffInMillies = dateFormatter.parse(Integer.toString(order.getCheckoutTime())).getTime() - dateFormatter.parse(Integer.toString(order.getCheckinTime())).getTime();
+        }
+        catch(Exception e){
+
+        }
+        int searchNight = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+        this.labelPrice = new JLabel("NTD " + (order.getPrice() * searchNight));
         this.addWithConstraints(labelPrice, 12, 1, 4, 1, 12, 1,
             GridBagConstraints.CENTER, GridBagConstraints.EAST);
 

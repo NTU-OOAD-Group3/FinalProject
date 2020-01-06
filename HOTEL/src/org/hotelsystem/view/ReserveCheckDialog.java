@@ -59,7 +59,7 @@ public class ReserveCheckDialog extends JDialog implements ActionListener{
             if( user != null){
                 Order order = new Order(-1, user.getUserID(), this.availableHotel.getHotelID(), null, this.searchControl.getCheckin(), this.searchControl.getCheckout(), this.price);
                 if( this.searchControl.insertOrder(order, this.combination.get(0), this.combination.get(1), this.combination.get(2)) ){
-                    JOptionPane.showMessageDialog(new JFrame(), "Reserve successes.", "Congratulation!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Reserve successes.", "Congratulation!", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else{
                     this.errorDialog = new JDialog(this.parent, "Reserve fail", true);

@@ -40,7 +40,7 @@ public class Order {
             else if (tmp.charAt(0) == '2'){
                 doubleNum ++;
             }
-            else if (tmp.charAt(0) == '3'){
+            else if (tmp.charAt(0) == '4'){
                 quadNum ++;
             }
         }
