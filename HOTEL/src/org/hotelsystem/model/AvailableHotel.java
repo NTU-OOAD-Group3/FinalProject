@@ -51,4 +51,8 @@ public class AvailableHotel implements Comparable{
     public ArrayList<Integer> getCombinationPrice() {
         return this.combinationPrice;
     }
+
+    public void setCombinationPrice(ArrayList<Integer> combinationPrice){
+        this.combinationPrice = combinationPrice;
+    }
 }

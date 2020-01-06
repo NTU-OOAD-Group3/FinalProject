@@ -8,12 +8,12 @@ import org.hotelsystem.model.DBUtil;
 import org.hotelsystem.model.Review;
 import org.hotelsystem.view.SearchUI;
 
-import java.net.URL;
 import java.util.*;
 import java.awt.Image;
-import java.awt.image.*;
 import javax.swing.*;
-import javax.imageio.ImageIO;
+
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 public class SearchControl {
     private ArrayList<Hotel> hotels = new ArrayList<Hotel>(0);
@@ -26,9 +26,11 @@ public class SearchControl {
     private int resultsPage = 0, resultsTotalPage = 0;
     private int reviewPage = 0, reviewTotalPage = 0;
     private int reviewHotelID = 0;
-    private int searchPeople, searchRoom, searchNight;
+    private int searchPeople, searchRoom;
+    private int searchNight;
     private int checkin, checkout;
     private int imageIdx;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");  
     //
 	public SearchControl(MainControl mainControl, DBUtil dbutils){
         this.mainControl = mainControl;
@@ -43,13 +45,24 @@ public class SearchControl {
         this.hotels = dbutils.getHotels(locality, checkin, checkout);
         ArrayList<AvailableHotel> tmp = new ArrayList<AvailableHotel>(0);
         System.out.printf("get %d hotels\n", this.hotels.size());
-        this.searchNight = checkout - checkin;
+        try{
+            long diffInMillies = this.dateFormatter.parse(Integer.toString(checkout)).getTime() - this.dateFormatter.parse(Integer.toString(checkin)).getTime();
+            this.searchNight = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        }
+        catch(Exception e){
+
+        }
         this.searchRoom = room;
         this.searchPeople = people;
         for( int i=0; i<this.hotels.size(); ++i){
             AvailableHotel temp = hotels.get(i).getAvailableHotel(people, room);
-            if( temp.getRoomCombination().size() > 0 )
+            if( temp.getRoomCombination().size() > 0 ){
+                ArrayList<Integer> roomCombPrice = temp.getCombinationPrice();
+                for( int rcp=0; rcp<roomCombPrice.size(); ++rcp )
+                    roomCombPrice.set(rcp, roomCombPrice.get(rcp) * this.searchNight);
+                temp.setCombinationPrice(roomCombPrice);
                 tmp.add(temp);
+            }
         }
         Collections.sort(tmp);
         this.checkin = checkin;
