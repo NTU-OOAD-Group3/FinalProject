@@ -57,13 +57,14 @@ public class InquireUI extends JPanel implements ActionListener{
       this.user = user;
       this.searchOrderTextField.setText("");
       this.searchOrderTextField.setEditable(true);
-      
+      this.searchOrderButton.setEnabled(true);
     }
     else{
       this.orders = this.emptyOrders;
       this.user = this.emptyUser;
       this.searchOrderTextField.setText("Please login!");
       this.searchOrderTextField.setEditable(false);
+      this.searchOrderButton.setEnabled(false);
     }
     this.userNameLabel.setText(" User Name: " + this.user.getUsername());
     this.orderSumLabel.setText(" Total Order: " + this.orders.size());
@@ -102,6 +103,7 @@ public class InquireUI extends JPanel implements ActionListener{
         GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
 
     this.searchOrderButton = new JButton("Send query!");
+    this.searchOrderButton.setEnabled(false);
     this.searchOrderButton.addActionListener(this);
     this.addWithConstraints(this.searchOrder, this.searchOrderButton, 0, 2, 1, 1, 1, 1,
         GridBagConstraints.HORIZONTAL, GridBagConstraints.NORTH);

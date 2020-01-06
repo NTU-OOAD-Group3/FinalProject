@@ -70,6 +70,7 @@ public class ModifyUI extends JPanel implements ActionListener{
 
         this.btnQueryOrder = new JButton("Query");
         this.btnQueryOrder.addActionListener(this);
+        this.btnQueryOrder.setEnabled(false);
         this.addWithConstraints(this.orderIDbar, this.btnQueryOrder, 0, 2, 1, 1, 1, 1,
             GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST, 0, 0, 1000, 50);
 
@@ -182,6 +183,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.tfModCheckInTime = new JTextField(8);
+        this.tfModCheckInTime.setEditable(false);
         this.tfModCheckInTime.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.modifiedOrderbar, this.tfModCheckInTime, 1, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
@@ -191,6 +193,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
         this.tfModCheckOutTime = new JTextField(8);
+        this.tfModCheckOutTime.setEditable(false);
         this.tfModCheckOutTime.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.modifiedOrderbar, this.tfModCheckOutTime, 2, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
@@ -200,6 +203,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.tfModSingleNum = new JTextField(8);
+        this.tfModSingleNum.setEditable(false);
         this.tfModSingleNum.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.modifiedOrderbar, this.tfModSingleNum, 3, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
@@ -209,6 +213,7 @@ public class ModifyUI extends JPanel implements ActionListener{
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
 
         this.tfModDoubleNum = new JTextField(8);
+        this.tfModDoubleNum.setEditable(false);
         this.tfModDoubleNum.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.modifiedOrderbar, this.tfModDoubleNum, 4, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
@@ -218,12 +223,14 @@ public class ModifyUI extends JPanel implements ActionListener{
                 GridBagConstraints.NONE, GridBagConstraints.SOUTH, 0, 0, 0, 0);
         
         this.tfModQuadNum = new JTextField(8);
+        this.tfModQuadNum.setEditable(false);
         this.tfModQuadNum.setHorizontalAlignment(JTextField.CENTER);
         this.addWithConstraints(this.modifiedOrderbar, this.tfModQuadNum, 5, 1, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH, 0, 0, 0, 0);
         
         this.btnCheckAndSend = new JButton("Check");
         this.btnCheckAndSend.addActionListener(this);
+        this.btnCheckAndSend.setEnabled(false);
         this.addWithConstraints(this, this.btnCheckAndSend, 0, 10, 1, 1, 1, 1,
             GridBagConstraints.NONE, GridBagConstraints.NORTH);
 
@@ -253,12 +260,14 @@ public class ModifyUI extends JPanel implements ActionListener{
             if (this.tfOrderID.getText().length()>10) {
                 this.tfOrderID.setText("");
             }
+            this.btnQueryOrder.setEnabled(true);
             this.tfOrderID.setEditable(true);
         }
         else{
             this.resetOrder();
             this.tfOrderID.setText("Please login!");
             this.tfOrderID.setEditable(false);
+            this.btnQueryOrder.setEnabled(false);;
         }
     }
 
@@ -287,6 +296,12 @@ public class ModifyUI extends JPanel implements ActionListener{
         this.tfModQuadNum.setText(String.valueOf(roomNums.get(2)));
 
         this.haveSetOrderID = order.getOrderID();
+        this.btnCheckAndSend.setEnabled(true);
+        this.tfModCheckInTime.setEditable(true);
+        this.tfModCheckOutTime.setEditable(true);
+        this.tfModSingleNum.setEditable(true);
+        this.tfModDoubleNum.setEditable(true);
+        this.tfModQuadNum.setEditable(true);
     }
 
     public void resetOrder(){
@@ -308,6 +323,12 @@ public class ModifyUI extends JPanel implements ActionListener{
         this.tfModQuadNum.setText("");
 
         this.haveSetOrderID = -1;
+        this.btnCheckAndSend.setEnabled(false);
+        this.tfModCheckInTime.setEditable(false);
+        this.tfModCheckOutTime.setEditable(false);
+        this.tfModSingleNum.setEditable(false);
+        this.tfModDoubleNum.setEditable(false);
+        this.tfModQuadNum.setEditable(false);
     }
 	
 	private void addWithConstraints(JComponent mother, JComponent c, int gridx, int gridy,
