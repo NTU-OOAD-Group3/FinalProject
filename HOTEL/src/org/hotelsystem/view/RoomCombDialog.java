@@ -69,7 +69,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
 
         for ( int i=0; i<10 && i < this.roomCombination.size(); ++i ) {
             ArrayList<Integer> combination = this.roomCombination.get(i);
-            btnCombination[i] = new JButton(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
+            btnCombination[i] = new JButton(String.format("Single: %d, Double: %d, Quad: %d, Price per day: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
             btnCombination[i].addActionListener(this);
             // commentArray[i].setVisible(false);
             this.addWithConstraints(listPanel, btnCombination[i],
@@ -142,7 +142,7 @@ public class RoomCombDialog extends JDialog implements ActionListener{
         for( int i=0;i<round;++i ){
             ArrayList<Integer> combination = this.roomCombination.get(base + i);
             this.btnCombination[i].setVisible(true);
-            this.btnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
+            this.btnCombination[i].setText(String.format("Single: %d, Double: %d, Quad: %d, Price per night: %d", combination.get(0), combination.get(1), combination.get(2), this.combinationPrice.get(i)));
         }
     }
 

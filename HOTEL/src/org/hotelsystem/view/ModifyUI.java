@@ -279,15 +279,6 @@ public class ModifyUI extends JPanel implements ActionListener{
     }
 
     public void setOrder(Order order){
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");  
-        long diffInMillies = 0;
-        try{
-            diffInMillies = dateFormatter.parse(Integer.toString(order.getCheckoutTime())).getTime() - dateFormatter.parse(Integer.toString(order.getCheckinTime())).getTime();
-        }
-        catch(Exception e){
-
-        }
-        int searchNight = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
         ArrayList<Integer> roomNums = order.getRoomsNum();
         this.tfOrderID.setText(String.valueOf(order.getOrderID()));
         this.tfOriHotelName.setText(String.valueOf(order.getHotelID()));
@@ -296,7 +287,7 @@ public class ModifyUI extends JPanel implements ActionListener{
         this.tfOriSingleNum.setText(String.valueOf(roomNums.get(0)));
         this.tfOriDoubleNum.setText(String.valueOf(roomNums.get(1)));
         this.tfOriQuadNum.setText(String.valueOf(roomNums.get(2)));
-        this.tfOriPrice.setText(String.valueOf(order.getPrice() * searchNight));
+        this.tfOriPrice.setText(String.valueOf(order.getPrice()));
         
 
         this.tfModHotelName.setText(String.valueOf(order.getHotelID()));

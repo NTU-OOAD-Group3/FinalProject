@@ -27,9 +27,9 @@ public class SearchControl {
     private int reviewPage = 0, reviewTotalPage = 0;
     private int reviewHotelID = 0;
     private int searchPeople, searchRoom;
-    private int searchNight;
     private int checkin, checkout;
     private int imageIdx;
+    private int searchNight;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");  
     //
 	public SearchControl(MainControl mainControl, DBUtil dbutils){
@@ -45,21 +45,13 @@ public class SearchControl {
         this.hotels = dbutils.getHotels(locality, checkin, checkout);
         ArrayList<AvailableHotel> tmp = new ArrayList<AvailableHotel>(0);
         System.out.printf("get %d hotels\n", this.hotels.size());
-        try{
-            long diffInMillies = this.dateFormatter.parse(Integer.toString(checkout)).getTime() - this.dateFormatter.parse(Integer.toString(checkin)).getTime();
-            this.searchNight = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-        }
-        catch(Exception e){
-
-        }
+       
         this.searchRoom = room;
         this.searchPeople = people;
         for( int i=0; i<this.hotels.size(); ++i){
             AvailableHotel temp = hotels.get(i).getAvailableHotel(people, room);
             if( temp.getRoomCombination().size() > 0 ){
                 ArrayList<Integer> roomCombPrice = temp.getCombinationPrice();
-                for( int rcp=0; rcp<roomCombPrice.size(); ++rcp )
-                    roomCombPrice.set(rcp, roomCombPrice.get(rcp) * this.searchNight);
                 temp.setCombinationPrice(roomCombPrice);
                 tmp.add(temp);
             }
@@ -68,7 +60,14 @@ public class SearchControl {
         this.checkin = checkin;
         this.checkout = checkout;
         this.availableHotel = tmp;
-        this.resultsTotalPage = (tmp.size() - 1) / 10;  
+        this.resultsTotalPage = (tmp.size() - 1) / 10; 
+        try{
+            long diffInMillies = this.dateFormatter.parse(Integer.toString(checkout)).getTime() - this.dateFormatter.parse(Integer.toString(checkin)).getTime();
+            this.searchNight = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS); 
+        }
+        catch(Exception e){
+            
+        }
         this.searchUI.refreshFilter();
         this.setSearchResults(new ArrayList<AvailableHotel>(this.availableHotel.subList(0, Math.min(10, this.availableHotel.size()))), 0, (tmp.size() -1) / 10);
     }
@@ -107,7 +106,11 @@ public class SearchControl {
     }
     
     public boolean insertOrder(Order order, int singleNum, int doubleNum, int quadNum){
-        return this.dbutils.insertOrder(order, singleNum, doubleNum, quadNum);
+        if( this.dbutils.insertOrder(order, singleNum, doubleNum, quadNum) ){
+            order.setPrice(order.getPrice() * this.searchNight);
+            return true;
+        }
+        return false;
     }
 
     public void setSearchResultsPage(int direction){
@@ -149,9 +152,6 @@ public class SearchControl {
         return this.searchRoom;
     }
 
-    public int getSearchNight(){
-        return this.searchNight;
-    }
 
     public int getCheckin(){
         return this.checkin;
@@ -165,6 +165,7 @@ public class SearchControl {
         return this.mainControl.getCurrentUser();
     }
 
+    public int getSearchNight(){ return this.searchNight; }
     public Image getBackGroundImage(){
         return this.mainControl.getBackGroundImage();
     }

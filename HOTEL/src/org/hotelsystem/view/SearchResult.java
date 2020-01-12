@@ -97,7 +97,7 @@ public class SearchResult extends JPanel implements ActionListener{
         this.labelHotelStar.setText("Star: " + Integer.toString(availableHotel.getHotelStar()));
         this.labelHotelLocality.setText("Locality: " + availableHotel.getLocality());
         this.labelHotelAddress.setText("Address: " + availableHotel.getStreetAddress());
-        this.labelPrice.setText("Price: " + Integer.toString(availableHotel.getCombinationPrice().get(0)));
+        this.labelPrice.setText("Price per night: " + Integer.toString(availableHotel.getCombinationPrice().get(0)));
         this.roomCombination = availableHotel.getRoomCombination();
         int minRoomNum = roomCombination.get(0).get(0) + roomCombination.get(0).get(1) + roomCombination.get(0).get(2);
         this.labelSummary.setText(String.format("Room sets: (%d people, %d nights, %d rooms)", this.searchControl.getSearchPeople(), this.searchControl.getSearchNight(), minRoomNum));

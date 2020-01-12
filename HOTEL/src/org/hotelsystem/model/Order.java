@@ -53,7 +53,7 @@ public class Order {
 
     public void setOrderID(int orderID) { this.orderID = orderID; }
     public void setRoomIDs(ArrayList<Integer> roomIDs) { this.roomIDs = roomIDs; }
-    
+    public void setPrice(int price){ this.price = price; }
     public String toString() {
         String s = String.format("OrderID: %d ", this.orderID) + 
             String.format("UserID: %d ", this.userID) +
