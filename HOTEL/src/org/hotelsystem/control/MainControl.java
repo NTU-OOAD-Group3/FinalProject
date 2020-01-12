@@ -25,6 +25,7 @@ public class MainControl{
     public MainControl() {
         // Initialize DBUtil before initialization of any control!!!
         this.dbutil = new DBUtil("140.112.21.82", "ooad", "ooad", "HOTEL");
+        // this.dbutil = new DBUtil("localhost", "root", "root", "HOTEL");
         this.hostControl = new HostControl(this, this.dbutil);
         this.inquireControl = new InquireControl(this, this.dbutil);
         this.loginControl = new LoginControl(this, this.dbutil);
