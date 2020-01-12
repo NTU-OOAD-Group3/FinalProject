@@ -1,5 +1,18 @@
-# FinalProject
+# ESOS OOAD 2019
+## FinalProject: Hotel System
 
+### How to use
+```
+cd HOTEL
+
+javac -cp src/:lib/json.jar:lib/mysql-connector-java-5.1.47.jar -d ./ src/InitDB.java
+java -cp ./:lib/json.jar:lib/mysql-connector-java-5.1.47.jar InitDB
+
+javac -cp src/:lib/json.jar:lib/mysql-connector-java-5.1.47.jar -d ./ src/main.java
+java -cp ./:lib/json.jar:lib/mysql-connector-java-5.1.47.jar main
+```
+
+### Some development note
 ```
 ├─.vscode
 └─HOTEL

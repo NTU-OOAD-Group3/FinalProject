@@ -66,7 +66,7 @@ public class InitDB {
             this.stmt = conn.createStatement();
             
             cmd = "CREATE TABLE Users (" +
-                    "`UserID` INT NOT NULL," +
+                    "`UserID` INT NOT NULL AUTO_INCREMENT," +
                     "`UserType` INT NOT NULL," +
                     "`UserName` VARCHAR(100) NOT NULL," +
                     "`Password` VARCHAR(100) NOT NULL," +
@@ -74,6 +74,27 @@ public class InitDB {
                   ");";
             stmt.execute(cmd);
             System.out.println("CREATE TABLE Users");
+
+            cmd = "CREATE TABLE UserInfo (" +
+                    "`UserID` INT NOT NULL," +
+                    "`Sex` INT NOT NULL DEFAULT 0," +
+                    "`PhoneNumber` CHAR(16)," +
+                    "`Address` VARCHAR(128)," +
+                    "`CardOwner` VARCHAR(32)," +
+                    "`CardAccount` CHAR(16)," +
+                    "`CardValidTime` CHAR(5)," +
+                    "PRIMARY KEY (`UserID`)," +
+                    "FOREIGN KEY (`UserID`) REFERENCES Users (`UserID`)" +
+                  ");";
+            stmt.execute(cmd);
+            System.out.println("CREATE TABLE UserInfo");
+
+            cmd = "CREATE TRIGGER `add_user_trigger` " +
+                  "AFTER INSERT ON `Users` FOR EACH ROW " +
+                  "INSERT INTO UserInfo (`UserID`)" +
+                  "VALUES (NEW.UserID);";
+            stmt.execute(cmd);
+            System.out.println("CREATE TRIGGER add_user_trigger");
 
             cmd = "CREATE TABLE Hotels (" +
                     "`HotelID` INT NOT NULL," +
@@ -224,6 +245,7 @@ public class InitDB {
 
     public static void main(String[] args) {
         InitDB mysql = new InitDB("140.112.21.82", "ooad", "ooad");
+        // InitDB mysql = new InitDB("localhost", "root", "root");
         mysql.createDatabase();
         mysql.createTables();
         mysql.insertFromJSON("data/HotelList.json");
